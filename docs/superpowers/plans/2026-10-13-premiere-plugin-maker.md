@@ -10,12 +10,12 @@
 
 **Spec:** `docs/superpowers/specs/2026-10-13-premiere-plugin-maker-design.md`（このワークツリーのルートから見たパス）
 
-**材料（調査資料）:** `/Users/kawamurafuushin/ClaudeCode/.claude/worktrees/premiere-plugin-skill-d8b265/docs/superpowers/research/2026-10-13-premiere-plugin-maker/` の A〜G・W と `notes/`（以下「調査 A」などと書く。セッション専用の一時フォルダから写した控えで、親リポジトリでは追跡しない。個人名を含むので、公開物には写さない）
+**材料（調査資料）:** `<作業場所>/docs/superpowers/research/2026-10-13-premiere-plugin-maker/` の A〜G・W と `notes/`（以下「調査 A」などと書く。セッション専用の一時フォルダから写した控えで、親リポジトリでは追跡しない。個人名を含むので、公開物には写さない）
 
 ## Global Constraints
 
 - 名前はリポジトリ・目録・プラグイン・スキルとも `premiere-plugin-maker`。公開後は変えない。
-- 作業場所: `/Users/kawamurafuushin/ClaudeCode/.claude/worktrees/premiere-plugin-skill-d8b265/projects/常時運用/premiere-plugin-maker/`（独立した git。親リポジトリは追跡しない）。以下、計画の中のパスはこのフォルダ（以下「リポジトリ」）から見た相対パス。
+- 作業場所: `<作業場所>/projects/常時運用/premiere-plugin-maker/`（独立した git。親リポジトリは追跡しない）。以下、計画の中のパスはこのフォルダ（以下「リポジトリ」）から見た相対パス。
 - スキルのフォルダ: `plugins/premiere-plugin-maker/skills/premiere-plugin-maker/`（以下 `SKILL/` と書く。Run のコマンドの中の `SKILL/` も略記なので、打つ前にこのパスへ置き換える。そのまま打つと「ファイルが無い」で止まる）。
 - 対象の Premiere: UXP の正式版が入った 25.6 以降（推奨 26.x）。manifest は `manifestVersion: 5`、`host.app: "premierepro"`、`host` は配列にしない。
 - 道具は Python 3.9 以上の標準ライブラリだけ。Mac は `python3 SKILL/scripts/<道具>.py`、Windows は `py -3 SKILL\scripts\<道具>.py`。
@@ -118,7 +118,7 @@ premiere-plugin-maker/                         リポジトリ（独立した gi
 - Create: `docs/superpowers/specs/2026-10-13-premiere-plugin-maker-design.md`（設計書の写し）
 - Create: `docs/superpowers/plans/2026-10-13-premiere-plugin-maker.md`（この計画の写し）
 - Create: `tests/helpers.py`、`tests/test_package.py`
-- Modify: 親リポジトリの `/Users/kawamurafuushin/ClaudeCode/.claude/worktrees/premiere-plugin-skill-d8b265/.gitignore`（このフォルダを追跡しない 1 行）
+- Modify: 親リポジトリの `<作業場所>/.gitignore`（このフォルダを追跡しない 1 行）
 
 **Interfaces:**
 - Produces: `tests/helpers.py` の定数 `REPO`, `PLUGIN`, `SKILL`, `SCRIPTS`, `KNOWLEDGE`, `PARTS`, `TEMPLATES`, `EXAMPLES` と関数 `temp_dir(prefix) -> pathlib.Path`、`run_script(name, *args, env=None, cwd=None) -> subprocess.CompletedProcess`
@@ -126,8 +126,8 @@ premiere-plugin-maker/                         リポジトリ（独立した gi
 - [ ] **Step 1: フォルダを作って git を始める**
 
 ```bash
-mkdir -p "/Users/kawamurafuushin/ClaudeCode/.claude/worktrees/premiere-plugin-skill-d8b265/projects/常時運用/premiere-plugin-maker"
-cd "/Users/kawamurafuushin/ClaudeCode/.claude/worktrees/premiere-plugin-skill-d8b265/projects/常時運用/premiere-plugin-maker"
+mkdir -p "<作業場所>/projects/常時運用/premiere-plugin-maker"
+cd "<作業場所>/projects/常時運用/premiere-plugin-maker"
 git init -b main
 git -C . config core.quotepath false
 mkdir -p .claude-plugin .agents/plugins docs/superpowers/specs docs/superpowers/plans tests/js \
@@ -138,7 +138,7 @@ mkdir -p .claude-plugin .agents/plugins docs/superpowers/specs docs/superpowers/
 親リポジトリがこのフォルダを追跡しないよう、親の `.gitignore` に 1 行足す（既に無視されているなら足さない）:
 
 ```bash
-cd /Users/kawamurafuushin/ClaudeCode/.claude/worktrees/premiere-plugin-skill-d8b265
+cd ~/ClaudeCode/.claude/worktrees/premiere-plugin-skill-d8b265
 git check-ignore -q "projects/常時運用/premiere-plugin-maker/README.md" || printf '\n# 独立した git（premiere-plugin-maker）\nprojects/常時運用/premiere-plugin-maker/\n' >> .gitignore
 ```
 
@@ -419,8 +419,8 @@ SOFTWARE.
 設計書と計画を写す:
 
 ```bash
-cp /Users/kawamurafuushin/ClaudeCode/.claude/worktrees/premiere-plugin-skill-d8b265/docs/superpowers/specs/2026-10-13-premiere-plugin-maker-design.md docs/superpowers/specs/
-cp /Users/kawamurafuushin/ClaudeCode/.claude/worktrees/premiere-plugin-skill-d8b265/docs/superpowers/plans/2026-10-13-premiere-plugin-maker.md docs/superpowers/plans/
+cp <作業場所>/docs/superpowers/specs/2026-10-13-premiere-plugin-maker-design.md docs/superpowers/specs/
+cp <作業場所>/docs/superpowers/plans/2026-10-13-premiere-plugin-maker.md docs/superpowers/plans/
 ```
 
 写した 2 つの文書のうち、個人の絶対パスと調査資料のパスを含む行は、公開前の Task 34 の衛生検査で落ちる。今は写すだけにし、Task 34 で該当行を「（作業メモ。公開物では省略）」に置き換える。
@@ -8768,7 +8768,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 
 ```bash
 mkdir -p plugins/premiere-plugin-maker/skills/premiere-plugin-maker/parts/silence-cut/server/vendor plugins/premiere-plugin-maker/skills/premiere-plugin-maker/parts/silence-cut/server/jobs
-cp "/Users/kawamurafuushin/ClaudeCode/.claude/worktrees/premiere-plugin-skill-d8b265/projects/保存用/Premiere プラグイン/premiere-cut-srt-plugin/server/vendor/premiere_skills/scripts/silence_cut.py" plugins/premiere-plugin-maker/skills/premiere-plugin-maker/parts/silence-cut/server/vendor/silence_cut.py
+cp "<作業場所>/projects/保存用/Premiere プラグイン/premiere-cut-srt-plugin/server/vendor/premiere_skills/scripts/silence_cut.py" plugins/premiere-plugin-maker/skills/premiere-plugin-maker/parts/silence-cut/server/vendor/silence_cut.py
 ```
 
 写した直後に、check.py の W003（文字コード）・W004（Mac 専用の場所）・P003（個人のパス）に当たる箇所を探す:
@@ -9272,7 +9272,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - [ ] **Step 1: 写して、Mac 専用の探し方と危ない経路を直す**
 
 ```bash
-SRC="/Users/kawamurafuushin/ClaudeCode/.claude/worktrees/premiere-plugin-skill-d8b265/projects/保存用/Premiere プラグイン/effect-design-extension/engine"
+SRC="<作業場所>/projects/保存用/Premiere プラグイン/effect-design-extension/engine"
 DST=plugins/premiere-plugin-maker/skills/premiere-plugin-maker/parts/mogrt-text/server/mogrt
 mkdir -p "$DST/styles" plugins/premiere-plugin-maker/skills/premiere-plugin-maker/parts/mogrt-text/server/jobs plugins/premiere-plugin-maker/skills/premiere-plugin-maker/parts/mogrt-text/lib
 for f in __init__.py build_mogrt.py style_tree.py textstyle_fb.py fonts.py cli.py; do cp "$SRC/$f" "$DST/$f"; done
@@ -9644,7 +9644,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 
 ```bash
 node -e '
-const m = require("/Users/kawamurafuushin/ClaudeCode/.claude/worktrees/premiere-plugin-skill-d8b265/projects/保存用/Premiere プラグイン/effect-design-extension/client/motion.js");
+const m = require("<作業場所>/projects/保存用/Premiere プラグイン/effect-design-extension/client/motion.js");
 const cases = {
   scale_bezier: [[{t:0,value:100,interp:"bezier"},{t:1,value:110,interp:"linear"}], 1/30],
   opacity_hold: [[{t:0,value:0,interp:"hold"},{t:0.5,value:100,interp:"linear"}], 1/30],
@@ -9747,7 +9747,7 @@ Expected: FAIL（`ENOENT … ppm-motion-bake.js`）
 KAZARU の `.prfpset` の生成器を写す:
 
 ```bash
-KZ=/Users/kawamurafuushin/ClaudeCode/projects/常時運用/kazaru/scripts/kazaru_core
+KZ=~/ClaudeCode/projects/常時運用/kazaru/scripts/kazaru_core
 P=plugins/premiere-plugin-maker/skills/premiere-plugin-maker/parts/motion-bake/server/presets
 mkdir -p "$P"
 cp "$KZ/prfpset_build.py" "$P/"
@@ -10921,7 +10921,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 3. `status` は根拠で決める: 実機で確かめた記録がある＝`verified`、一部だけ（Mac だけ・ある版だけ）＝`partial`、記録が無い＝`unverified`、後から訂正された古い主張＝`superseded`（本文の先頭に「訂正: 正しくは〜（id）」と書き、`related` に正しい方の id を入れる）。
 4. `os` は当てはまる OS だけ（Mac だけの話なら `[mac]`）。`premiere` は当てはまる版（例 `">=26.3"`、分からなければ `">=25.6"`）。
 5. 本文は日本語の平易な文。初心者が読んで分かる言葉にし、専門の言葉は初出で一言説明する。記号や略語で圧縮しない。
-6. **公開物なので、個人名（河村さん・視聴者・取引先・出演者の名前）、個人のパス（`/Users/<名前>/` など）、鍵・トークン、チャンネル名、取引の情報を書かない。**人は「利用者」「視聴者」と書く。パスは `~/` や `%APPDATA%` の形にする。
+6. **公開物なので、個人名（作者・視聴者・取引先・出演者の名前）、個人のパス（`/Users/<名前>/` など）、鍵・トークン、チャンネル名、取引の情報を書かない。**人は「利用者」「視聴者」と書く。パスは `~/` や `%APPDATA%` の形にする。
 7. 原文の丸写しをしない。要点を自分の言葉で書き、コードは必要な最小の断片だけにする。
 8. 「出どころ」の節には、どのプラグインのどの記録か（例: 「Cut & SRT の失敗記録（2026-07-24）」「Adobe 公式の変更履歴（26.3）」）を書く。URL は Adobe 公式とフォーラムのものだけ書いてよい。
 9. 記録どうしが食い違う所は、片方だけを書かない。両方と「キットの部品はどちらに合わせたか」を書く（調査 A §3.3、調査 E §3.3）。
@@ -10995,7 +10995,7 @@ Premiere の取引（`project.lockedAccess` の中の `project.executeTransactio
 | core-api-patterns | API の正しい使い方の型（用途別） | プロジェクトとシーケンス・タイムラインを読む（getTrackItems は引数 2 つ）・選択（getSelection を使い new TrackItemSelection は使わない）・クリップの操作・マーカー・書き出し（exportSequenceFrame は書き終わる前に返る）・プロジェクトの項目とビン・効果とキー（findParam の日英の表示名）・トランジション・MOGRT・UXP の host・ファイル・クリップボード・localStorage・ネットワーク／TickTime の読み方（ticksNumber を先に）／存在を確かめてから呼ぶ（doc 記載≠実装済み）／記録が割れている所（ticks・insertMogrtFromPath の上書き・setInPoint）と部品の選んだ側 | 調査 A §3.1〜3.3、調査 E §3 |
 | core-ui-rules | UXP の画面の制約と直し方 | grid 不可・flex の子が潰れる（一覧の行に flex: 0 0 auto）・ドックの下のボタンに届かない（高さ 100% と min-height: 0）・sp-button が押せない・select のホイール・textarea の null・空欄の NaN・confirm が無い・重ね表示が透ける・MutationObserver が無い・複雑な SVG（PNG に焼く）・require の相対パス・起動は末尾で 1 回・title を隠す・ul/li は div・input file/color 不可／下見（Chromium）では出ない崩れがあること | 調査 A §4、調査 G §6、調査 C 付録 A（23・24） |
 | core-manifest-permissions | manifest と権限の決め方 | 必須の項目・host は配列にしない・host.data（apiVersion 2・loadEvent startup。公式の文書には無いが実機で動いた形）・icons（species は文字列 "generic" で動いた）・権限ごとに「何をするとき足すか」（localFileSystem plugin/request/fullAccess・network（127.0.0.1 は "all" が要る）・clipboard・launchProcess・webview（domains は TLD のワイルドカードだけ効いた）・allowCodeGenerationFromStrings・enableAlerts）／id を変えるとショートカットの割り当てが消える | 調査 G §2.2、調査 A §2.1〜2.5、調査 E §2 |
-| core-verification | 実機で確かめる作法 | 「完成と言ってよいのは利用者の Premiere で確かめた後だけ」／診断ボタン（probe）で API の有無を先に見る／logs.py でログを読む／コマを書き出して画で見る（プレイヘッドを置いてから）／1 回に 1 手順を頼む／テストが全部通っても実機だけ止まる型（UMD・child_process・存在しないプロパティ）／未確認は未確認と書く | 河村さんの記憶の「検証の鉄則」、調査 D §6、調査 F §5.4 |
+| core-verification | 実機で確かめる作法 | 「完成と言ってよいのは利用者の Premiere で確かめた後だけ」／診断ボタン（probe）で API の有無を先に見る／logs.py でログを読む／コマを書き出して画で見る（プレイヘッドを置いてから）／1 回に 1 手順を頼む／テストが全部通っても実機だけ止まる型（UMD・child_process・存在しないプロパティ）／未確認は未確認と書く | 作者の記憶の「検証の鉄則」、調査 D §6、調査 F §5.4 |
 | core-dev-loop | 開発中の読み込み（UDT）とつながらないとき | 開発者モードは 2 か所（UDT 側の settings.json・Premiere の設定→プラグイン）＋Premiere の再起動／Add Plugin → Load・Load & Watch・Reload・manifest を変えたら Unload → Load／ウィンドウ→UXP プラグイン／UDT が Premiere を見つけないとき／UDT を開いたまま plugins_workspace.json を書き換えない／直したのに変わらないとき（読み込み元の確認） | 調査 C §2、調査 G §5.1、調査 W |
 | core-safety | 利用者のプロジェクトを守る | 取引 1 回＝取り消し 1 回を基本に／一括の前に保存を勧める・件数を伝えて確認／元のシーケンスを残す（カットは新しいシーケンスへ）／権限は最小／外部へ送る機能は相手先を示して同意／鍵は OS の保管庫／他人のテンプレート・有料素材を写さない／大量のクリップは件数を分ける（落ちる既知の問題） | 調査 F §5.4、設計書 §12、調査 G §8（5） |
 | core-intake | 聞き取りと、要望から雛形・部品への対応 | 6 つの質問（何を・何に・どう動かす・結果・重い処理・誰が使う）／要望の型→雛形と部品の表（例: 選んだクリップに効果→panel＋ppro-kit、無音カット→panel-server＋silence-cut、字幕→panel-server＋transcribe-srt、テロップの差し替え→panel-server＋mogrt-text、ショートカット→panel-commands、分割・再生→cep-helper（期限つき）、AI から操作→mcp-bridge）／最低版の決め方 | 設計書 §5.1〜5.2、§7 |
@@ -11062,7 +11062,7 @@ Expected: FAIL（`test_required_ids_exist` が 23 件の不足）
 
 - [ ] **Step 3: サブエージェントに 2 バッチで書いてもらう**
 
-バッチ 1（core の 11 件）とバッチ 2（platform 3 件・reference 9 件）を、それぞれ 1 本のサブエージェント（`model: sonnet`）に任せる。依頼文には「全バッチに共通の指示」「本文の型」「usecase の見本」「この Task の表のうち担当の行」「材料のファイルの絶対パス（調査 A〜G・W と `notes/`、`~/.claude/projects/-Users-kawamurafuushin-ClaudeCode/memory/` の reference_premiere_extension_internals.md・feedback_cutsrt_plugin_gotchas.md・feedback_verification_principles.md）」を入れる。2 本は同時に走らせてよい。
+バッチ 1（core の 11 件）とバッチ 2（platform 3 件・reference 9 件）を、それぞれ 1 本のサブエージェント（`model: sonnet`）に任せる。依頼文には「全バッチに共通の指示」「本文の型」「usecase の見本」「この Task の表のうち担当の行」「材料のファイルの絶対パス（調査 A〜G・W と `notes/`、`~/.claude/projects/<記憶のフォルダ>/memory/` の reference_premiere_extension_internals.md・feedback_cutsrt_plugin_gotchas.md・feedback_verification_principles.md）」を入れる。2 本は同時に走らせてよい。
 
 - [ ] **Step 4: 親が確かめる**
 
@@ -11159,7 +11159,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 
 **Interfaces:**
 - 材料: 調査 B（`B_failures_usecases.md`。仕上げ中なら `notes/F1_failures_1-297.txt` `notes/F2_failures_298-472.txt` と `notes/G*.txt` `notes/H*.txt`）、B の ID の一覧 `B_failures_usecases_trace.tsv`（列: `final_id` `writer_id` `title` `raw_note_slugs`。`final_id` が `C1-01` の形の ID）、調査 C の付録 A（事故 30 件）、調査 D §8、調査 G §8、調査 W
-- 取り込みの対応表（公開物に入れない）: 各バッチは最後の報告に「B の ID ⇥ 作った usecase の id」を 1 行ずつ返す（まとめた ID は同じ usecase の id を書く）。親はそれを `/Users/kawamurafuushin/ClaudeCode/.claude/worktrees/premiere-plugin-skill-d8b265/docs/superpowers/research/2026-10-13-premiere-plugin-maker/usecase_map.tsv` に集める
+- 取り込みの対応表（公開物に入れない）: 各バッチは最後の報告に「B の ID ⇥ 作った usecase の id」を 1 行ずつ返す（まとめた ID は同じ usecase の id を書く）。親はそれを `<作業場所>/docs/superpowers/research/2026-10-13-premiere-plugin-maker/usecase_map.tsv` に集める
 - id の付け方: `uc-<分野>-<短い英語>`。分野は `uxp` `ui` `fps` `xml` `mogrt` `cep` `server` `install` `windows` `mac` `ai` `verify` `dev`
 - 重複は 1 件にまとめる（同じ原因なら 1 件。症状が違う場合は症状の節に両方書く）
 - 古い主張（後で訂正されたもの）は `status: superseded` で残し、正しい方を `related` に入れる
@@ -11219,7 +11219,7 @@ Run:
 ```bash
 python3 SKILL/scripts/kb.py build && python3 SKILL/scripts/kb.py check
 python3 SKILL/scripts/kb.py list --kind usecase | wc -l
-python3 - "/Users/kawamurafuushin/ClaudeCode/.claude/worktrees/premiere-plugin-skill-d8b265/docs/superpowers/research/2026-10-13-premiere-plugin-maker" <<'EOF'
+python3 - "<作業場所>/docs/superpowers/research/2026-10-13-premiere-plugin-maker" <<'EOF'
 # B の全 ID が、実在する usecase のどれかに取り込まれたかを確かめる
 import csv, pathlib, sys
 src = pathlib.Path(sys.argv[1])
@@ -12412,11 +12412,11 @@ if __name__ == "__main__":
     unittest.main()
 ```
 
-`tests/local_denylist.txt`（git に入れない。公開してはいけない語を 1 行ずつ。中身は `~/.claude/projects/-Users-kawamurafuushin-ClaudeCode/memory/` の記憶から、利用者・視聴者・出演者・取引先の名前、チャンネル名、個人のユーザー名を拾って書く）:
+`tests/local_denylist.txt`（git に入れない。公開してはいけない語を 1 行ずつ。中身は `~/.claude/projects/<記憶のフォルダ>/memory/` の記憶から、利用者・視聴者・出演者・取引先の名前、チャンネル名、個人のユーザー名を拾って書く）:
 
 ```
 # 公開物に入れてはいけない語（このファイルは git に入れない）
-kawamurafuushin
+<ユーザー名>
 （以下、記憶から拾った名前とチャンネル名を 1 行ずつ）
 ```
 
@@ -12436,12 +12436,12 @@ python3 - <<'EOF'
 import re, pathlib
 for p in list(pathlib.Path("docs/superpowers").rglob("*.md")):
     t = p.read_text(encoding="utf-8")
-    t = re.sub(r"/private/tmp/claude-501/[^\s`)]+", "（作業用の調査資料。公開物では省略）", t)
-    t = t.replace("/Users/kawamurafuushin/ClaudeCode/.claude/worktrees/premiere-plugin-skill-d8b265/", "<作業場所>/")
-    t = t.replace("/Users/kawamurafuushin/", "~/")
-    t = t.replace("-Users-kawamurafuushin-ClaudeCode", "<記憶のフォルダ>")
-    t = t.replace("kawamurafuushin", "<ユーザー名>")
-    for name in ("河村風真", "河村さん", "河村"):
+    t = re.sub(r"（作業用の調査資料。公開物では省略）`)]+", "（作業用の調査資料。公開物では省略）", t)
+    t = t.replace("<作業場所>/", "<作業場所>/")
+    t = t.replace("~/", "~/")
+    t = t.replace("<記憶のフォルダ>", "<記憶のフォルダ>")
+    t = t.replace("<ユーザー名>", "<ユーザー名>")
+    for name in ("作者", "作者", "作者"):
         t = t.replace(name, "作者")
     p.write_text(t, encoding="utf-8")
 EOF
@@ -12641,7 +12641,7 @@ Expected: どちらにも `premiere-plugin-maker` が installed / enabled で出
 
 - [ ] **Step 1: 記憶を書く**
 
-`/Users/kawamurafuushin/.claude/projects/-Users-kawamurafuushin-ClaudeCode/memory/project_premiere_plugin_maker.md` を作る（形は記憶の決まりどおり）。中身: 何のスキルか（1 行）／場所（このワークツリーの `projects/常時運用/premiere-plugin-maker/`、独立した git、公開したなら URL）／版／確かめた範囲（Mac 実機・Windows 未確認）／次にすること（27.0 の正式版で分割の API を確かめる、Windows の利用者の報告を知識に反映）／**ワークツリーを片付ける前に、公開済みか git bundle の控えがあるかを確かめる**。
+`~/.claude/projects/<記憶のフォルダ>/memory/project_premiere_plugin_maker.md` を作る（形は記憶の決まりどおり）。中身: 何のスキルか（1 行）／場所（このワークツリーの `projects/常時運用/premiere-plugin-maker/`、独立した git、公開したなら URL）／版／確かめた範囲（Mac 実機・Windows 未確認）／次にすること（27.0 の正式版で分割の API を確かめる、Windows の利用者の報告を知識に反映）／**ワークツリーを片付ける前に、公開済みか git bundle の控えがあるかを確かめる**。
 
 `MEMORY.md` の「動画編集・Premiere」の節に 1 行足す:
 

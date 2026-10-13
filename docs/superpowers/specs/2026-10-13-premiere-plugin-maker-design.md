@@ -9,7 +9,7 @@
 
 ## 0. 要約
 
-河村さんがこれまで作った Premiere 用プラグイン（Cut & SRT、Effect & Design、小型 UXP 4 本、KAZARU、premiere-skills、premiere-agent-kit）の部品・知識・失敗の記録を一つにまとめ、Claude Code と Codex の両方で使えるスキル「premiere-plugin-maker」にする。
+作者がこれまで作った Premiere 用プラグイン（Cut & SRT、Effect & Design、小型 UXP 4 本、KAZARU、premiere-skills、premiere-agent-kit）の部品・知識・失敗の記録を一つにまとめ、Claude Code と Codex の両方で使えるスキル「premiere-plugin-maker」にする。
 
 視聴者や編集者がこのスキルを AI に使わせると、AI はまず「Windows か Mac か」を聞き、要望を聞き取り、知識の棚から関係する知識と部品を選び、雛形と部品を組み合わせてプラグインを作る。作った物は機械の検査に通し、利用者の Premiere で動くことを確かめてから完成とする。
 
@@ -38,7 +38,7 @@
 
 ## 2. 使う人と前提
 
-- 使う人: 河村さんの視聴者・編集者。プログラミングには詳しくない想定。AI はデスクトップアプリの Claude Code または Codex を使う。
+- 使う人: 作者の視聴者・編集者。プログラミングには詳しくない想定。AI はデスクトップアプリの Claude Code または Codex を使う。
 - OS: Mac（Apple シリコンが主。Intel も考慮）と Windows 10/11。スキルの最初の質問で確定する。
 - Premiere: UXP の正式版が入った 25.6 以降。推奨は 26.x。ベータ版（27.x）は任意。
 - 利用者の PC に要るもの（スキルが案内し、勝手には入れない）: Premiere、Creative Cloud デスクトップ、UXP Developer Tools（以下 UDT）、Python 3.9 以上（キットの道具を動かすため）。部品によっては ffmpeg などが加わる。
@@ -231,7 +231,7 @@ related: [ui-sp-button-inactive]
 | KAZARU | .prtextstyle と .prfpset の生成、言葉から数値への対応表 |
 | premiere-skills | /cut（無音カット）と /srt（字幕）の作りと終了コードの約束 |
 | premiere-agent-kit | MCP の使い方、UXP に無い操作の逃げ道、トラブルの切り分け表、画面操作の作法 |
-| 河村さんの記憶のうちプラグイン作りに効くもの | テロップの置き方と校正、編集点は声の谷、文字起こしと無音カット、日本語の扱い（NFC/NFD）、ローカルブリッジ、検証の鉄則、Web の画面の落とし穴、Jev の使い方 |
+| 作者の記憶のうちプラグイン作りに効くもの | テロップの置き方と校正、編集点は声の谷、文字起こしと無音カット、日本語の扱い（NFC/NFD）、ローカルブリッジ、検証の鉄則、Web の画面の落とし穴、Jev の使い方 |
 | Adobe 公式の最新事実（2026-10-13 調査） | 版ごとの API、26.3 の取引の規則変更、CEP の終了予定、UDT と .ccx と UPIA、UXP の制限、公式サンプルと型定義、フォーラムの頻出の落とし穴 |
 
 ---

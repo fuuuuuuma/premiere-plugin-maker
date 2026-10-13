@@ -5,3 +5,4 @@ dist/
 node_modules/
 *.ccx
 .ppm-test-*
+tests/local_denylist.txt
