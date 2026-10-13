@@ -1,0 +1,17 @@
+{
+  "name": "fcpxml",
+  "description": "FCP7 XML の往復（書き出し・定義のぶら下がりの検査・宣言 timebase での換算・テロップの本文の読み取り・読み込み）",
+  "status": "partial",
+  "os": ["mac", "windows"],
+  "requires": ["local-server"],
+  "files": {"server/ppm_fcpxml.py": "server/ppm_fcpxml.py", "server/jobs/read_texts.py": "server/jobs/read_texts.py", "lib/ppm-fcpxml.js": "lib/ppm-fcpxml.js"},
+  "scripts": ["lib/ppm-fcpxml.js"],
+  "styles": [],
+  "permissions": {},
+  "featureFlags": {},
+  "entrypoints": [],
+  "minVersion": "26.2",
+  "pythonDeps": [],
+  "knowledge": ["ref-fcp7-xml", "ref-ticktime"],
+  "notes": "規則は Cut&SRT で実機確認済み。この部品の形（read_texts と importAndOpen）は Task 36 で確かめる"
+}
