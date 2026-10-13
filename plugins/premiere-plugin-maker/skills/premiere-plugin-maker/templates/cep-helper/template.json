@@ -1,0 +1,7 @@
+{
+  "name": "cep-helper",
+  "description": "パネル＋手元のサーバー＋CEP の補助（再生・停止・分割。上級。UXP で足りないときだけ。期限つき）",
+  "extends": "panel-server",
+  "parts": ["cep-helper"],
+  "minVersion": "25.6"
+}

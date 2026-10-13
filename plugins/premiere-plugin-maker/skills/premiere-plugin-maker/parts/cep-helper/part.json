@@ -1,0 +1,17 @@
+{
+  "name": "cep-helper",
+  "description": "UXP に無い再生・停止・クリップの分割を、CEP の補助（ExtendScript の QE DOM）で行う。期限つき（CEP は 2028-12 に既定で無効の予定）",
+  "status": "partial",
+  "os": ["mac"],
+  "requires": ["local-server"],
+  "files": {"cep/": "cep/", "server/ext/cep_relay.py": "server/ext/cep_relay.py", "lib/ppm-cep.js": "lib/ppm-cep.js"},
+  "scripts": ["lib/ppm-cep.js"],
+  "styles": [],
+  "permissions": {},
+  "featureFlags": {},
+  "entrypoints": [],
+  "minVersion": "25.6",
+  "pythonDeps": [],
+  "knowledge": ["ref-cep-extendscript", "recipe-razor-workarounds"],
+  "notes": "再生・停止は Cut&SRT で実機確認済み。分割は未確認。Windows は未確認。入れるときの PlayerDebugMode は利用者の明示の許可を取ってから"
+}
