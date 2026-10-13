@@ -1,0 +1,4 @@
+{"id": "white-black", "name": "白文字 黒縁", "font": "HiraginoSans-W7", "size": 110, "tracking": -10,
+ "fill": "#FFFFFF", "strokes": [{"color": "#111111", "width": 18}],
+ "shadow": {"color": "#000000", "opacity": 60, "angle": 135, "distance": 6, "size": 0, "blur": 10},
+ "extra_shadows": [], "background": null, "position": {"x": 0.5, "y": 0.86}}

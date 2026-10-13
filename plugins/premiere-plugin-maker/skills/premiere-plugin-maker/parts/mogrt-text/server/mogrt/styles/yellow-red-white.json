@@ -1,0 +1,4 @@
+{"id": "yellow-red-white", "name": "黄文字 赤白二重縁", "font": "HiraginoSans-W8", "size": 128, "tracking": -12,
+ "fill": "#FFE24A", "strokes": [{"color": "#A3161B", "width": 14}, {"color": "#FFFFFF", "width": 26}],
+ "shadow": {"color": "#000000", "opacity": 70, "angle": 135, "distance": 8, "size": 0, "blur": 14},
+ "extra_shadows": [], "background": null, "position": {"x": 0.5, "y": 0.86}}

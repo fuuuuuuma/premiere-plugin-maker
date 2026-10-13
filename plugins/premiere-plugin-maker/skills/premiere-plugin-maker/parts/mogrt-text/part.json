@@ -1,0 +1,17 @@
+{
+  "name": "mogrt-text",
+  "description": "テロップの MOGRT を作る（Premiere の中の Basic Title.mogrt をドナーに、文字のデザインを差し替える）と、入れる・差し替える",
+  "status": "partial",
+  "os": ["mac", "windows"],
+  "requires": ["fcpxml"],
+  "files": {"server/mogrt/": "server/mogrt/", "server/jobs/build_mogrt.py": "server/jobs/build_mogrt.py", "server/jobs/list_fonts.py": "server/jobs/list_fonts.py", "lib/ppm-mogrt.js": "lib/ppm-mogrt.js"},
+  "scripts": ["lib/ppm-mogrt.js"],
+  "styles": [],
+  "permissions": {},
+  "featureFlags": {},
+  "entrypoints": [],
+  "minVersion": "26.2",
+  "pythonDeps": [],
+  "knowledge": ["ref-mogrt", "ref-prtextstyle", "recipe-telop-restyle"],
+  "notes": "Mac の生成は実機で確認済み。Windows はドナーの場所だけ利用者の報告で確認。差し替えの取り消しは 2〜3 回（MOGRT の挿入が取引に入らないため）"
+}
