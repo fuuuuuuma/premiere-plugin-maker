@@ -1,8 +1,8 @@
 ---
 id: core-versions
-title: Premiere と UXP の版の歴史と、最低版（minVersion）の決め方
+title: Premiere と UXP の版の歴史、API がどの版から使えるか、最低版（minVersion）の決め方
 kind: core
-tags: [版, minVersion, 25.6, 26.2, 26.3, 26.5, 27.0, CEP, 終了予定, 変更履歴]
+tags: [版, minVersion, API の版, どの版から使えるか, 25.6, 26.2, 26.3, 26.5, 27.0, CEP, 終了予定, 変更履歴]
 os: [mac, windows]
 premiere: ">=25.2"
 status: partial

@@ -75,7 +75,7 @@
  },
  {
   "id": "core-dev-loop",
-  "title": "開発中の読み込み（UDT）と、つながらないときの見方",
+  "title": "開発中のプラグインの読み込み（UDT）と、読み込まれない・つながらないときの見方",
   "kind": "core",
   "tags": [
    "UDT",
@@ -86,6 +86,8 @@
    "Watch",
    "Unload",
    "読み込み",
+   "読み込まれない",
+   "プラグインが出ない",
    "つながらない",
    "plugins_workspace"
   ],
@@ -350,11 +352,13 @@
  },
  {
   "id": "core-versions",
-  "title": "Premiere と UXP の版の歴史と、最低版（minVersion）の決め方",
+  "title": "Premiere と UXP の版の歴史、API がどの版から使えるか、最低版（minVersion）の決め方",
   "kind": "core",
   "tags": [
    "版",
    "minVersion",
+   "API の版",
+   "どの版から使えるか",
    "25.6",
    "26.2",
    "26.3",

@@ -38,6 +38,7 @@ REQUIRED = ("id", "title", "kind", "tags", "os", "premiere", "status", "summary"
 STATUS_WEIGHT = {"verified": 1.0, "partial": 0.9, "unverified": 0.8, "superseded": 0.5}
 ID_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 SPLIT_RE = re.compile(r"[\s、。・,，/／「」『』（）()]+")
+HIRAGANA_RE = re.compile(r"[\u3041-\u309f]+")
 
 
 def norm(s: str) -> str:
@@ -97,14 +98,30 @@ def load_synonyms(knowledge_dir: Path = KNOWLEDGE) -> List[List[str]]:
 def query_terms(query: str, synonyms: List[List[str]]) -> List[List[str]]:
     """言葉ごとに、同じ意味の言葉をまとめた組を返す（「無音カット」のような複合語は両方の組に広げる）。"""
     groups = []
+
+    def add(word: str) -> None:
+        alts = {word}
+        for g in synonyms:
+            if any(word == w or (len(w) >= 2 and w in word) for w in g):
+                alts.update(g)
+        alts = sorted(alts)
+        if alts not in groups:
+            groups.append(alts)
+
     for raw in SPLIT_RE.split(norm(query)):
         if not raw:
             continue
-        alts = {raw}
-        for g in synonyms:
-            if any(raw == w or (len(w) >= 2 and w in raw) for w in g):
-                alts.update(g)
-        groups.append(sorted(alts))
+        if not _has_cjk(raw):
+            add(raw)
+            continue
+        # 日本語は区切りが無いので、ひらがなの所（助詞や語尾）で言葉に分け、言葉ごとに点を足す
+        words = [w for w in HIRAGANA_RE.split(raw) if len(w) >= 2]
+        for g in synonyms:  # 「話している人」のようにひらがなを含む言い換えも拾う
+            for w in g:
+                if len(w) >= 2 and _has_cjk(w) and w in raw and not any(w in x for x in words):
+                    words.append(w)
+        for w in words or [raw]:
+            add(w)
     return groups
 
 

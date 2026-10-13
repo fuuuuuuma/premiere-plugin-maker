@@ -10,7 +10,17 @@ summary: pythonw で動く常駐はログが残らないので、ログの出力
 parts: [local-server, logger]
 related: [platform-windows, uc-windows-port-local-server, uc-windows-cp932]
 ---
-## 違いの一覧
+## 症状
+
+`start_new_session=True`、プロセスグループへの kill、osascript による通知が、Windows では使えない。`pythonw` で動かした常駐は、ログが残らず、失敗の原因が分からない。
+
+## 原因
+
+OS の違い（プロセスグループ・通知・コンソールの有無・パスの表記）。
+
+## 直し方
+
+Mac で使ったものを、Windows では次に置き換える。
 
 | 項目 | Mac で使ったもの | Windows での置き換え |
 |---|---|---|
@@ -21,14 +31,6 @@ related: [platform-windows, uc-windows-port-local-server, uc-windows-cp932]
 | 常駐のログ | ターミナルかログファイル | `pythonw` は出力が残らないので、`%LOCALAPPDATA%\<名前>\Logs` に自前でリダイレクト |
 | 一時フォルダ | `/tmp` | サーバーが `ready` で渡す `tmpDir` を、パネルが使う |
 | ファイルの URL | `file://` で始まる Mac のパス | `file:///C:/...` |
-
-## 症状
-
-`start_new_session=True`、プロセスグループへの kill、osascript による通知が、Windows では使えない。`pythonw` で動かした常駐は、ログが残らず、失敗の原因が分からない。
-
-## 原因
-
-OS の違い（プロセスグループ・通知・コンソールの有無・パスの表記）。
 
 ## 再発防止
 

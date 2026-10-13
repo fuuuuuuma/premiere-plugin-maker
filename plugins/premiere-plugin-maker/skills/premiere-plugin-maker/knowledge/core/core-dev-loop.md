@@ -1,8 +1,8 @@
 ---
 id: core-dev-loop
-title: 開発中の読み込み（UDT）と、つながらないときの見方
+title: 開発中のプラグインの読み込み（UDT）と、読み込まれない・つながらないときの見方
 kind: core
-tags: [UDT, UXP Developer Tool, 開発者モード, Load, Reload, Watch, Unload, 読み込み, つながらない, plugins_workspace]
+tags: [UDT, UXP Developer Tool, 開発者モード, Load, Reload, Watch, Unload, 読み込み, 読み込まれない, プラグインが出ない, つながらない, plugins_workspace]
 os: [mac, windows]
 premiere: ">=25.6"
 status: partial
