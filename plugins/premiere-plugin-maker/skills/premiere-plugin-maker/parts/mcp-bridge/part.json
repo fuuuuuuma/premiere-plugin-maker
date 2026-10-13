@@ -1,0 +1,17 @@
+{
+  "name": "mcp-bridge",
+  "description": "AI（Claude Code / Codex）からプラグインを操作する口（MCP → 手元のサーバー → パネルの待ち行列）。開発中の確かめにも使える",
+  "status": "partial",
+  "os": ["mac", "windows"],
+  "requires": ["local-server", "probe"],
+  "files": {"server/ppm_mcp.py": "server/ppm_mcp.py", "server/setup_mcp.py": "server/setup_mcp.py", "server/ext/panel_queue.py": "server/ext/panel_queue.py", "lib/ppm-agent-bridge.js": "lib/ppm-agent-bridge.js"},
+  "scripts": ["lib/ppm-agent-bridge.js"],
+  "styles": [],
+  "permissions": {},
+  "featureFlags": {},
+  "entrypoints": [],
+  "minVersion": "25.6",
+  "pythonDeps": [],
+  "knowledge": ["ref-mcp", "recipe-agent-mcp"],
+  "notes": "index.js の boot() の中で PPM.agent.start() を呼ぶ。登録は server/setup_mcp.py（既定は試し実行）。パネルを閉じていると届かない"
+}
