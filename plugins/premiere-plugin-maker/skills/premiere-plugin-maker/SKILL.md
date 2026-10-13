@@ -50,15 +50,15 @@ description: Premiere（Premiere Pro）用のプラグインを、要望を聞�
 1. 雛形を選ぶ（`kb.py show core-intake`）: panel／panel-commands／panel-server／cep-helper（上級・期限つき・Mac だけ）。一覧は `new_plugin.py --list`。近い完成サンプル（`<SKILL>/examples/` の zoom-button・silence-cut・telop-restyle）があれば、その `index.html` と `index.js` を見本にする。
 2. `new_plugin.py --template <雛形> --name "<英字の名前>" --label "<表示名>"`。既定の場所は Mac `~/PremierePlugins/<名前>`、Windows `%USERPROFILE%\PremierePlugins\<名前>`。`--dest` を付けると、そのフォルダ自体が作業フォルダになる。既にあれば上書きしない。
 3. 部品を足す: `add_part.py <部品> --project <作業フォルダ>`（一覧は `add_part.py --list`）。
-4. `index.js` の `onRun` に処理を書く。型は `core-api-patterns` と `core-transactions`（取引の中で await しない・Action は取引の中で作る・戻り値を見る・1 回の取引で取り消し 1 回）。
+4. 部品を足しても画面と処理は雛形のまま。`index.html` の `page-main` の中身と、`index.js` の `onRun` は自分で書く（見本を写すときも、`APP.tag` と `manifest.json` の id は作業フォルダのものを残す）。型は `core-api-patterns` と `core-transactions`（取引の中で await しない・Action は取引の中で作る・戻り値を見る・1 回の取引で取り消し 1 回）。
 5. `check.py <作業フォルダ>` の誤りが 0 件になるまで直す。注意は理由を読んで判断する。
-6. サーバーの部品を使うなら、依存（Python の部品・モデル）を入れる前に、何をどれくらい入れるかを見せて許可を取る。
+6. サーバーの部品を使うなら、依存（Python の部品・モデル）を入れる前に、何をどれくらい入れるかを見せて許可を取る（`server/install.py --dry-run` の結果を見せるのはよい）。
 
 ## 6. Premiere で確かめる（ここを通るまで完成と言わない）
 
 1. 読み込み: UXP Developer Tools の［Add Plugin］で `manifest.json` を選び［Load］。直したら［Reload］、manifest を変えたら［Unload］→［Load］。開発者モードは UDT 側と Premiere 側（［設定］→［プラグイン］→ Premiere の再起動）の両方が要る（`core-dev-loop`。Windows は `platform-windows`）。
 2. サーバーがあれば入れる: Mac は `server/install_mac.command`、Windows は `server\install_windows.bat`（`ref-local-server`）。
-3. パネルの「診断」を押してもらい、`logs.py --project <作業フォルダ>` で結果を読む。使う API が missing なら、実装する前に手を変える。
+3. パネルの「診断」を押してもらい、`logs.py --project <作業フォルダ>` で結果を読む（見つからなければ、診断に出るログの場所を `--file` で渡す）。使う API が missing なら、実装する前に手を変える。
 4. 試してほしい操作は 1 回に 1 つ。結果を聞き、ログを読んでから次へ進む。
 5. 見た目はコマの書き出し（`PPM.exportFrame`）か画面写真で確かめる。取り消し（Cmd+Z / Ctrl+Z）で戻ることも確かめる。
 
@@ -77,7 +77,7 @@ description: Premiere（Premiere Pro）用のプラグインを、要望を聞�
 
 - 利用者のプロジェクトと素材を上書きしない。一括の変更の前は保存を勧め、件数を伝えて確認する（`core-safety`）。
 - Premiere を変える処理は、取り消し 1 回で戻る作りを基本にする（`PPM.transact`）。
-- 権限は最小にする。ネットに出る機能は相手先を示して同意を取る。鍵は OS の保管庫に置く（部品 keychain）。
+- 権限は最小にする（部品が足した権限は、その部品が要るもの。それ以外は足さない）。ネットに出る機能は相手先を示して同意を取る。鍵は OS の保管庫に置く（部品 keychain）。
 - インストール・ダウンロード・課金・外部への送信・公開、CEP の PlayerDebugMode の設定、MCP の登録は、実行の前に許可を取る。
 - 確かめていないことを「動きます」と言わない。未確認は未確認と書く（`core-verification`）。
 - 他人のテンプレートや有料素材を写さない。Adobe の配布物（CSInterface.js・Basic Title.mogrt）を作業フォルダや配布物に入れない。

@@ -50,6 +50,26 @@ related: [core-api-patterns, core-transactions, ref-ticktime, core-capabilities,
 
    `check.py` が誤り 0 件になってから、UXP Developer Tools で［Load］。診断ボタンのあと `logs.py` で結果を読む。
 
+## 既存のマーカーを読む（チャプター一覧を作るとき）
+
+```js
+const { sequence } = await PPM.getProjectAndSequence();
+const markersApi = await ppro.Markers.getMarkers(sequence);   // 静的・Promise（Cut & SRT で実機確認）
+let list = markersApi.getMarkers();                            // 版によって配列か Promise なので、両方に備える
+if (list && typeof list.then === "function") list = await list;
+const rows = [];
+for (const m of list || []) {
+  const start = PPM.secondsOf(await PPM.resolve(m.getStart()));   // TickTime を秒に
+  rows.push({ seconds: start, name: String(await PPM.resolve(m.getName()) || "") });
+}
+rows.sort((a, b) => a.seconds - b.seconds);
+```
+
+- `Marker` の読み取りは `getName` `getStart` `getDuration` `getComments` `getColor` `getType`（公式の型の定義）。値が Promise で返る版もあるので `PPM.resolve` を通す。読み取りの書き方そのものは Cut & SRT のコードにあるが、実機で確かめた記録は無い（未確認）。
+- 読むだけなら取引は要らない（取り消しの対象にならない）。
+- 26.5 で `getMarkers` の filters の不具合が直った。filters は使わず、全部を読んでから並べ替える。
+- 動かないときは、診断ボタン（probe）で `Markers.getMarkers` の有無を先に見る。
+
 ## 確認
 
 利用者の Premiere で次を見てもらいます。
