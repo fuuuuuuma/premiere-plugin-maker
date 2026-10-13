@@ -1,0 +1,17 @@
+{
+  "name": "media-tools",
+  "description": "ffmpeg の場所探し（実際に起動して確かめる）・音声の取り出し・音量の計算",
+  "status": "verified",
+  "os": ["mac", "windows"],
+  "requires": ["local-server"],
+  "files": {"server/ppm_media.py": "server/ppm_media.py"},
+  "scripts": [],
+  "styles": [],
+  "permissions": {},
+  "featureFlags": {},
+  "entrypoints": [],
+  "minVersion": "25.6",
+  "pythonDeps": [],
+  "knowledge": ["recipe-silence-cut", "platform-windows"],
+  "notes": "ジョブの中で import ppm_media して使う。ffmpeg が無ければ MediaError に入れ方が入る"
+}
