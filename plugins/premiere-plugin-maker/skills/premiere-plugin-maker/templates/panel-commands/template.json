@@ -1,0 +1,7 @@
+{
+  "name": "panel-commands",
+  "description": "パネル＋メニューのコマンド（パネルを開かずに実行・Mac はキーの割り当てができる）",
+  "extends": "panel",
+  "parts": ["commands"],
+  "minVersion": "25.6"
+}

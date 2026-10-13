@@ -1,0 +1,17 @@
+{
+  "name": "commands",
+  "description": "メニューのコマンド。パネルを開かずに処理を実行でき、Mac はシステム設定でキーを割り当てられる",
+  "status": "partial",
+  "os": ["mac", "windows"],
+  "requires": ["logger"],
+  "files": {"lib/ppm-commands.js": "lib/ppm-commands.js"},
+  "scripts": ["lib/ppm-commands.js"],
+  "styles": [],
+  "permissions": {},
+  "featureFlags": {},
+  "entrypoints": [{"type": "command", "id": "runMain", "label": {"default": "{{PANEL_LABEL}}: 実行"}}],
+  "minVersion": "25.6",
+  "pythonDeps": [],
+  "knowledge": ["recipe-commands-shortcuts"],
+  "notes": "index.js の PPM.commands.define(\"runMain\", onRun) がメニューの「実行」で呼ばれる。コマンドを足すときは part.json と同じ形で manifest に足し、define する"
+}
