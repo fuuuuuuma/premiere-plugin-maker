@@ -59,9 +59,34 @@ def requirements() -> list:
     return [line.strip() for line in req.read_text(encoding="utf-8").splitlines() if line.strip() and not line.startswith("#")]
 
 
+def _applies(dep: str) -> bool:
+    """requirements の行の環境の条件（例: `; sys_platform == "darwin" and platform_machine == "arm64"`）を判定する。
+    eval は使わず、sys_platform と platform_machine の == / != を and / or でつないだ形だけを読む。読めない形は「当てはまる」とする。"""
+    if ";" not in dep:
+        return True
+    import platform as _p
+    import re as _re
+    env = {"sys_platform": sys.platform, "platform_machine": _p.machine()}
+    marker = dep.split(";", 1)[1].strip()
+    term = _re.compile(r"^\(?\s*(sys_platform|platform_machine)\s*(==|!=)\s*['\"]([^'\"]*)['\"]\s*\)?$")
+    any_ok = False
+    for alt in _re.split(r"\s+or\s+", marker):
+        all_ok = True
+        for part in _re.split(r"\s+and\s+", alt):
+            m = term.match(part.strip())
+            if not m:
+                return True
+            key, op, value = m.groups()
+            all_ok = all_ok and ((env[key] == value) if op == "==" else (env[key] != value))
+        any_ok = any_ok or all_ok
+    return any_ok
+
+
 def missing_deps() -> list:
     out = []
     for dep in requirements():
+        if not _applies(dep):
+            continue
         name = dep.split(";")[0].split("[")[0]
         for sep in ("==", ">=", "<=", "~=", ">", "<"):
             name = name.split(sep)[0]

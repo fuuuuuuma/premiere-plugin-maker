@@ -1,0 +1,17 @@
+{
+  "name": "transcribe-srt",
+  "description": "文字起こし（Mac は mlx-whisper、Windows は faster-whisper）と SRT、カット後のタイムラインへの合わせ込み",
+  "status": "partial",
+  "os": ["mac", "windows"],
+  "requires": ["media-tools"],
+  "files": {"server/ppm_transcribe.py": "server/ppm_transcribe.py", "server/jobs/transcribe.py": "server/jobs/transcribe.py"},
+  "scripts": [],
+  "styles": [],
+  "permissions": {},
+  "featureFlags": {},
+  "entrypoints": [],
+  "minVersion": "25.6",
+  "pythonDeps": ["mlx-whisper; sys_platform == \"darwin\" and platform_machine == \"arm64\"", "faster-whisper; sys_platform != \"darwin\" or platform_machine != \"arm64\""],
+  "knowledge": ["recipe-captions-srt", "feat-premiere-skills"],
+  "notes": "モデルは初回に約 1.5GB をダウンロードする。入れる前に許可を取る。SRT はプロジェクトに読み込めるが、シーケンスへの配置は手作業か別の処理"
+}
