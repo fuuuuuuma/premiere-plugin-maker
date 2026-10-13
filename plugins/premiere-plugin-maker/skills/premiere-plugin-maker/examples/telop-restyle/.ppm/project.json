@@ -1,0 +1,22 @@
+{
+  "name": "Telop Restyle",
+  "label": "テロップ一括デザイン",
+  "slug": "telop-restyle",
+  "pluginId": "com.example.teloprestyle",
+  "panelId": "mainPanel",
+  "appName": "TelopRestyle",
+  "logTag": "telop-restyle",
+  "version": "0.1.0",
+  "minVersion": "26.2",
+  "template": "panel-server",
+  "parts": [
+    "logger",
+    "ppro-kit",
+    "ui-kit",
+    "probe",
+    "local-server",
+    "fcpxml",
+    "mogrt-text"
+  ],
+  "kitVersion": "0.1.0"
+}

@@ -1,0 +1,4 @@
+{"id": "news-band", "name": "ニュース風の帯", "font": "HiraginoSans-W6", "size": 84, "tracking": 0,
+ "fill": "#FFFFFF", "strokes": [],
+ "shadow": null, "extra_shadows": [],
+ "background": {"color": "#1F3A93", "opacity": 90, "size": 18}, "position": {"x": 0.5, "y": 0.88}}

@@ -1,0 +1,42 @@
+/* ppm-ui-kit — UXP で崩れにくい見た目の決まり（Cut & SRT で実機確認した対策入り）。
+ * - grid は使わない（UXP は非対応）。並べるのは flex だけ
+ * - flex の子は中身より小さく潰れることがある → 一覧の行と page の子は縮めない
+ * - <title> は隠す（パネルに文字として出る） */
+:root {
+  --ppm-bg: #1e1e1e;
+  --ppm-panel: #262626;
+  --ppm-line: #3a3a3a;
+  --ppm-text: #e6e6e6;
+  --ppm-sub: #a8a8a8;
+  --ppm-accent: #2b5bd7;
+  --ppm-accent-text: #ffffff;
+  --ppm-ok: #3fb26b;
+  --ppm-error: #e5534b;
+  --ppm-info: #5a9bd5;
+}
+html, body { height: 100%; margin: 0; background: var(--ppm-bg); color: var(--ppm-text); font-size: 12px; }
+title { display: none; }
+.ppm-app { display: flex; flex-direction: column; height: 100%; }
+.ppm-header { display: flex; flex-direction: row; align-items: center; padding: 10px 12px 6px; flex-shrink: 0; }
+.ppm-title { font-size: 14px; font-weight: 700; margin: 0; }
+.ppm-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 4px 12px 12px; }
+.ppm-page { display: flex; flex-direction: column; }
+.ppm-page > * { flex-shrink: 0; margin-bottom: 8px; }
+.ppm-list { display: flex; flex-direction: column; overflow-y: auto; }
+.ppm-list > * { flex: 0 0 auto; }
+.ppm-row { display: flex; flex-direction: row; align-items: center; }
+.ppm-row > * { margin-right: 6px; }
+.ppm-field { display: flex; flex-direction: column; }
+.ppm-label { color: var(--ppm-sub); margin-bottom: 4px; }
+.ppm-input { min-width: 0; background: var(--ppm-panel); color: var(--ppm-text); border: 1px solid var(--ppm-line); border-radius: 4px; padding: 4px 6px; }
+.ppm-hint { color: var(--ppm-sub); margin: 0; }
+.ppm-btn { border: 1px solid var(--ppm-line); border-radius: 4px; padding: 6px 10px; background: var(--ppm-panel); color: var(--ppm-text); }
+.ppm-btn-primary { background: var(--ppm-accent); border-color: var(--ppm-accent); color: var(--ppm-accent-text); font-weight: 700; }
+.ppm-btn-quiet { background: transparent; }
+.ppm-btn[disabled] { opacity: 0.5; }
+.ppm-result { white-space: pre-wrap; padding: 8px; border-radius: 4px; border: 1px solid var(--ppm-line); min-height: 18px; }
+.ppm-result[data-state="ok"] { border-color: var(--ppm-ok); }
+.ppm-result[data-state="error"] { border-color: var(--ppm-error); }
+.ppm-result[data-state="info"] { border-color: var(--ppm-info); }
+.ppm-footer { display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 6px 12px; border-top: 1px solid var(--ppm-line); flex-shrink: 0; }
+.ppm-version { color: var(--ppm-sub); }
