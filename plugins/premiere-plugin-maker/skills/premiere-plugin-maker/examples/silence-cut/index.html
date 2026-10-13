@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Silence Cut</title>
+  <!-- ppm:styles-start -->
+  <link rel="stylesheet" href="lib/ppm-ui-kit.css">
+  <!-- ppm:styles-end -->
+  <link rel="stylesheet" href="panel.css" />
+</head>
+<body>
+  <div class="ppm-app">
+    <header class="ppm-header">
+      <h1 class="ppm-title">無音カット</h1>
+    </header>
+    <main class="ppm-scroll">
+      <section class="ppm-page" id="page-main">
+                <p class="ppm-hint">いま開いているシーケンスの無音を詰めて、新しいシーケンスを作ります（元のシーケンスは触りません）。</p>
+                <div class="ppm-row">
+                  <div class="ppm-field"><label class="ppm-label" for="threshold">無音とみなす音量（dB）</label><input id="threshold" class="ppm-input" type="number" value="-48" /></div>
+                  <div class="ppm-field"><label class="ppm-label" for="minSilence">最小の無音（秒）</label><input id="minSilence" class="ppm-input" type="number" value="0.2" /></div>
+                  <div class="ppm-field"><label class="ppm-label" for="padding">前後に残す（コマ）</label><input id="padding" class="ppm-input" type="number" value="2" /></div>
+                </div>
+                <button id="run" class="ppm-btn ppm-btn-primary" type="button">無音をカットする</button>
+                <div id="result" class="ppm-result" data-state="idle"></div>
+      </section>
+    </main>
+    <footer class="ppm-footer">
+      <button id="probe" class="ppm-btn ppm-btn-quiet" type="button">診断</button>
+      <span id="version" class="ppm-version"></span>
+    </footer>
+  </div>
+  <!-- ppm:scripts-start -->
+  <script src="lib/ppm-logger.js"></script>
+  <script src="lib/ppm-ppro-kit.js"></script>
+  <script src="lib/ppm-ui-kit.js"></script>
+  <script src="lib/ppm-probe.js"></script>
+  <script src="lib/ppm-server-client.js"></script>
+  <script src="lib/ppm-fcpxml.js"></script>
+  <!-- ppm:scripts-end -->
+  <script src="index.js"></script>
+</body>
+</html>

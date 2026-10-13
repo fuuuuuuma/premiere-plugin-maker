@@ -1,0 +1,23 @@
+{
+  "name": "Silence Cut",
+  "label": "無音カット",
+  "slug": "silence-cut",
+  "pluginId": "com.example.silencecut",
+  "panelId": "mainPanel",
+  "appName": "SilenceCut",
+  "logTag": "silence-cut",
+  "version": "0.1.0",
+  "minVersion": "26.2",
+  "template": "panel-server",
+  "parts": [
+    "logger",
+    "ppro-kit",
+    "ui-kit",
+    "probe",
+    "local-server",
+    "fcpxml",
+    "media-tools",
+    "silence-cut"
+  ],
+  "kitVersion": "0.1.0"
+}
