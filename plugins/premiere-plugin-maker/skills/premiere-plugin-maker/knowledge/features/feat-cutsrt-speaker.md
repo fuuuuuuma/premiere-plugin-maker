@@ -8,7 +8,7 @@ premiere: ">=26.2"
 status: partial
 summary: 複数人の会話のテロップを、話している人ごとのトラックへ振り分ける。声紋だけでは重なりに弱いので、声の分離と本文の確かめと前後の文脈を合成し、自信の低い所にマーカーを付ける。Mac では実機確認済み、Windows は未確認
 parts: [local-server, media-tools, ppro-kit]
-related: [feat-cutsrt-pinmic, core-transactions, ref-local-server]
+related: [feat-cutsrt-pinmic, core-transactions, ref-local-server, recipe-clip-slots, core-capabilities]
 ---
 ## 何をする機能か
 
@@ -29,6 +29,27 @@ related: [feat-cutsrt-pinmic, core-transactions, ref-local-server]
 5. **確からしさ**: 合成後の確率が 0.9 未満のテロップに、マーカー「話者を確認」を付ける。
 
 実行中にタイムラインが変わっていないかは、解析の前と実行の直前でクリップ配置のスナップショットを比べ、変わっていたら止めます。判定の記録は「判定ログをコピー」ボタンとサーバー側のフォルダに残り、あとから見直せます。
+
+## トラックへの移し方（UXP に「別トラックへ移す」は無いので、複製して元を消す）
+
+1 回の取引の中で、全部の Action を先に作ってから足します。複製の Action が 1 つでも作れなければ、元を消す Action を足さずに止めます（元が消えて複製が無い状態を作らない）。テロップの読み取り・行き先の決定・確認用マーカーの準備は、取引の前に済ませます。
+
+```js
+project.lockedAccess(() => {
+  ok = project.executeTransaction((ca) => {
+    // 時間はずらさず（zero）、トラックだけ「行き先 − 今のトラック」ずらした複製を作る
+    const clones = moves.map((m) => editor.createCloneTrackItemAction(m.item, zero, m.target - m.track, 0, true, false));
+    // 移すテロップを選んだ selection を、映像の種類で消す（4 引数）
+    const remove = editor.createRemoveItemsAction(selection, false, videoType, false);
+    if (clones.some((a) => !a) || !remove) throw new Error("移動の Action を作れませんでした");
+    for (const a of clones) ca.addAction(a);
+    ca.addAction(remove);
+    for (const a of markerActions) ca.addAction(a);   // 確認用マーカーも同じ取引に入れ、取り消し 1 回で全部戻る
+  }, "話者別テロップ");
+});
+```
+
+動かした後は、全部のテロップを読み直し、「移したものはトラックだけが変わり、時刻・入点・出点・素材・名前は同じ。ほかは何も変わっていない」を数と中身で確かめます。合わなければ、利用者に取り消しを 1 回してもらうよう伝えます。`editor` は `SequenceEditor.getEditor(sequence)` で、取引の前に取ります。移す先のトラックが無いときと、トラックがロックされているときは、取引の前に止めます。この移し方は Cut & SRT の話者タブで Mac の Premiere で使われていました（`createCloneTrackItemAction` の引数の意味は `recipe-clip-slots` も参照）。Windows では確かめていません。
 
 ## 使った API と道具
 

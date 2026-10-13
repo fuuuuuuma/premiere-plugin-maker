@@ -130,7 +130,7 @@
   ],
   "premiere": ">=25.6",
   "status": "unverified",
-  "summary": "6 つの質問を 1 問ずつ聞き、答えから雛形と部品を選ぶ。できない操作なら先に伝える。最低版は使う API の最低版で決める",
+  "summary": "7 つの質問を 1 問ずつ聞き、答えから雛形と部品を選ぶ。できない操作なら先に伝える。最低版は使う API の最低版で決める",
   "parts": [],
   "related": [
    "core-capabilities",
@@ -1249,7 +1249,9 @@
   "related": [
    "feat-cutsrt-pinmic",
    "core-transactions",
-   "ref-local-server"
+   "ref-local-server",
+   "recipe-clip-slots",
+   "core-capabilities"
   ],
   "path": "features/feat-cutsrt-speaker.md",
   "source": "kit"
