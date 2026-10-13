@@ -1,0 +1,17 @@
+{
+  "name": "packaging",
+  "description": "配る準備。受け取る人向けの「はじめにお読みください」の雛形（make_ccx.py --bundle が使う）",
+  "status": "partial",
+  "os": ["mac", "windows"],
+  "requires": [],
+  "files": {"packaging/README-recipient.txt": "packaging/README-recipient.txt"},
+  "scripts": [],
+  "styles": [],
+  "permissions": {},
+  "featureFlags": {},
+  "entrypoints": [],
+  "minVersion": "25.6",
+  "pythonDeps": [],
+  "knowledge": ["core-versioning-release"],
+  "notes": "packaging/README-recipient.txt を書き換えると、--bundle の「はじめにお読みください.txt」が変わる"
+}
