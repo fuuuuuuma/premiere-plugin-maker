@@ -100,7 +100,7 @@ def _suppressed(lines: List[str], line_no: int, rule_name: str) -> bool:
 
 
 def run_all(root: Path, kit_dir: Path) -> List[Finding]:
-    from . import css_html_rules, js_rules, manifest_rules  # noqa: F401  （登録のための import。Task 8 で残りを足す）
+    from . import css_html_rules, js_rules, manifest_rules, package_rules, platform_rules  # noqa: F401
     project = Project(root, kit_dir)
     found: List[Finding] = []
     for fn in RULES:
