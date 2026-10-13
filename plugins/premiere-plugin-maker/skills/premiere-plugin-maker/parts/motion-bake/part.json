@@ -1,0 +1,17 @@
+{
+  "name": "motion-bake",
+  "description": "Premiere の補間（bezier・hold・空間の曲線）を 1 コマごとの直線のキーに焼く。.prfpset（エフェクトプリセット）の生成も",
+  "status": "verified",
+  "os": ["mac", "windows"],
+  "requires": ["ppro-kit"],
+  "files": {"lib/ppm-motion-bake.js": "lib/ppm-motion-bake.js", "server/presets/": "server/presets/"},
+  "scripts": ["lib/ppm-motion-bake.js"],
+  "styles": [],
+  "permissions": {},
+  "featureFlags": {},
+  "entrypoints": [],
+  "minVersion": "25.6",
+  "pythonDeps": [],
+  "knowledge": ["ref-keyframe-interpolation", "ref-prfpset", "recipe-keyframe-motion"],
+  "notes": "PPM.motion.bakeTrack(keys, 1 / fps) の結果を PPM.keyframeActions に渡すと、取引 1 回（Cmd+Z 1 回）で同じ見た目になる"
+}

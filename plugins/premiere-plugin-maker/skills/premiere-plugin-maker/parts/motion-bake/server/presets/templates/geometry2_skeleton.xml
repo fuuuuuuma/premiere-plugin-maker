@@ -1,0 +1,220 @@
+	<VideoFilterComponent ObjectID="49" ClassID="d10da199-beea-4dd1-b941-ed3a78766d50" Version="9">
+		<VideoFilterType>2</VideoFilterType>
+		<Component Version="7">
+			<DisplayName>トランスフォーム</DisplayName>
+			<Node Version="1">
+				<Properties Version="1">
+					<BE.VideoComponentChain.ChildPinID>8</BE.VideoComponentChain.ChildPinID>
+				</Properties>
+			</Node>
+			<Params Version="1">
+				<Param Index="0" ObjectRef="50"/>
+				<Param Index="1" ObjectRef="51"/>
+				<Param Index="2" ObjectRef="52"/>
+				<Param Index="3" ObjectRef="53"/>
+				<Param Index="4" ObjectRef="54"/>
+				<Param Index="5" ObjectRef="55"/>
+				<Param Index="6" ObjectRef="56"/>
+				<Param Index="7" ObjectRef="57"/>
+				<Param Index="8" ObjectRef="58"/>
+				<Param Index="9" ObjectRef="59"/>
+				<Param Index="10" ObjectRef="60"/>
+				<Param Index="11" ObjectRef="61"/>
+			</Params>
+			<InstanceName>NAME</InstanceName>
+		</Component>
+		<MatchName>AE.ADBE Geometry2</MatchName>
+	</VideoFilterComponent>
+	<PointComponentParam ObjectID="50" ClassID="ca81d347-309b-44d2-acc7-1c572efb973c" Version="4">
+		<DiscontinuousInterpolate>false</DiscontinuousInterpolate>
+		<ParameterID>1</ParameterID>
+		<UnitsString></UnitsString>
+		<IsTimeVarying>false</IsTimeVarying>
+		<Keyframes></Keyframes>
+		<ParameterControlType>6</ParameterControlType>
+		<StartKeyframe>-91445760000000000,0.5:0.5,0,0,0,0,0,0,5,4,0,0,0,0</StartKeyframe>
+		<Name>アンカーポイント</Name>
+		<Node Version="1">
+		</Node>
+		<CurrentValue>0,0</CurrentValue>
+		<IsLocked>false</IsLocked>
+	</PointComponentParam>
+	<PointComponentParam ObjectID="51" ClassID="ca81d347-309b-44d2-acc7-1c572efb973c" Version="4">
+		<DiscontinuousInterpolate>false</DiscontinuousInterpolate>
+		<ParameterID>2</ParameterID>
+		<UnitsString></UnitsString>
+		<IsTimeVarying>false</IsTimeVarying>
+		<Keyframes></Keyframes>
+		<ParameterControlType>6</ParameterControlType>
+		<StartKeyframe>-91445760000000000,0.5:0.5,0,0,0,0,0,0,5,4,0,0,0,0</StartKeyframe>
+		<Name>位置</Name>
+		<Node Version="1">
+			<Properties Version="1">
+				<ECP.PointParameter.Expanded>true</ECP.PointParameter.Expanded>
+			</Properties>
+		</Node>
+		<CurrentValue>0,0</CurrentValue>
+		<IsLocked>false</IsLocked>
+	</PointComponentParam>
+	<VideoComponentParam ObjectID="52" ClassID="cc12343e-f113-4d3b-ae05-b287db77d461" Version="10">
+		<DiscontinuousInterpolate>false</DiscontinuousInterpolate>
+		<ParameterID>11</ParameterID>
+		<UnitsString></UnitsString>
+		<UpperBound>true</UpperBound>
+		<IsTimeVarying>false</IsTimeVarying>
+		<Keyframes></Keyframes>
+		<ParameterControlType>4</ParameterControlType>
+		<StartKeyframe>-91445760000000000,true,0,0,0,0,0,0</StartKeyframe>
+		<Node Version="1">
+		</Node>
+		<LowerBound>false</LowerBound>
+		<CurrentValue>false</CurrentValue>
+		<IsLocked>false</IsLocked>
+	</VideoComponentParam>
+	<VideoComponentParam ObjectID="53" ClassID="fe47129e-6c94-4fc0-95d5-c056a517aaf3" Version="10">
+		<DiscontinuousInterpolate>false</DiscontinuousInterpolate>
+		<ParameterID>3</ParameterID>
+		<UnitsString></UnitsString>
+		<UpperUIBound>200.</UpperUIBound>
+		<UpperBound>30000.</UpperBound>
+		<IsTimeVarying>false</IsTimeVarying>
+		<Keyframes></Keyframes>
+		<ParameterControlType>2</ParameterControlType>
+		<StartKeyframe>-91445760000000000,100.,0,0,0,0,0,0</StartKeyframe>
+		<Name>スケール (高さ)</Name>
+		<Node Version="1">
+		</Node>
+		<LowerBound>-30000.</LowerBound>
+		<LowerUIBound>-200.</LowerUIBound>
+		<CurrentValue>0.</CurrentValue>
+		<IsLocked>false</IsLocked>
+	</VideoComponentParam>
+	<VideoComponentParam ObjectID="54" ClassID="fe47129e-6c94-4fc0-95d5-c056a517aaf3" Version="10">
+		<DiscontinuousInterpolate>false</DiscontinuousInterpolate>
+		<ParameterID>4</ParameterID>
+		<UnitsString></UnitsString>
+		<UpperUIBound>200.</UpperUIBound>
+		<UpperBound>30000.</UpperBound>
+		<IsTimeVarying>false</IsTimeVarying>
+		<Keyframes></Keyframes>
+		<ParameterControlType>2</ParameterControlType>
+		<StartKeyframe>-91445760000000000,100.,0,0,0,0,0,0</StartKeyframe>
+		<Name>スケール (幅)</Name>
+		<Node Version="1">
+		</Node>
+		<LowerBound>-30000.</LowerBound>
+		<LowerUIBound>-200.</LowerUIBound>
+		<CurrentValue>0.</CurrentValue>
+		<IsLocked>false</IsLocked>
+	</VideoComponentParam>
+	<VideoComponentParam ObjectID="55" ClassID="fe47129e-6c94-4fc0-95d5-c056a517aaf3" Version="10">
+		<DiscontinuousInterpolate>false</DiscontinuousInterpolate>
+		<ParameterID>5</ParameterID>
+		<UnitsString></UnitsString>
+		<UpperBound>70.</UpperBound>
+		<IsTimeVarying>false</IsTimeVarying>
+		<Keyframes></Keyframes>
+		<ParameterControlType>2</ParameterControlType>
+		<StartKeyframe>-91445760000000000,0.,0,0,0,0,0,0</StartKeyframe>
+		<Name>歪曲</Name>
+		<Node Version="1">
+		</Node>
+		<LowerBound>-70.</LowerBound>
+		<CurrentValue>0.</CurrentValue>
+		<IsLocked>false</IsLocked>
+	</VideoComponentParam>
+	<VideoComponentParam ObjectID="56" ClassID="fe47129e-6c94-4fc0-95d5-c056a517aaf3" Version="10">
+		<DiscontinuousInterpolate>false</DiscontinuousInterpolate>
+		<ParameterID>6</ParameterID>
+		<UnitsString></UnitsString>
+		<UpperBound>32767.</UpperBound>
+		<IsTimeVarying>false</IsTimeVarying>
+		<Keyframes></Keyframes>
+		<ParameterControlType>3</ParameterControlType>
+		<StartKeyframe>-91445760000000000,0.,0,0,0,0,0,0</StartKeyframe>
+		<Name>歪曲軸</Name>
+		<Node Version="1">
+		</Node>
+		<LowerBound>-32768.</LowerBound>
+		<CurrentValue>0.</CurrentValue>
+		<IsLocked>false</IsLocked>
+	</VideoComponentParam>
+	<VideoComponentParam ObjectID="57" ClassID="fe47129e-6c94-4fc0-95d5-c056a517aaf3" Version="10">
+		<DiscontinuousInterpolate>false</DiscontinuousInterpolate>
+		<ParameterID>7</ParameterID>
+		<UnitsString></UnitsString>
+		<UpperBound>32767.</UpperBound>
+		<IsTimeVarying>false</IsTimeVarying>
+		<Keyframes></Keyframes>
+		<ParameterControlType>3</ParameterControlType>
+		<StartKeyframe>-91445760000000000,0.,0,0,0,0,0,0</StartKeyframe>
+		<Name>回転</Name>
+		<Node Version="1">
+		</Node>
+		<LowerBound>-32768.</LowerBound>
+		<CurrentValue>0.</CurrentValue>
+		<IsLocked>false</IsLocked>
+	</VideoComponentParam>
+	<VideoComponentParam ObjectID="58" ClassID="fe47129e-6c94-4fc0-95d5-c056a517aaf3" Version="10">
+		<DiscontinuousInterpolate>false</DiscontinuousInterpolate>
+		<ParameterID>8</ParameterID>
+		<UnitsString></UnitsString>
+		<UpperBound>100.</UpperBound>
+		<IsTimeVarying>false</IsTimeVarying>
+		<Keyframes></Keyframes>
+		<ParameterControlType>2</ParameterControlType>
+		<StartKeyframe>-91445760000000000,100.,0,0,0,0,0,0</StartKeyframe>
+		<Name>不透明度</Name>
+		<Node Version="1">
+		</Node>
+		<LowerBound>0.</LowerBound>
+		<CurrentValue>0.</CurrentValue>
+		<IsLocked>false</IsLocked>
+	</VideoComponentParam>
+	<VideoComponentParam ObjectID="59" ClassID="cc12343e-f113-4d3b-ae05-b287db77d461" Version="10">
+		<DiscontinuousInterpolate>false</DiscontinuousInterpolate>
+		<ParameterID>9</ParameterID>
+		<UnitsString></UnitsString>
+		<UpperBound>true</UpperBound>
+		<IsTimeVarying>false</IsTimeVarying>
+		<Keyframes></Keyframes>
+		<ParameterControlType>4</ParameterControlType>
+		<StartKeyframe>-91445760000000000,true,0,0,0,0,0,0</StartKeyframe>
+		<Node Version="1">
+		</Node>
+		<LowerBound>false</LowerBound>
+		<CurrentValue>false</CurrentValue>
+		<IsLocked>false</IsLocked>
+	</VideoComponentParam>
+	<VideoComponentParam ObjectID="60" ClassID="fe47129e-6c94-4fc0-95d5-c056a517aaf3" Version="10">
+		<DiscontinuousInterpolate>false</DiscontinuousInterpolate>
+		<ParameterID>10</ParameterID>
+		<UnitsString></UnitsString>
+		<UpperBound>360.</UpperBound>
+		<IsTimeVarying>false</IsTimeVarying>
+		<Keyframes></Keyframes>
+		<ParameterControlType>2</ParameterControlType>
+		<StartKeyframe>-91445760000000000,0.,0,0,0,0,0,0</StartKeyframe>
+		<Name>シャッター角度</Name>
+		<Node Version="1">
+		</Node>
+		<LowerBound>0.</LowerBound>
+		<CurrentValue>0.</CurrentValue>
+		<IsLocked>false</IsLocked>
+	</VideoComponentParam>
+	<VideoComponentParam ObjectID="61" ClassID="6e02e8bb-2569-46b2-8ab1-4ab11c43e9c8" Version="10">
+		<DiscontinuousInterpolate>true</DiscontinuousInterpolate>
+		<ParameterID>12</ParameterID>
+		<UnitsString></UnitsString>
+		<UpperBound>1</UpperBound>
+		<IsTimeVarying>false</IsTimeVarying>
+		<Keyframes></Keyframes>
+		<ParameterControlType>7</ParameterControlType>
+		<StartKeyframe>-91445760000000000,0,0,0,0,0,0,0</StartKeyframe>
+		<Name>サンプリング</Name>
+		<Node Version="1">
+		</Node>
+		<LowerBound>0</LowerBound>
+		<CurrentValue>0</CurrentValue>
+		<IsLocked>false</IsLocked>
+	</VideoComponentParam>
