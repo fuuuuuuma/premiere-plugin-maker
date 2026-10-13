@@ -1,0 +1,32 @@
+{
+  "manifestVersion": 5,
+  "id": "{{PLUGIN_ID}}",
+  "name": "{{PLUGIN_NAME}}",
+  "version": "{{VERSION}}",
+  "main": "index.html",
+  "host": {
+    "app": "premierepro",
+    "minVersion": "{{MIN_VERSION}}",
+    "data": {
+      "apiVersion": 2,
+      "loadEvent": "startup"
+    }
+  },
+  "entrypoints": [
+    {
+      "type": "panel",
+      "id": "{{PANEL_ID}}",
+      "label": { "default": "{{PANEL_LABEL}}" },
+      "minimumSize": { "width": 260, "height": 240 },
+      "maximumSize": { "width": 2000, "height": 2000 },
+      "preferredDockedSize": { "width": 320, "height": 460 },
+      "preferredFloatingSize": { "width": 360, "height": 520 }
+    }
+  ],
+  "icons": [
+    { "width": 24, "height": 24, "path": "icons/icon.png", "scale": [1, 2], "theme": ["all"], "species": "generic" }
+  ],
+  "requiredPermissions": {
+    "localFileSystem": "plugin"
+  }
+}

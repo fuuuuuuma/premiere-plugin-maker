@@ -1,0 +1,2 @@
+/* このプラグイン固有の見た目。共通の決まりは lib/ppm-ui-kit.css にある（grid は使わない・一覧の行は縮めない）。 */
+title { display: none; }

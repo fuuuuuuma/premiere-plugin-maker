@@ -1,0 +1,7 @@
+{
+  "name": "panel",
+  "description": "パネルだけ（いちばん小さい形）。ログ・Premiere 操作の型・見た目・診断ボタン入り",
+  "files": "_base",
+  "parts": ["logger", "ppro-kit", "ui-kit", "probe"],
+  "minVersion": "25.6"
+}

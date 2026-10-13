@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{PLUGIN_NAME}}</title>
+  <!-- ppm:styles-start -->
+  <!-- ppm:styles-end -->
+  <link rel="stylesheet" href="panel.css" />
+</head>
+<body>
+  <div class="ppm-app">
+    <header class="ppm-header">
+      <h1 class="ppm-title">{{PANEL_LABEL}}</h1>
+    </header>
+    <main class="ppm-scroll">
+      <section class="ppm-page" id="page-main">
+        <p class="ppm-hint">タイムラインでクリップを選んでから押してください。</p>
+        <button id="run" class="ppm-btn ppm-btn-primary" type="button">実行</button>
+        <div id="result" class="ppm-result" data-state="idle"></div>
+      </section>
+    </main>
+    <footer class="ppm-footer">
+      <button id="probe" class="ppm-btn ppm-btn-quiet" type="button">診断</button>
+      <span id="version" class="ppm-version"></span>
+    </footer>
+  </div>
+  <!-- ppm:scripts-start -->
+  <!-- ppm:scripts-end -->
+  <script src="index.js"></script>
+</body>
+</html>
