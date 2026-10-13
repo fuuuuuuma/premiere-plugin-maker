@@ -1,0 +1,17 @@
+{
+  "name": "silence-cut",
+  "description": "無音カット（RMS の包絡で前後を同じ基準で測り、FCP7 XML を作り直す）。終了コードの約束つき",
+  "status": "verified",
+  "os": ["mac", "windows"],
+  "requires": ["fcpxml", "media-tools"],
+  "files": {"server/vendor/": "server/vendor/", "server/jobs/silence_cut.py": "server/jobs/silence_cut.py"},
+  "scripts": [],
+  "styles": [],
+  "permissions": {},
+  "featureFlags": {},
+  "entrypoints": [],
+  "minVersion": "26.2",
+  "pythonDeps": ["numpy"],
+  "knowledge": ["recipe-silence-cut", "feat-cutsrt-cut"],
+  "notes": "パネルは PPM.fcpxml.exportActiveSequence → PPM.server.runJob(\"silence_cut\", {xmlPath}) → PPM.fcpxml.importAndOpen(outputXml)。BGM のトラックは tracks に入れない"
+}
