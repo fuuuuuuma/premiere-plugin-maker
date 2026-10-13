@@ -232,7 +232,14 @@
     const lfs = state.uxp && state.uxp.storage && state.uxp.storage.localFileSystem;
     if (!lfs) throw err("書き出し先を用意できません", "UXP の保存の機能が見つかりません", "Premiere の中で開いてください");
     const folder = await lfs.getDataFolder();
+    // 前に書き出した同じ名前のファイルが残っていると、それを「できた」と見誤る。先に消す
+    for (const name of [fileName, fileName + ".png"]) {
+      try { const old = await folder.getEntry(name); if (old && typeof old.delete === "function") await old.delete(); } catch (e) { /* 無ければよい */ }
+    }
     const ok = await resolve(ppro().Exporter.exportSequenceFrame(sequence, time(seconds), fileName, folder.nativePath, o.width || 1920, o.height || 1080));
+    if (ok === false) {
+      throw err("コマを書き出せませんでした", "Premiere が書き出しを受け付けませんでした", "プレイヘッドをその時刻に置いてから、もう一度試してください");
+    }
     // 返事が来ても書き終わっていないことがある（Cut&SRT 2026-10-05）。ファイルができるのを待つ
     const deadline = Date.now() + (o.timeoutMs || 15000);
     while (Date.now() < deadline) {

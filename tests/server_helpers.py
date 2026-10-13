@@ -38,11 +38,14 @@ class LiveServer:
         self.proc = subprocess.Popen([sys.executable, str(server_dir / "ppm_server.py")], env=self.env,
                                      stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
         self.handshake_path = self.root / "support" / app / "server.json"
-        deadline = time.time() + 20
+        deadline = time.time() + 60
         while time.time() < deadline and not self.handshake_path.exists():
             if self.proc.poll() is not None:
                 raise RuntimeError("サーバーが起動しませんでした: " + self.proc.stderr.read().decode("utf-8", "replace"))
             time.sleep(0.1)
+        if not self.handshake_path.exists():
+            self.proc.kill()
+            raise RuntimeError("60 秒待っても server.json ができませんでした: " + self.proc.stderr.read().decode("utf-8", "replace"))
         self.info = json.loads(self.handshake_path.read_text(encoding="utf-8"))
 
     def call(self, path, body=None, token=True):

@@ -5632,6 +5632,37 @@
   "source": "kit"
  },
  {
+  "id": "uc-server-getfqdn-slow-start",
+  "title": "手元のサーバーが起動の合図（server.json）を書くまで何十秒も止まる",
+  "kind": "usecase",
+  "tags": [
+   "サーバー",
+   "起動",
+   "遅い",
+   "server.json",
+   "getfqdn",
+   "DNS",
+   "HTTPServer",
+   "Mac"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "Python の標準の HTTPServer は待ち受けの前に socket.getfqdn で自分の名前を DNS に聞く。ネットの設定によってはそこで長く止まる。127.0.0.1 だけで待つなら、server_bind で名前を聞かない",
+  "parts": [
+   "local-server"
+  ],
+  "related": [
+   "ref-local-server",
+   "uc-server-localhost-network-all"
+  ],
+  "path": "usecases/uc-server-getfqdn-slow-start.md",
+  "source": "kit"
+ },
+ {
   "id": "uc-server-launchd-log-rotation",
   "title": "常駐サーバーのログを truncate すると、巨大な空白ができる（launchd）",
   "kind": "usecase",

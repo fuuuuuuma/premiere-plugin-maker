@@ -19,6 +19,7 @@ import threading
 import time
 import traceback
 import uuid
+import socketserver
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -237,6 +238,20 @@ def _stop(*_args):
     raise KeyboardInterrupt
 
 
+class _Server(ThreadingHTTPServer):
+    def server_bind(self):
+        # 標準の HTTPServer は socket.getfqdn で自分の名前を DNS に聞く。ネットの設定によっては長く止まる（GitHub の Mac で 20 秒以上）。
+        # 127.0.0.1 だけで待つので名前は要らない
+        socketserver.TCPServer.server_bind(self)
+        host, port = self.server_address[:2]
+        self.server_name = host
+        self.server_port = port
+
+
+def make_httpd(port: int) -> ThreadingHTTPServer:
+    return _Server(("127.0.0.1", port), Handler)
+
+
 def main() -> int:
     if sys.stdout is None or sys.stderr is None:  # pythonw（Windows の常駐）では標準出力が無い
         LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -248,7 +263,7 @@ def main() -> int:
         ROUTES.update(getattr(mod, "ROUTES", {}))
     port = int(os.environ.get("PPM_PORT") or CONFIG.get("port", 0))
     try:
-        httpd = ThreadingHTTPServer(("127.0.0.1", port), Handler)
+        httpd = make_httpd(port)
     except OSError as e:
         log(f"待ち受けを始められません（{e}）。同じポートを別のサーバーが使っていないか確かめてください")
         return 1

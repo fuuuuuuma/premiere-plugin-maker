@@ -111,8 +111,10 @@ class WindowsDpapiBackend:
     def directory(self) -> str:
         if self._directory:
             return self._directory
-        import ppm_paths  # local-server の部品（Windows でだけ要る）
-        return str(ppm_paths.app_support(SERVICE) / "secrets")
+        # local-server の ppm_paths.app_support と同じ場所。ほかの部品に頼らず、この部品だけで決める
+        root = os.environ.get("PPM_APP_SUPPORT_ROOT")
+        base = Path(root) if root else Path(os.environ.get("APPDATA") or (Path.home() / "AppData" / "Roaming"))
+        return str(base / SERVICE / "secrets")
 
     def path(self, name: str) -> str:
         return os.path.join(self.directory(), f"{name}.bin")

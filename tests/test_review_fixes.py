@@ -5,6 +5,7 @@ import subprocess
 import sys
 import unittest
 import zipfile
+from pathlib import Path
 from unittest import mock
 
 from helpers import PARTS, SKILL, temp_dir
@@ -138,6 +139,44 @@ class McpSetupTests(unittest.TestCase):
         with mock.patch.object(mod.shutil, "which", side_effect=lambda n: resolved.get(n)):
             cmds = mod.plan("python", server / "ppm_mcp.py")
         self.assertEqual({c[0] for c, _ in cmds}, set(resolved.values()))
+
+
+class CiFoundIssuesTests(unittest.TestCase):
+    """公開後の CI（GitHub Actions）で見つかった型。"""
+
+    def test_server_does_not_ask_dns_for_its_own_name(self):
+        # 標準の HTTPServer は待ち受けの前に socket.getfqdn で自分の名前を DNS に聞く。GitHub の Mac ではこれが長く止まった
+        import importlib.util
+        import socket
+        from server_helpers import make_server_dir
+        d = make_server_dir()
+        sys.path.insert(0, str(d))
+        try:
+            spec = importlib.util.spec_from_file_location("ppm_server_t", d / "ppm_server.py")
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            with mock.patch.object(socket, "getfqdn", side_effect=AssertionError("getfqdn を呼んだ")):
+                httpd = mod.make_httpd(0)
+            try:
+                self.assertEqual(httpd.server_address[0], "127.0.0.1")
+            finally:
+                httpd.server_close()
+        finally:
+            sys.path.remove(str(d))
+
+    def test_keychain_on_windows_does_not_need_other_parts(self):
+        # 鍵の保管の部品だけを置いたフォルダでも、Windows の置き場所を決められる（ppm_paths に頼らない）
+        server = temp_dir() / "server"
+        server.mkdir()
+        (server / "config.json").write_text(json.dumps({"app": "PpmTest"}), encoding="utf-8")
+        (server / "ppm_keychain.py").write_text((PARTS / "keychain" / "server" / "ppm_keychain.py").read_text(encoding="utf-8"), encoding="utf-8")
+        code = ("import sys; sys.path.insert(0, sys.argv[1]); import ppm_keychain as k; "
+                "print(k.WindowsDpapiBackend().directory())")
+        env = {**os.environ, "APPDATA": str(server / "AppData")}
+        proc = subprocess.run([sys.executable, "-c", code, str(server)], capture_output=True, text=True,
+                              encoding="utf-8", errors="replace", env=env, timeout=60)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertEqual(Path(proc.stdout.strip()), server / "AppData" / "PpmTest" / "secrets")
 
 
 if __name__ == "__main__":
