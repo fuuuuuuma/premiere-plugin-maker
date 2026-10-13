@@ -1,0 +1,17 @@
+{
+  "name": "ppro-kit",
+  "description": "Premiere の UXP API を安全に使う型（取引・選択・キー・効果・トランジション・マーカー・コマの書き出し・fps）",
+  "status": "partial",
+  "os": ["mac", "windows"],
+  "requires": ["logger"],
+  "files": {"lib/ppm-ppro-kit.js": "lib/ppm-ppro-kit.js"},
+  "scripts": ["lib/ppm-ppro-kit.js"],
+  "styles": [],
+  "permissions": {},
+  "featureFlags": {},
+  "entrypoints": [],
+  "minVersion": "25.6",
+  "pythonDeps": [],
+  "knowledge": ["core-transactions", "core-api-patterns"],
+  "notes": "書き方の元は実機で確認済み。この部品としてまとめた形は Task 36 で確かめる"
+}

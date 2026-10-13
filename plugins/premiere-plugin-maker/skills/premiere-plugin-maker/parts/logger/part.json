@@ -1,0 +1,17 @@
+{
+  "name": "logger",
+  "description": "パネルのログを console とプラグインのデータフォルダの ppm-log.txt に書く。AI は logs.py で読む",
+  "status": "unverified",
+  "os": ["mac", "windows"],
+  "requires": [],
+  "files": {"lib/ppm-logger.js": "lib/ppm-logger.js"},
+  "scripts": ["lib/ppm-logger.js"],
+  "styles": [],
+  "permissions": {},
+  "featureFlags": {},
+  "entrypoints": [],
+  "minVersion": "25.6",
+  "pythonDeps": [],
+  "knowledge": ["core-verification"],
+  "notes": "PPM.log.info / warn / error。保存場所は PPM.log.filePath() と、診断ボタンの表示で分かる"
+}

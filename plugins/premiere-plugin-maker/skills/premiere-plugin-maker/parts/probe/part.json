@@ -1,0 +1,17 @@
+{
+  "name": "probe",
+  "description": "診断ボタン。使う API がこの Premiere にあるかを調べ、版とログの場所と一緒に表示・記録する",
+  "status": "unverified",
+  "os": ["mac", "windows"],
+  "requires": ["ppro-kit", "ui-kit"],
+  "files": {"lib/ppm-probe.js": "lib/ppm-probe.js"},
+  "scripts": ["lib/ppm-probe.js"],
+  "styles": [],
+  "permissions": {},
+  "featureFlags": {},
+  "entrypoints": [],
+  "minVersion": "25.6",
+  "pythonDeps": [],
+  "knowledge": ["core-verification"],
+  "notes": "調べたい API は PPM.probe.run([\"クラス.メソッド\"]) で足せる"
+}

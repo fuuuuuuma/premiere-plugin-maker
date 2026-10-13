@@ -1,0 +1,17 @@
+{
+  "name": "ui-kit",
+  "description": "UXP で崩れにくい見た目と、結果の表示・処理中・空欄の値・select の誤操作の対策",
+  "status": "partial",
+  "os": ["mac", "windows"],
+  "requires": [],
+  "files": {"lib/ppm-ui-kit.js": "lib/ppm-ui-kit.js", "lib/ppm-ui-kit.css": "lib/ppm-ui-kit.css"},
+  "scripts": ["lib/ppm-ui-kit.js"],
+  "styles": ["lib/ppm-ui-kit.css"],
+  "permissions": {},
+  "featureFlags": {},
+  "entrypoints": [],
+  "minVersion": "25.6",
+  "pythonDeps": [],
+  "knowledge": ["core-ui-rules"],
+  "notes": "部品の名前は ppm- で始まる。select の対策は Cut&SRT の 3 段の対策を 1 段に縮めたもの"
+}
