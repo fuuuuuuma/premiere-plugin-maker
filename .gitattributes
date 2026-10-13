@@ -1,0 +1,8 @@
+# どの OS で取り出しても同じ改行にする（Windows の git が CRLF に変えると、部品の写しや .command が壊れる）
+* text=auto eol=lf
+# Windows のバッチは CRLF のまま
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.png binary
+*.ccx binary
+*.zip binary

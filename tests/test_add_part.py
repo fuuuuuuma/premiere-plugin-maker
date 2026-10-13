@@ -62,6 +62,12 @@ class AddPartTests(unittest.TestCase):
         self.assertEqual(info["parts"][-2:], ["demo-base", "demo"])
         self.assertEqual(info["minVersion"], "26.2")
 
+    def test_batch_files_are_written_with_crlf(self):
+        src = self.kit / "parts" / "demo" / "server" / "run.bat"
+        src.write_bytes(b"@echo off\nexit /b 0\n")
+        add_part.add_part(self.dest, "demo", self.kit)
+        self.assertEqual((self.dest / "server" / "run.bat").read_bytes(), b"@echo off\r\nexit /b 0\r\n")
+
     def test_second_time_changes_nothing(self):
         add_part.add_part(self.dest, "demo", self.kit)
         before = {p: p.read_bytes() for p in self.dest.rglob("*") if p.is_file()}

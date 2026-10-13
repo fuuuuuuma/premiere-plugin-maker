@@ -71,7 +71,10 @@ def _expand_files(part_dir: Path, mapping: Dict[str, str]) -> List[Tuple[Path, s
 
 def _render(src: Path, mapping: Dict[str, str]) -> bytes:
     if src.suffix.lower() in TEXT_SUFFIXES:
-        return projlib.substitute(src.read_text(encoding="utf-8"), mapping).encode("utf-8")
+        text = projlib.substitute(src.read_text(encoding="utf-8"), mapping)
+        if src.suffix.lower() in (".bat", ".cmd"):  # Windows のバッチはどの OS で写しても CRLF
+            text = text.replace("\r\n", "\n").replace("\n", "\r\n")
+        return text.encode("utf-8")
     return src.read_bytes()
 
 
