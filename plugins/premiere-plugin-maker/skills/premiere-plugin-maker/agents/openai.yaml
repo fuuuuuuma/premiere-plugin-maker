@@ -1,0 +1,7 @@
+interface:
+  display_name: "Premiere Plugin Maker"
+  short_description: "要望を聞いて Premiere のプラグインを作る（Mac / Windows）"
+  brand_color: "#2B5BD7"
+  default_prompt: "Use $premiere-plugin-maker to 要望を聞いて Premiere のプラグインを作ってください。"
+policy:
+  allow_implicit_invocation: true
