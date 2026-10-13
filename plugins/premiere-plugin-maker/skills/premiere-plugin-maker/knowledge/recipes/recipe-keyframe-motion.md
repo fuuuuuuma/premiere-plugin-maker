@@ -2,7 +2,7 @@
 id: recipe-keyframe-motion
 title: キーで動きを付ける（ズーム・スライド・フェード）
 kind: recipe
-tags: [キーフレーム, ズーム, スライド, フェード, 補間, 焼き込み, 取り消し, モーション, スケール]
+tags: [キーフレーム, ズーム, ズームイン, ゆっくり, スライド, フェード, 補間, 焼き込み, 取り消し, モーション, スケール]
 os: [mac, windows]
 premiere: ">=25.6"
 status: verified
