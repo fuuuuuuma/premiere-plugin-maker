@@ -17,6 +17,8 @@ const APP = { tag: "zoom-button", booted: false };
 
 function $(id) { return document.getElementById(id); }
 
+const MAX_CLIPS = 200;
+
 async function onRun() {
   const out = $("result");
   PPM.ui.busy($("run"), true, "付けています…");
@@ -29,9 +31,17 @@ async function onRun() {
     const from = PPM.ui.numberValue($("from"), 100);
     const to = PPM.ui.numberValue($("to"), 110);
     const seconds = Math.max(0.1, PPM.ui.numberValue($("seconds"), 2));
+    if (clips.length > MAX_CLIPS) {
+      throw PPM.err(`選んだクリップが多すぎます（${clips.length} 本）`, `1 回の取引に詰めるキーが多いと Premiere が固まることがあります`,
+        `${MAX_CLIPS} 本までに分けて選び、何回かに分けて押してください`);
+    }
     const fr = await PPM.getFrameRate(sequence);
-    if (!fr.detected) PPM.log.warn("フレームレートを読めないので 30 コマで焼きます", {});
-    const frame = 1 / (fr.detected ? fr.fps : 30);
+    if (!fr.detected) {
+      // 30 コマと決めつけて焼くと、ほかのフレームレートでは動きの速さがずれる
+      throw PPM.err("シーケンスのフレームレートを読めません", "この Premiere ではフレームレートを読む API が使えません（26.2 以降で使える）",
+        "Premiere を更新してから、もう一度押してください");
+    }
+    const frame = 1 / fr.fps;
     const keys = PPM.motion.bakeTrack([{ t: 0, value: from, interp: "bezier" }, { t: seconds, value: to, interp: "linear" }], frame);
     // 非同期の取得（スケールの項目・入点）は取引の前に全部済ませる
     const targets = [];

@@ -32,6 +32,22 @@ def load(path) -> Dict[str, Any]:
     return data
 
 
+SHAPES = {"host": dict, "requiredPermissions": dict, "entrypoints": list, "icons": list, "featureFlags": dict}
+
+
+def require_shape(data: Dict[str, Any], need_id: bool = False) -> None:
+    """道具が書き換える・読む項目の形を確かめる。手で壊れた形はトレースバックでなく、直し方の文で止める。"""
+    names = {dict: "{ }（オブジェクト）", list: "[ ]（配列）"}
+    for key, kind in SHAPES.items():
+        if key in data and not isinstance(data[key], kind):
+            raise ManifestError(f"manifest.json の「{key}」は {names[kind]} で書きます（今は {type(data[key]).__name__}）。雛形の manifest.json と見比べて直してください")
+    perms = data.get("requiredPermissions") or {}
+    if "network" in perms and not isinstance(perms["network"], dict):
+        raise ManifestError("manifest.json の requiredPermissions.network は {\"domains\": …} の形で書きます")
+    if need_id and not data.get("id"):
+        raise ManifestError("manifest.json に id がありません。雛形と同じく \"id\": \"com.…\" を書いてください")
+
+
 def save(path, data: Dict[str, Any]) -> None:
     with open(Path(path), "w", encoding="utf-8", newline="\n") as f:
         f.write(json.dumps(data, ensure_ascii=False, indent=2) + "\n")

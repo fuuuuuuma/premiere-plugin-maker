@@ -41,8 +41,15 @@ async function onRun() {
     }, { onProgress: (p, m) => PPM.ui.showInfo(out, `${m || "作っています"}（${p}%）`) });
     let steps = 0;
     for (let i = 0; i < targets.length; i++) {
-      const r = await PPM.mogrt.replaceClip(project, sequence, targets[i].clip, built.mogrts[i].path);
-      steps += r.undoSteps;
+      try {
+        const r = await PPM.mogrt.replaceClip(project, sequence, targets[i].clip, built.mogrts[i].path);
+        steps += r.undoSteps;
+      } catch (e) {
+        const p = (e && e.ppm) || { symptom: String((e && e.message) || e), why: "", next: "" };
+        // 途中で止まったときは、何本まで済んだかと、ここまでを戻す取り消しの回数を伝える
+        throw PPM.err(`${i} 本まで差し替え、${i + 1} 本目で止まりました: ${p.symptom}`, p.why,
+          `${p.next}${p.next ? "。" : ""}ここまでを全部戻すなら、Cmd+Z / Ctrl+Z をあと ${steps} 回`);
+      }
     }
     const lines = [`${targets.length} 本を差し替えました（元に戻すには Cmd+Z / Ctrl+Z を ${steps} 回）`];
     if (skipped) lines.push(`${skipped} 本は本文を読めず、飛ばしました`);

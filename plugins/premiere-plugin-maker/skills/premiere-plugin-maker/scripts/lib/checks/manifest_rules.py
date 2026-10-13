@@ -69,7 +69,10 @@ def manifest_rules(p: Project) -> List[Finding]:
             if not (isinstance(label, dict) and label.get("default")) and not isinstance(label, str):
                 out.append(_f("M007", "error", f"入口「{eid}」に label がありません", "メニューに名前が出ません",
                               '"label": {"default": "表示名"} を書いてください'))
-    for icon in m.get("icons") or []:
+    icons = m.get("icons") or []
+    if not isinstance(icons, list):
+        return [Finding("M014", "error", "manifest.json", 0, "icons が配列ではありません", "UXP は icons を [ ] で受け取ります", "雛形と同じ [ {\"path\": …} ] の形に直してください")]
+    for icon in icons:
         path = icon.get("path")
         if path and not (p.root / path).exists():
             out.append(_f("M008", "error", f"アイコン「{path}」がありません", "読み込みで失敗したり、配布の検査で落ちたりします",

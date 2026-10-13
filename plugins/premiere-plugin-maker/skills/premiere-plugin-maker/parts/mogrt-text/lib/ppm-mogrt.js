@@ -32,7 +32,13 @@
     PPM.transact(project, "元のテロップを外す", (add) => {
       add("remove", () => editor.createRemoveItemsAction(sel, false, videoType, false));
     });
-    await insertAt(project, sequence, mogrtPath, clip.startSeconds, clip.trackIndex, 0);
+    try {
+      await insertAt(project, sequence, mogrtPath, clip.startSeconds, clip.trackIndex, 0);
+    } catch (e) {
+      const why = (e && e.ppm && e.ppm.why) || String((e && e.message) || e);
+      throw PPM.err("新しいテロップを入れられませんでした", `元のテロップは外れています（${why}）`,
+        "Premiere で Cmd+Z / Ctrl+Z を 1 回押すと、外した元のテロップが戻ります");
+    }
     let steps = 2;
     const placed = await PPM.findClip(sequence, "video", clip.trackIndex, clip.startTicks);
     if (placed) {

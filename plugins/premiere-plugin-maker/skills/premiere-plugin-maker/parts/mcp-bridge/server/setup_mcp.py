@@ -16,13 +16,16 @@ NAME = f"{APP.lower()}-premiere"
 
 
 def plan(python: str, script: Path) -> list:
+    # which が返した実際のパスで呼ぶ（Windows の npm 入りは claude.cmd / codex.cmd で、名前だけでは見つからない）
     cmds = []
-    if shutil.which("claude"):
-        cmds.append((["claude", "mcp", "remove", NAME, "--scope", "user"], False))
-        cmds.append((["claude", "mcp", "add", NAME, "--scope", "user", "--", python, str(script)], True))
-    if shutil.which("codex"):
-        cmds.append((["codex", "mcp", "remove", NAME], False))
-        cmds.append((["codex", "mcp", "add", NAME, "--", python, str(script)], True))
+    claude = shutil.which("claude")
+    if claude:
+        cmds.append(([claude, "mcp", "remove", NAME, "--scope", "user"], False))
+        cmds.append(([claude, "mcp", "add", NAME, "--scope", "user", "--", python, str(script)], True))
+    codex = shutil.which("codex")
+    if codex:
+        cmds.append(([codex, "mcp", "remove", NAME], False))
+        cmds.append(([codex, "mcp", "add", NAME, "--", python, str(script)], True))
     return cmds
 
 
@@ -45,7 +48,12 @@ def main(argv=None) -> int:
         return 0
     failed = False
     for c, must in cmds:
-        r = subprocess.run(c, capture_output=True, text=True, encoding="utf-8", errors="replace")
+        try:
+            r = subprocess.run(c, capture_output=True, text=True, encoding="utf-8", errors="replace")
+        except OSError as e:
+            failed = True
+            print(f"[NG!] {' '.join(c)} を起動できませんでした: {e}")
+            continue
         if must and r.returncode != 0:
             failed = True
             print(f"[NG!] {' '.join(c)}\n{r.stdout}{r.stderr}")

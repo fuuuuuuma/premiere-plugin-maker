@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -16,12 +17,23 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 CSXS = [10, 11, 12, 13]
+BUNDLE_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 
 
 def ext_dir() -> Path:
     if sys.platform == "win32":
         return Path(os.environ.get("APPDATA", "")) / "Adobe" / "CEP" / "extensions"
     return Path(os.environ.get("HOME", str(Path.home()))) / "Library" / "Application Support" / "Adobe" / "CEP" / "extensions"
+
+
+def _is_ours(target: Path, bundle_id: str) -> bool:
+    """入れ替えてよいのは、同じ ExtensionBundleId の拡張だけ（別の拡張のフォルダは消さない）。"""
+    manifest = target / "CSXS" / "manifest.xml"
+    try:
+        text = manifest.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return False
+    return f'ExtensionBundleId="{bundle_id}"' in text
 
 
 def debug_commands() -> list:
@@ -39,7 +51,16 @@ def main(argv=None) -> int:
     ap.add_argument("--bundle-id", required=True)
     ap.add_argument("--apply", action="store_true")
     args = ap.parse_args(argv)
+    if not BUNDLE_ID_RE.match(args.bundle_id or "") or ".." in args.bundle_id:
+        print(f"--bundle-id が正しくありません（英数字・. _ - だけ）: {args.bundle_id!r}。拡張のフォルダの外や拡張のフォルダ全体を指さないよう、何もせずに止めます")
+        return 2
     target = ext_dir() / args.bundle_id
+    if target.parent != ext_dir():
+        print(f"--bundle-id が拡張のフォルダの外を指しています: {target}。何もせずに止めます")
+        return 2
+    if target.exists() and not _is_ours(target, args.bundle_id):
+        print(f"{target} には別の拡張が入っています（manifest.xml の ExtensionBundleId が {args.bundle_id} ではない）。上書きせずに止めます")
+        return 2
     cmds = debug_commands()
     print(f"・写す: {HERE} → {target}")
     for c in cmds:

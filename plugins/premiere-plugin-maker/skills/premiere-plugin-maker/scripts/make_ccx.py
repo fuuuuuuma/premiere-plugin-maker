@@ -40,6 +40,15 @@ DEFAULT_README = """{{PANEL_LABEL}}（{{PLUGIN_NAME}} v{{VERSION}}）の入れ�
 - Creative Cloud にサインインし直した後は、入れ直しが要ることがあります
 - 同じ版のまま入れ直しても更新されません。Creative Cloud デスクトップの［プラグイン］から一度削除してから入れてください
 """
+SERVER_README = """
+■ 手元のサーバー（このプラグインは重い処理を手元のサーバーに任せます）
+1. 同じフォルダの {{APP_NAME}}_server_v{{VERSION}}.zip を、好きな場所に展開する（展開した場所は消さない）
+2. Mac: ターミナルで「bash 」（後ろに空白）と打ち、展開した server フォルダの install_mac.command をドラッグして Enter
+   Windows: 展開した server フォルダの install_windows.bat をダブルクリック
+3. Premiere でパネルを開き直す。「サーバーが動いていません」と出たら、手順 2 をもう一度
+"""
+SERVER_SKIP_DIRS = {".venv", "venv", ".git", "models", "logs", "__pycache__", "node_modules"}
+SERVER_SKIP_SUFFIXES = {".pyc", ".log"}
 
 
 class CcxError(ValueError):
@@ -71,6 +80,7 @@ def _css_refs(text: str) -> List[str]:
 def collect_files(project_dir) -> List[str]:
     root = Path(project_dir)
     data = mf.load(root / "manifest.json")
+    mf.require_shape(data, need_id=True)
     files = {"manifest.json"}
     queue = [data.get("main") or "main.js"]
     while queue:
@@ -112,20 +122,26 @@ def collect_files(project_dir) -> List[str]:
     return sorted(files, key=lambda x: (x != "manifest.json", x))
 
 
+def _scan_text(root: Path, rel: str, problems: List[str]) -> None:
+    text = (root / rel).read_text(encoding="utf-8", errors="replace")
+    for line, found in privacy.personal_paths(text):
+        problems.append(f"{rel} の {line} 行目: 個人のパス {found}")
+    for line, found in privacy.token_like(text):
+        problems.append(f"{rel} の {line} 行目: 鍵の形の文字列 {found}")
+
+
 def validate(project_dir, files: List[str]) -> None:
     root = Path(project_dir)
     data = mf.load(root / "manifest.json")
+    mf.require_shape(data, need_id=True)
     problems = []
     for rel in files:
         name = PurePosixPath(rel).name
         if privacy.secret_like_name(name):
             problems.append(f"{rel}: 秘密らしい名前のファイルは配りません")
         if Path(rel).suffix.lower() in TEXT_SUFFIXES:
+            _scan_text(root, rel, problems)
             text = (root / rel).read_text(encoding="utf-8", errors="replace")
-            for line, found in privacy.personal_paths(text):
-                problems.append(f"{rel} の {line} 行目: 個人のパス {found}")
-            for line, found in privacy.token_like(text):
-                problems.append(f"{rel} の {line} 行目: 鍵の形の文字列 {found}")
             if re.search(r"\{\{[A-Z_]+\}\}", text):
                 problems.append(f"{rel}: 置き換え忘れの {{{{…}}}} があります")
     info = root / "build_info.json"
@@ -168,16 +184,24 @@ def build_bundle(project_dir) -> Path:
     ccx = build_ccx(root, folder / f"{data['id']}_{data['version']}.ccx")
     template = root / "packaging" / "README-recipient.txt"
     text = template.read_text(encoding="utf-8") if template.is_file() else DEFAULT_README
-    fsutil.write_text(folder / "はじめにお読みください.txt", projlib.substitute(text, projlib.placeholders({**info, "version": data["version"]})))
     server = root / "server"
+    if server.is_dir() and "install_mac.command" not in text:
+        text = text.rstrip("\n") + "\n" + SERVER_README
+    fsutil.write_text(folder / "はじめにお読みください.txt", projlib.substitute(text, projlib.placeholders({**info, "version": data["version"]})))
     if server.is_dir():
-        entries = []
-        for p in sorted(x for x in server.rglob("*") if x.is_file() and "__pycache__" not in x.parts and x.suffix != ".pyc"):
+        entries, problems = [], []
+        for p in sorted(x for x in server.rglob("*") if x.is_file()):
+            if SERVER_SKIP_DIRS & set(p.relative_to(server).parts[:-1]) or p.suffix.lower() in SERVER_SKIP_SUFFIXES:
+                continue
             rel = p.relative_to(root).as_posix()
             if privacy.secret_like_name(p.name):
-                raise CcxError(f"{rel}: 秘密らしい名前のファイルは配りません")
+                problems.append(f"{rel}: 秘密らしい名前のファイルは配りません")
+            if p.suffix.lower() in TEXT_SUFFIXES | {".py", ".bat", ".command", ".ps1", ".sh", ".template", ".plist", ".cfg", ".ini", ".toml", ".yml", ".yaml"}:
+                _scan_text(root, rel, problems)
             mode = 0o100755 if p.suffix in (".command", ".sh") else 0o100644
             entries.append((rel, p.read_bytes(), mode))
+        if problems:
+            raise CcxError("サーバーの zip に入れる前に直すことがあります:\n- " + "\n- ".join(problems))
         _write_zip(folder / f"{info['appName']}_server_v{data['version']}.zip", entries)
     return folder
 

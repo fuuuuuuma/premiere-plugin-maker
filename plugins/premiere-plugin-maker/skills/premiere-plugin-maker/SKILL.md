@@ -13,7 +13,7 @@ description: Premiere（Premiere Pro）用のプラグインを、要望を聞�
 ## 0. 毎回、最初に
 
 1. **OS を聞く**: 「お使いのパソコンは Windows と Mac のどちらですか？」（依頼に書いてあれば聞かない）。以降のコマンドとパスは、その OS の形で出す。
-2. **一式があるか見る**: `<SKILL>/scripts/doctor.py` が無ければ、「公開リポジトリから一式を取ってきます」と伝えてから取ってくる。
+2. **一式があるか見る**: `<SKILL>/scripts/doctor.py` が無ければ、「公開リポジトリ（github.com/fuuuuuuma/premiere-plugin-maker）から一式を取ってきてよいですか」と聞き、許可をもらってから取ってくる。
    - Mac: `git clone --depth 1 https://github.com/fuuuuuuma/premiere-plugin-maker ~/.premiere-plugin-maker/kit`（git が無ければ `mkdir -p ~/.premiere-plugin-maker && curl -L https://github.com/fuuuuuuma/premiere-plugin-maker/archive/refs/heads/main.tar.gz | tar xz -C ~/.premiere-plugin-maker && mv ~/.premiere-plugin-maker/premiere-plugin-maker-main ~/.premiere-plugin-maker/kit`）
    - Windows（PowerShell）: `git clone --depth 1 https://github.com/fuuuuuuma/premiere-plugin-maker "$env:USERPROFILE\.premiere-plugin-maker\kit"`（git が無ければ `Invoke-WebRequest https://github.com/fuuuuuuma/premiere-plugin-maker/archive/refs/heads/main.zip -OutFile "$env:TEMP\ppm.zip"; Expand-Archive "$env:TEMP\ppm.zip" "$env:USERPROFILE\.premiere-plugin-maker"; Rename-Item "$env:USERPROFILE\.premiere-plugin-maker\premiere-plugin-maker-main" kit`）
    - 以降の `<SKILL>` は、取ってきた `kit` の中の `plugins/premiere-plugin-maker/skills/premiere-plugin-maker`。
@@ -33,7 +33,7 @@ description: Premiere（Premiere Pro）用のプラグインを、要望を聞�
 
 - `kb.py search <要望の言葉> --os <mac か windows>` を実行し、上位を `kb.py show <id>` で読む。
 - 結果が薄ければ `kb.py list --brief` を読み、意味で選ぶ。
-- status が verified の知識を優先する。unverified の知識を使うときは「未確認です」と伝え、診断ボタンで確かめてから採用する。superseded は使わない。
+- status の verified は「元のプラグイン（Cut & SRT など）を Premiere で動かした記録がある」の意味。このキットの部品の組み合わせは、まだ Premiere で通していないので、利用者には「元の記録では確かめてある」と伝える。verified の知識を優先する。unverified の知識を使うときは「未確認です」と伝え、診断ボタンで確かめてから採用する。superseded は使わない。
 - 部品がある機能は部品を使う。部品が無い機能（話者の振り分け・顔の追従など）は、features の記録を元に部品を組み合わせて作る。
 
 ## 3. できるかを判定

@@ -59,7 +59,7 @@ Premiere の UXP の API に無い操作は作れません。代わりの手（F
 
 ## 確かめた範囲
 
-- 道具のテスト: macOS と Windows（GitHub Actions）
+- 道具のテスト: この Mac で全部通る。GitHub Actions で macOS と Windows のテストを走らせる設定を入れてある（結果はリポジトリの Actions の画面）
 - Premiere の実機: このキット（道具・部品・完成サンプル）自体は、まだ Premiere の実機で通して確かめていません（0.1.0 の時点）。部品の多くは、元になったプラグイン（Cut & SRT・Effect & Design など）が Mac の Premiere で実際に使っていた書き方を写したもので、知識の各項目に「確かめたか（verified / partial / unverified）」を書いてあります。テロップの部品は、この Mac の Premiere 26.5.2 に入っている Basic Title.mogrt から MOGRT を作るところまでテストで通しています
 - Windows の Premiere の実機では確かめていません。手順と検査は Windows 向けにも用意してあり、確かめていない所は知識に「未確認」と書いてあります
 

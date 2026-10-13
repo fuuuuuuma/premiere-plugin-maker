@@ -1,10 +1,17 @@
 {
   "name": "keychain",
   "description": "AI などの API キーを OS の保管庫に置く（Mac はキーチェーン、Windows は DPAPI）。ファイルに平文で書かない",
-  "status": "verified",
-  "os": ["mac", "windows"],
-  "requires": ["local-server"],
-  "files": {"server/ppm_keychain.py": "server/ppm_keychain.py"},
+  "status": "partial",
+  "os": [
+    "mac",
+    "windows"
+  ],
+  "requires": [
+    "local-server"
+  ],
+  "files": {
+    "server/ppm_keychain.py": "server/ppm_keychain.py"
+  },
   "scripts": [],
   "styles": [],
   "permissions": {},
@@ -12,6 +19,8 @@
   "entrypoints": [],
   "minVersion": "25.6",
   "pythonDeps": [],
-  "knowledge": ["recipe-ai-integration"],
-  "notes": "部品の名前に secret・token を入れない（配布の検査で落ちる）。パネルには「保存済みかどうか」だけを返す"
+  "knowledge": [
+    "recipe-ai-integration"
+  ],
+  "notes": "部品の名前に secret・token を入れない（配布の検査で落ちる）。パネルには「保存済みかどうか」だけを返す Mac は Cut & SRT で実機の記録あり。Windows の DPAPI は確かめていない（テストは Windows でだけ走る）。"
 }

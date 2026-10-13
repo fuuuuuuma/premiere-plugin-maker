@@ -105,7 +105,7 @@ def add_part(project_dir, name: str, kit_dir: Path = SKILL_DIR, _stack=None) -> 
         raise PartError("部品の requires が輪になっています: " + " → ".join(stack + [name]))
     part = load_part(name, parts_dir)
     manifest_path = project_dir / "manifest.json"
-    mf.load(manifest_path)  # 壊れていたら ManifestError で止める（何も書き換えない）
+    mf.require_shape(mf.load(manifest_path))  # 壊れていたら ManifestError で止める（何も書き換えない）
     for req in part["requires"]:
         result["installed"].extend(add_part(project_dir, req, kit_dir, stack + [name])["installed"])
     info = projlib.load(project_dir)
