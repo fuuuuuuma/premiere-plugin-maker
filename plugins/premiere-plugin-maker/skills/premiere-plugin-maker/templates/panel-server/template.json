@@ -1,0 +1,7 @@
+{
+  "name": "panel-server",
+  "description": "パネル＋手元のサーバー（音声の解析・ファイルの生成・AI など、パネルだけでは重い処理）",
+  "extends": "panel",
+  "parts": ["local-server"],
+  "minVersion": "25.6"
+}

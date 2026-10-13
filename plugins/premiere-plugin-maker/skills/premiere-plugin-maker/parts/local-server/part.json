@@ -1,0 +1,17 @@
+{
+  "name": "local-server",
+  "description": "重い処理を任せる手元のサーバー（127.0.0.1 だけ・起動ごとの合言葉・ジョブ）。Mac は launchd、Windows はタスク スケジューラで常駐",
+  "status": "partial",
+  "os": ["mac", "windows"],
+  "requires": ["ppro-kit"],
+  "files": {"server/": "server/", "lib/ppm-server-client.js": "lib/ppm-server-client.js"},
+  "scripts": ["lib/ppm-server-client.js"],
+  "styles": [],
+  "permissions": {"localFileSystem": "fullAccess", "network": {"domains": "all"}},
+  "featureFlags": {},
+  "entrypoints": [],
+  "minVersion": "25.6",
+  "pythonDeps": [],
+  "knowledge": ["ref-local-server", "recipe-local-server-heavy"],
+  "notes": "ジョブは server/jobs/<名前>.py に NAME と run(params, ctx)。パネルからは await PPM.server.connect() のあと await PPM.server.runJob(\"名前\", {...})。入れ方は server/install_mac.command か install_windows.bat"
+}

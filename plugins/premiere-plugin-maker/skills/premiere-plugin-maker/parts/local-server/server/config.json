@@ -1,0 +1,6 @@
+{
+  "app": "{{APP_NAME}}",
+  "version": "{{VERSION}}",
+  "protocol": 1,
+  "port": 0
+}
