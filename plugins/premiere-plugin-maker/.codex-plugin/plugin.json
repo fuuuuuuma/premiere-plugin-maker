@@ -1,0 +1,26 @@
+{
+  "name": "premiere-plugin-maker",
+  "version": "0.1.0",
+  "description": "要望を聞いて Premiere 用のプラグイン（UXP のパネル・コマンド・ローカルサーバー・CEP 補助）を作る。過去の機能・失敗事例・版の知識と、部品・雛形・機械の検査を使い、Premiere で動くことを確かめてから完成とする。Mac / Windows 対応。",
+  "author": {
+    "name": "fuuuuuuma",
+    "url": "https://github.com/fuuuuuuma"
+  },
+  "repository": "https://github.com/fuuuuuuma/premiere-plugin-maker",
+  "license": "MIT",
+  "keywords": ["premiere", "premiere-pro", "uxp", "plugin", "cep", "extendscript", "video-editing"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Premiere Plugin Maker",
+    "shortDescription": "要望を聞いて Premiere のプラグインを作る",
+    "longDescription": "Windows か Mac かを聞き、環境を診断し、要望を 1 問ずつ聞き取ってから、知識の棚と部品・雛形を組み合わせて Premiere 用のプラグインを作ります。機械の検査と Premiere での確認を通してから完成とし、配る準備（.ccx）まで手伝います。",
+    "developerName": "fuuuuuuma",
+    "category": "Productivity",
+    "capabilities": ["Write"],
+    "defaultPrompt": [
+      "Premiere で、選んだクリップにボタン一つでズームを付けるプラグインを作りたい",
+      "Premiere のプラグインが読み込まれないので直してほしい"
+    ],
+    "brandColor": "#2B5BD7"
+  }
+}

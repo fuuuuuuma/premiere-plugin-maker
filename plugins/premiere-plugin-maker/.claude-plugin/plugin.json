@@ -1,0 +1,10 @@
+{
+  "name": "premiere-plugin-maker",
+  "version": "0.1.0",
+  "description": "要望を聞いて Premiere 用のプラグイン（UXP のパネル・コマンド・ローカルサーバー・CEP 補助）を作る。過去の機能・失敗事例・版の知識と、部品・雛形・機械の検査を使い、Premiere で動くことを確かめてから完成とする。Mac / Windows 対応。",
+  "author": {
+    "name": "fuuuuuuma"
+  },
+  "license": "MIT",
+  "skills": "./skills/"
+}

@@ -1,0 +1,13 @@
+{
+  "name": "premiere-plugin-maker",
+  "description": "要望を聞いて Premiere 用のプラグインを作るスキル。部品・雛形・知識・機械の検査つき（Mac / Windows）",
+  "owner": {
+    "name": "fuuuuuuma"
+  },
+  "plugins": [
+    {
+      "name": "premiere-plugin-maker",
+      "source": "./plugins/premiere-plugin-maker"
+    }
+  ]
+}

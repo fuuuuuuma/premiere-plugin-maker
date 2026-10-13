@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.DS_Store
+dist/
+node_modules/
+*.ccx
+.ppm-test-*
