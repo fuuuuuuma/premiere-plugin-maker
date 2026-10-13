@@ -1,0 +1,8646 @@
+[
+ {
+  "id": "core-api-patterns",
+  "title": "Premiere の API の正しい使い方の型（用途別）",
+  "kind": "core",
+  "tags": [
+   "API",
+   "premierepro",
+   "シーケンス",
+   "選択",
+   "getTrackItems",
+   "マーカー",
+   "書き出し",
+   "効果",
+   "MOGRT",
+   "TickTime",
+   "localStorage"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "読み取りは await、変更は取引の中。getTrackItems は引数 2 つ、選択は getSelection を使い、TickTime は ticksNumber から読む。公式の文書にあっても実装済みとは限らないので存在を確かめてから呼ぶ",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "core-transactions",
+   "core-verification",
+   "core-versions",
+   "ref-ticktime",
+   "ref-mogrt"
+  ],
+  "path": "core/core-api-patterns.md",
+  "source": "kit"
+ },
+ {
+  "id": "core-capabilities",
+  "title": "できること・できないことと、代わりの手",
+  "kind": "core",
+  "tags": [
+   "できない",
+   "分割",
+   "razor",
+   "速度",
+   "字幕",
+   "再生",
+   "メニュー",
+   "トラック",
+   "代替",
+   "実現性"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "クリップの分割・別トラックへの移動・速度変更・字幕本文の書き換えなどは UXP の API に無い。無いものは無いと言い、代わりの手（XML の作り直し・CEP・MOGRT・手作業・画面操作）を示す",
+  "parts": [
+   "cep-helper",
+   "fcpxml",
+   "mogrt-text"
+  ],
+  "related": [
+   "core-intake",
+   "core-safety",
+   "ref-fcp7-xml",
+   "ref-cep-extendscript"
+  ],
+  "path": "core/core-capabilities.md",
+  "source": "kit"
+ },
+ {
+  "id": "core-dev-loop",
+  "title": "開発中の読み込み（UDT）と、つながらないときの見方",
+  "kind": "core",
+  "tags": [
+   "UDT",
+   "UXP Developer Tool",
+   "開発者モード",
+   "Load",
+   "Reload",
+   "Watch",
+   "Unload",
+   "読み込み",
+   "つながらない",
+   "plugins_workspace"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "開発者モードは UDT 側と Premiere 側の 2 か所で入れて Premiere を再起動する。manifest を変えたら Unload してから Load。直したのに変わらないときは、読み込み元を疑う",
+  "parts": [],
+  "related": [
+   "core-verification",
+   "core-versioning-release",
+   "core-manifest-permissions",
+   "platform-windows",
+   "platform-mac"
+  ],
+  "path": "core/core-dev-loop.md",
+  "source": "kit"
+ },
+ {
+  "id": "core-intake",
+  "title": "聞き取りと、要望から雛形・部品への対応",
+  "kind": "core",
+  "tags": [
+   "聞き取り",
+   "要望",
+   "雛形",
+   "テンプレート",
+   "部品",
+   "実現性",
+   "最低版",
+   "質問",
+   "計画"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "6 つの質問を 1 問ずつ聞き、答えから雛形と部品を選ぶ。できない操作なら先に伝える。最低版は使う API の最低版で決める",
+  "parts": [],
+  "related": [
+   "core-capabilities",
+   "core-versions",
+   "core-manifest-permissions"
+  ],
+  "path": "core/core-intake.md",
+  "source": "kit"
+ },
+ {
+  "id": "core-manifest-permissions",
+  "title": "manifest（plugin の設計書）と権限の決め方",
+  "kind": "core",
+  "tags": [
+   "manifest",
+   "権限",
+   "requiredPermissions",
+   "host",
+   "minVersion",
+   "localFileSystem",
+   "network",
+   "webview",
+   "clipboard",
+   "launchProcess",
+   "icons",
+   "id"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "manifest は host を配列にせず、権限は「何をするとき足すか」で最小にする。手元のサーバーへ繋ぐなら network は all、id を変えるとショートカットの割り当てが消える",
+  "parts": [],
+  "related": [
+   "core-versions",
+   "core-safety",
+   "core-ui-rules"
+  ],
+  "path": "core/core-manifest-permissions.md",
+  "source": "kit"
+ },
+ {
+  "id": "core-safety",
+  "title": "利用者のプロジェクトと素材を守る決まり",
+  "kind": "core",
+  "tags": [
+   "安全",
+   "取り消し",
+   "保存",
+   "確認",
+   "権限",
+   "鍵",
+   "外部送信",
+   "元のシーケンス",
+   "大量",
+   "許可"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "取引 1 回を取り消し 1 回にし、一括の前に保存を勧めて件数を伝える。元のシーケンスは残し、権限は最小、鍵は OS の保管庫、他人の素材は写さない",
+  "parts": [
+   "keychain"
+  ],
+  "related": [
+   "core-transactions",
+   "core-manifest-permissions",
+   "core-verification"
+  ],
+  "path": "core/core-safety.md",
+  "source": "kit"
+ },
+ {
+  "id": "core-transactions",
+  "title": "取引（トランザクション）の作法 ― 取り消し 1 回で戻す",
+  "kind": "core",
+  "tags": [
+   "取引",
+   "トランザクション",
+   "lockedAccess",
+   "executeTransaction",
+   "Action",
+   "取り消し",
+   "キーフレーム",
+   "効果",
+   "ESLint"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "タイムラインを変える処理は lockedAccess の中で Action を作り、同期の executeTransaction で足す。非同期の取得は先に済ませ、足した効果の値は別の取引で書く",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "core-api-patterns",
+   "core-versions",
+   "core-safety",
+   "ref-keyframe-interpolation"
+  ],
+  "path": "core/core-transactions.md",
+  "source": "kit"
+ },
+ {
+  "id": "core-ui-rules",
+  "title": "UXP のパネル画面の制約と直し方",
+  "kind": "core",
+  "tags": [
+   "UI",
+   "CSS",
+   "flex",
+   "grid",
+   "画面",
+   "sp-button",
+   "select",
+   "textarea",
+   "SVG",
+   "MutationObserver",
+   "require",
+   "下見",
+   "崩れ"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "UXP の画面は Chrome と同じではない。grid が使えず、flex の子は潰れ、一部の部品は押せず、MutationObserver や confirm が無い。下見の Chromium では出ない崩れがあるので最後は実機で見る",
+  "parts": [
+   "ui-kit"
+  ],
+  "related": [
+   "core-verification",
+   "core-api-patterns"
+  ],
+  "path": "core/core-ui-rules.md",
+  "source": "kit"
+ },
+ {
+  "id": "core-verification",
+  "title": "Premiere の実機で確かめる作法",
+  "kind": "core",
+  "tags": [
+   "検証",
+   "実機",
+   "診断",
+   "probe",
+   "ログ",
+   "logs.py",
+   "完成",
+   "テスト",
+   "書き出しコマ",
+   "未確認"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "「完成」と言ってよいのは利用者の Premiere で確かめた後だけ。診断ボタンで API の有無を先に見て、ログと書き出したコマで結果を確かめ、お願いは 1 回に 1 つにする",
+  "parts": [
+   "probe",
+   "logger"
+  ],
+  "related": [
+   "core-api-patterns",
+   "core-dev-loop",
+   "core-safety"
+  ],
+  "path": "core/core-verification.md",
+  "source": "kit"
+ },
+ {
+  "id": "core-versioning-release",
+  "title": "版数と配布（.ccx・入れ方・更新が届かない理由）",
+  "kind": "core",
+  "tags": [
+   "版数",
+   "build_info",
+   "配布",
+   ".ccx",
+   "UPIA",
+   "入れ直し",
+   "更新",
+   "Creative Cloud",
+   "Marketplace",
+   "審査",
+   "パッケージ"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "版は manifest と build_info を同じにし、同じ版で入れ直しても更新されない。.ccx は配る物だけを集めて作り、受け取る人はダブルクリックか UPIA で入れる。Windows の UPIA は未確認",
+  "parts": [
+   "packaging"
+  ],
+  "related": [
+   "core-dev-loop",
+   "core-intake",
+   "core-safety",
+   "platform-windows",
+   "platform-mac"
+  ],
+  "path": "core/core-versioning-release.md",
+  "source": "kit"
+ },
+ {
+  "id": "core-versions",
+  "title": "Premiere と UXP の版の歴史と、最低版（minVersion）の決め方",
+  "kind": "core",
+  "tags": [
+   "版",
+   "minVersion",
+   "25.6",
+   "26.2",
+   "26.3",
+   "26.5",
+   "27.0",
+   "CEP",
+   "終了予定",
+   "変更履歴"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.2",
+  "status": "partial",
+  "summary": "UXP の正式版は 25.6 から。26.3 で取引の規則が厳しくなった。minVersion は「使う API の最低版」で決める。CEP は 2028-12 に既定で無効の予定",
+  "parts": [],
+  "related": [
+   "core-transactions",
+   "core-manifest-permissions",
+   "ref-cep-extendscript"
+  ],
+  "path": "core/core-versions.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-caption-align",
+  "title": "caption-align（最小の UXP パネル・整列・setIn/setOut をグラフィックに使わない）",
+  "kind": "feature",
+  "tags": [
+   "caption-align",
+   "UXP",
+   "小型プラグイン",
+   "整列",
+   "スナップ",
+   "テロップ",
+   "グラフィック",
+   "setStart",
+   "setEnd",
+   "TickTime",
+   "最小構成"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "テロップの頭と尻を、基準トラックのクリップの境目へ寄せる最小の UXP パネル。1 日で 6 版を重ね、グラフィックには入点・出点を触らず開始と終了だけを動かすと分かった。権限が最小で、雛形の土台に向く",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "feat-cutsrt-align",
+   "feat-clip-clipboard",
+   "feat-effect-shortcut",
+   "feat-silence-cut-plugin",
+   "core-api-patterns",
+   "core-transactions",
+   "core-ui-rules",
+   "ref-ticktime"
+  ],
+  "path": "features/feat-caption-align.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-clip-clipboard",
+  "title": "clip-clipboard（クリップのコピーと貼り付け・コマンド 10 個）",
+  "kind": "feature",
+  "tags": [
+   "clip-clipboard",
+   "UXP",
+   "小型プラグイン",
+   "クリップ",
+   "貼り付け",
+   "スロット",
+   "コマンド",
+   "localStorage",
+   "ハンドル",
+   "取引"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "選んだ複数のクリップを 10 個の棚に保存し、再生ヘッドの位置へ相対位置のまま貼る小型パネル。保存は名前・開始・トラックだけにして、貼る直前に取り直す。原型の実機記録は無く、吸収先で実機の確認を受けた",
+  "parts": [
+   "commands",
+   "ppro-kit"
+  ],
+  "related": [
+   "feat-cutsrt-clip-slots",
+   "feat-effect-shortcut",
+   "feat-caption-align",
+   "core-transactions",
+   "core-api-patterns",
+   "ref-ticktime"
+  ],
+  "path": "features/feat-clip-clipboard.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-ai-engines",
+  "title": "AI のエンジンの連携（CLI の起動・確かめ方・標準入力・Antigravity の回帰）",
+  "kind": "feature",
+  "tags": [
+   "Cut & SRT",
+   "AI",
+   "エンジン",
+   "CLI",
+   "codex",
+   "claude",
+   "gemini",
+   "grok",
+   "antigravity",
+   "標準入力",
+   "認証",
+   "プローブ",
+   "回帰",
+   "改行"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "字幕の意味区切りの改行や辞書の補助に、利用者が自分で入れた AI の CLI（Codex・Claude・Gemini など）やローカルモデルを使う。本文は標準入力かファイルで渡し、検査も本番と同じ経路で行う。ログインの確認結果を長く覚えすぎない。ある CLI の修正が兄弟の CLI を壊した例",
+  "parts": [
+   "local-server",
+   "transcribe-srt"
+  ],
+  "related": [
+   "feat-cutsrt-dictionary",
+   "ref-local-server",
+   "core-safety",
+   "platform-windows"
+  ],
+  "path": "features/feat-cutsrt-ai-engines.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-align",
+  "title": "テロップの整列（カットの境目にそろえる）",
+  "kind": "feature",
+  "tags": [
+   "整列",
+   "テロップ",
+   "スナップ",
+   "カット点",
+   "TickTime",
+   "setStart",
+   "setEnd",
+   "グラフィック",
+   "取引"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "テロップの開始と終了を、基準トラックのクリップの境目へ許容コマ数の内で寄せる。グラフィックのクリップには入点・出点を触らせず、開始と終了だけを動かす。1 回の取り消しで戻せる",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "feat-cutsrt-telop-srt",
+   "feat-cutsrt-cut",
+   "core-transactions",
+   "ref-ticktime",
+   "core-api-patterns"
+  ],
+  "path": "features/feat-cutsrt-align.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-assets",
+  "title": "素材タブ（効果音・画像・動画・書体の検索・規約の扱い・ビンへの取り込み）",
+  "kind": "feature",
+  "tags": [
+   "素材",
+   "効果音",
+   "BGM",
+   "画像",
+   "動画",
+   "書体",
+   "検索",
+   "規約",
+   "直リンク",
+   "ビン",
+   "取り込み",
+   "カタログ"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "効果音・画像・動画・書体を、パネルの中の検索で探して取り込む。音源は鳴らさず自動取得もしない（手で落としたファイルを取り込む）、画像は提供元がサムネ URL を配るものだけ表示する",
+  "parts": [
+   "media-tools",
+   "ui-kit"
+  ],
+  "related": [
+   "feat-cutsrt-web",
+   "feat-cutsrt-overview",
+   "core-safety",
+   "core-capabilities"
+  ],
+  "path": "features/feat-cutsrt-assets.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-clip-slots",
+  "title": "クリップ棚（効果とキーごと保存・貼り付け・コマンドのショートカット）",
+  "kind": "feature",
+  "tags": [
+   "Cut & SRT",
+   "クリップ棚",
+   "クリップスロット",
+   "コピー",
+   "貼り付け",
+   "localStorage",
+   "効果",
+   "キーフレーム",
+   "別シーケンス",
+   "ショートカット"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "選んだ複数のクリップを番号つきの棚に保存し、再生ヘッドの位置へ相対位置のまま貼り付ける。効果とキーフレームも一緒に写す。保存は素の数値と文字だけにして、Premiere のオブジェクトは貼る直前に取り直す",
+  "parts": [
+   "commands",
+   "ppro-kit"
+  ],
+  "related": [
+   "feat-cutsrt-fx-slots",
+   "core-transactions",
+   "core-api-patterns",
+   "ref-ticktime"
+  ],
+  "path": "features/feat-cutsrt-clip-slots.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-cut",
+  "title": "無音カット（XML の往復・包絡の検出・前後の余白・fps の規則・終了コード・マルチカムとネスト）",
+  "kind": "feature",
+  "tags": [
+   "無音カット",
+   "FCP7 XML",
+   "xmeml",
+   "包絡",
+   "RMS",
+   "パディング",
+   "fps",
+   "timebase",
+   "終了コード",
+   "マルチカム",
+   "ネスト",
+   "fail-closed"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "verified",
+  "summary": "シーケンスを FCP7 XML で書き出し、無音を検出して切り貼りした XML を作り、Premiere へ読み込み直す。余白は前後同じ基準で測り、時間は宣言 timebase で数え、カット 0 件は成功にしない",
+  "parts": [
+   "silence-cut",
+   "fcpxml",
+   "probe"
+  ],
+  "related": [
+   "ref-fcp7-xml",
+   "ref-ticktime",
+   "core-safety",
+   "feat-cutsrt-overview",
+   "feat-cutsrt-telop-srt"
+  ],
+  "path": "features/feat-cutsrt-cut.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-design",
+  "title": "デザインタブ（Effect & Design の UXP への移植・見本の PNG・差し替えと位置の写し）",
+  "kind": "feature",
+  "tags": [
+   "デザイン",
+   "テロップ",
+   "MOGRT",
+   "見本",
+   "PNG",
+   "SVG",
+   "移植",
+   "位置の引き継ぎ",
+   "フォント",
+   "ハッシュ検査"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "別の拡張（CEP 製の Effect & Design）の仕組みを UXP のタブに写し、選んだテロップを同じ本文のまま別のデザインに差し替える。見本は事前に描いた PNG、元の位置とモーションは新しいクリップへ写す",
+  "parts": [
+   "mogrt-text",
+   "motion-bake",
+   "ppro-kit",
+   "ui-kit"
+  ],
+  "related": [
+   "ref-mogrt",
+   "ref-prtextstyle",
+   "ref-keyframe-interpolation",
+   "core-transactions",
+   "platform-windows",
+   "feat-cutsrt-overview",
+   "feat-cutsrt-assets"
+  ],
+  "path": "features/feat-cutsrt-design.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-dictionary",
+  "title": "辞書（差分の学習・置換だけを登録する規則・テロップ本文の読み取り）",
+  "kind": "feature",
+  "tags": [
+   "Cut & SRT",
+   "辞書",
+   "差分学習",
+   "置換",
+   "誤変換",
+   "固有名詞",
+   "テロップ本文",
+   "BinaryData",
+   "OTIO",
+   "候補",
+   "承認"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "音声認識が間違えた言葉を「誤→正」の置換表として覚える。利用者が直したテロップと自動生成の字幕の差分から候補を作り、承認したものだけを辞書にする。登録してよいのは置換だけで、含み合うペアは弾く。本文の読み取りは実物を見てから規則を変える",
+  "parts": [
+   "transcribe-srt",
+   "fcpxml",
+   "ui-kit"
+  ],
+  "related": [
+   "feat-cutsrt-split-fix",
+   "ref-fcp7-xml",
+   "core-versions"
+  ],
+  "path": "features/feat-cutsrt-dictionary.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-direct-angle",
+  "title": "演出 画角の変更（外部の生成サービスの CLI・見積もり・費用の確認）",
+  "kind": "feature",
+  "tags": [
+   "Cut & SRT",
+   "演出",
+   "画角",
+   "生成AI",
+   "外部サービス",
+   "CLI",
+   "見積もり",
+   "クレジット",
+   "費用",
+   "規約",
+   "Higgsfield",
+   "鍵",
+   "キーチェーン"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "クリップの映像を外部の動画生成サービスに渡し、別の画角に撮り直したような映像を作って真上のトラックへ置く。費用がかかるので、実行前に必ず見積もりを見せて許可を取る。既定は公式 CLI（契約中のプランのクレジット）で、映像の送信先・料金・規約を利用者が確認する前提",
+  "parts": [
+   "keychain",
+   "local-server",
+   "ppro-kit"
+  ],
+  "related": [
+   "feat-cutsrt-direct-stamp",
+   "feat-cutsrt-direct-zoom",
+   "core-safety"
+  ],
+  "path": "features/feat-cutsrt-direct-angle.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-direct-stamp",
+  "title": "演出 顔についていくスタンプ（顔検出・コマの書き出し・配置）",
+  "kind": "feature",
+  "tags": [
+   "Cut & SRT",
+   "演出",
+   "スタンプ",
+   "顔検出",
+   "YuNet",
+   "onnxruntime",
+   "exportSequenceFrame",
+   "透明PNG",
+   "モーション",
+   "追従"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "動画の人物の顔に追従する絵（スタンプ）を貼る。顔は小さな顔検出モデルで毎秒 10 コマ測り、位置はシーケンスのコマを書き出して実測し、だめならモーションから計算する。書き出しの完了を待たない罠があり、サーバーが最大 15 秒待つ形で直した",
+  "parts": [
+   "local-server",
+   "ppro-kit",
+   "media-tools"
+  ],
+  "related": [
+   "feat-cutsrt-direct-zoom",
+   "feat-cutsrt-direct-angle",
+   "core-transactions",
+   "ref-keyframe-interpolation"
+  ],
+  "path": "features/feat-cutsrt-direct-stamp.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-direct-zoom",
+  "title": "演出 囲んだ所へのズーム（四角のつまみ・キーの焼き込み）",
+  "kind": "feature",
+  "tags": [
+   "Cut & SRT",
+   "演出",
+   "ズーム",
+   "四角",
+   "つまみ",
+   "ドラッグ",
+   "キーフレーム",
+   "焼き込み",
+   "位置",
+   "スケール",
+   "exportSequenceFrame"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "見本のコマの上で四角を囲むと、その四角へ画面がズームする。四角の四隅のつまみで大きさを変え、内側ドラッグで動かす。なめらかな動きは 1 コマごとの直線キーに焼き込んで付ける。四角にぴったり寄る既定は未確認",
+  "parts": [
+   "ppro-kit",
+   "motion-bake"
+  ],
+  "related": [
+   "feat-cutsrt-direct-stamp",
+   "feat-cutsrt-direct-angle",
+   "ref-keyframe-interpolation",
+   "core-transactions"
+  ],
+  "path": "features/feat-cutsrt-direct-zoom.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-filler-cut",
+  "title": "フィラーカット（実験・既定はオフ）",
+  "kind": "feature",
+  "tags": [
+   "Cut & SRT",
+   "フィラー",
+   "えー",
+   "あのー",
+   "無音カット",
+   "実験",
+   "言い直し",
+   "マーカー",
+   "文字起こし",
+   "extra-cut-ranges"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "unverified",
+  "summary": "「えー」「あのー」のようなつなぎ言葉の区間を、無音カットの切る範囲に足して一緒に切る実験機能。既定はオフ。フィラーの検出は文字起こしの生の結果を読む必要があり、切る前にマーカーで確かめる運用が前提。切る処理そのものの実機確認の記録は見つからない",
+  "parts": [
+   "silence-cut",
+   "transcribe-srt"
+  ],
+  "related": [
+   "feat-cutsrt-dictionary",
+   "feat-cutsrt-ai-engines",
+   "ref-fcp7-xml"
+  ],
+  "path": "features/feat-cutsrt-filler-cut.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-fx-slots",
+  "title": "FX スロット（効果の状態の保存と適用）",
+  "kind": "feature",
+  "tags": [
+   "Cut & SRT",
+   "FX",
+   "エフェクト",
+   "スロット",
+   "保存",
+   "適用",
+   "キーフレーム",
+   "Motion",
+   "PointF",
+   "取引",
+   "ショートカット"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "見本クリップの効果の値（キーフレーム込み）を番号つきのスロットに保存し、選択したクリップへワンクリックで適用する。効果を足す取引と値を書く取引を分け、値は 1 つずつ Action にして個別に包む",
+  "parts": [
+   "ppro-kit",
+   "commands"
+  ],
+  "related": [
+   "feat-cutsrt-clip-slots",
+   "core-transactions",
+   "ref-keyframe-interpolation",
+   "core-api-patterns"
+  ],
+  "path": "features/feat-cutsrt-fx-slots.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-install-update",
+  "title": "導入と更新（版ごとの runtime・sha256・常駐・.ccx・同じ版の罠・秘密らしい名前で部品が落ちる）",
+  "kind": "feature",
+  "tags": [
+   "Cut & SRT",
+   "導入",
+   "更新",
+   "インストーラ",
+   "runtime",
+   "sha256",
+   "launchd",
+   "タスクスケジューラ",
+   "ccx",
+   "配布",
+   "同じ版",
+   "秘密",
+   "個人パス"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "パネルは .ccx、サーバーは OS 別の zip で配る。サーバーは版ごとの固定フォルダに置いて検証し、全項目を検査してからまとめて直す。同じ版の入れ直しは更新されない。名前に secret を含む部品は配布から自動で落ちる。Windows の自動起動は未確認",
+  "parts": [
+   "packaging",
+   "local-server",
+   "keychain"
+  ],
+  "related": [
+   "core-versioning-release",
+   "platform-mac",
+   "platform-windows",
+   "ref-local-server",
+   "feat-cutsrt-settings-diagnostics"
+  ],
+  "path": "features/feat-cutsrt-install-update.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-mcp",
+  "title": "MCP の 36 の道具とパネルの待ち行列",
+  "kind": "feature",
+  "tags": [
+   "Cut & SRT",
+   "MCP",
+   "ツール",
+   "待ち行列",
+   "ポーリング",
+   "504",
+   "server.json",
+   "403",
+   "Claude Code",
+   "Codex",
+   "認証"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "AI（Claude Code や Codex）から Premiere を操作する口。サーバーで済む道具は直接答え、Premiere の操作が要る道具は、サーバーの待ち行列に積んでパネルが 2 秒ごとに取りに来る。パネルを開いていないと 504。接続情報の探す順番を間違えると 403 が万単位で続く",
+  "parts": [
+   "mcp-bridge",
+   "local-server"
+  ],
+  "related": [
+   "ref-mcp",
+   "ref-local-server",
+   "feat-cutsrt-settings-diagnostics",
+   "core-safety"
+  ],
+  "path": "features/feat-cutsrt-mcp.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-overview",
+  "title": "Cut & SRT の全体の作り（パネル＋サーバー＋CEP 補助＋MCP・タブの構成・版の歴史）",
+  "kind": "feature",
+  "tags": [
+   "Cut & SRT",
+   "全体構成",
+   "UXP",
+   "ブリッジサーバー",
+   "CEP",
+   "MCP",
+   "タブ",
+   "版の歴史",
+   "server.json",
+   "トークン"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "画面と Premiere の操作は UXP パネル、重い処理は手元の Python サーバー、UXP に無い再生と分割は CEP の補助、外部の AI からは MCP。この 4 部構成と、通信・認証・版の合わせ方の記録",
+  "parts": [
+   "local-server",
+   "mcp-bridge",
+   "cep-helper",
+   "ui-kit",
+   "logger"
+  ],
+  "related": [
+   "ref-local-server",
+   "ref-mcp",
+   "ref-cep-extendscript",
+   "core-manifest-permissions",
+   "core-versions",
+   "core-ui-rules",
+   "feat-cutsrt-cut"
+  ],
+  "path": "features/feat-cutsrt-overview.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-pinmic",
+  "title": "ピンマイクの自動切り替え（マイクごとの音量・持ち主の自動決定・分割は CEP）",
+  "kind": "feature",
+  "tags": [
+   "Cut & SRT",
+   "ピンマイク",
+   "話者",
+   "音声トラック",
+   "有効無効",
+   "razor",
+   "分割",
+   "CEP",
+   "音量",
+   "ベータ"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "話している人のピンマイクのクリップだけを有効にし、ほかを無効にする。マイクごとの持ち主は音量から自動で決め、話者が入れ替わる所だけ CEP の分割で切る。持ち主の判定と計画は試験素材で通ったが、切る処理は実機で未確認",
+  "parts": [
+   "cep-helper",
+   "local-server",
+   "ppro-kit"
+  ],
+  "related": [
+   "feat-cutsrt-speaker",
+   "feat-cutsrt-playback-helper",
+   "core-transactions",
+   "ref-cep-extendscript"
+  ],
+  "path": "features/feat-cutsrt-pinmic.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-playback-helper",
+  "title": "CEP の再生ヘルパー（名乗った命令だけ送る）",
+  "kind": "feature",
+  "tags": [
+   "Cut & SRT",
+   "CEP",
+   "再生ヘルパー",
+   "再生",
+   "停止",
+   "razor",
+   "分割",
+   "ExtendScript",
+   "QE DOM",
+   "名乗り",
+   "features"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "UXP に無い再生・停止・クリップの分割を、画面のない小さな CEP 拡張に頼む。サーバーが最新の 1 件だけ預かり、拡張が 0.4 秒ごとに取りに来る。実行できる資格を自分で確かめてから取りに行き、できる命令を名乗る。再生と停止は実機で確認済み、分割は未確認",
+  "parts": [
+   "cep-helper",
+   "local-server"
+  ],
+  "related": [
+   "feat-cutsrt-pinmic",
+   "ref-cep-extendscript",
+   "core-capabilities"
+  ],
+  "path": "features/feat-cutsrt-playback-helper.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-send",
+  "title": "送るタブ（書き出し先の見張り・Drive・ギガファイル便・Frame.io・IRERU の落とし穴）",
+  "kind": "feature",
+  "tags": [
+   "送る",
+   "書き出し",
+   "見張り",
+   "Google Drive",
+   "ギガファイル便",
+   "Frame.io",
+   "IRERU",
+   "OAuth",
+   "規約",
+   "外部サービス",
+   "Cloudflare",
+   "User-Agent"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "書き出し先のフォルダをサーバーが見張り、ファイルの大きさが 8 秒変わらなければ完了と見て、チェックした送り先へ自動で送る。外部サービスごとの規約・認証・つまずきと、費用や公開に関わる注意の記録",
+  "parts": [
+   "local-server",
+   "keychain",
+   "logger"
+  ],
+  "related": [
+   "feat-cutsrt-overview",
+   "core-safety",
+   "ref-local-server"
+  ],
+  "path": "features/feat-cutsrt-send.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-settings-diagnostics",
+  "title": "設定・診断・サポートパック・ログ",
+  "kind": "feature",
+  "tags": [
+   "Cut & SRT",
+   "設定",
+   "診断",
+   "doctor",
+   "サポートパック",
+   "ログ",
+   "秘匿",
+   "settings.json",
+   "デバウンス",
+   "版数",
+   "問い合わせ"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "設定は変更のたびにサーバーへ保存し、診断は「失敗した時だけでなく毎回出る値」を増やす。問い合わせ用に、字幕本文・鍵・個人のパスを入れない秘匿済みのサポートパックを 1 クリックで作る。パネルが開かないときはターミナルの診断ツールを使う",
+  "parts": [
+   "logger",
+   "probe",
+   "local-server"
+  ],
+  "related": [
+   "feat-cutsrt-install-update",
+   "feat-cutsrt-mcp",
+   "core-dev-loop",
+   "core-verification"
+  ],
+  "path": "features/feat-cutsrt-settings-diagnostics.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-shapes",
+  "title": "図形（MOGRT のドナーのバイナリの差し替え・凍結した理由）",
+  "kind": "feature",
+  "tags": [
+   "Cut & SRT",
+   "図形",
+   "シェイプ",
+   "MOGRT",
+   "ドナー",
+   "バイナリ",
+   "パッチ",
+   "BinaryHash",
+   "凍結",
+   "空グラフィック",
+   "insertMogrtFromPath"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "帯・真円・多角形を、Premiere 同梱の MOGRT を「ドナー」にして中のバイナリを書き換え、insertMogrtFromPath で入れる方式。何度直しても実機で中身が空のグラフィックになり、パネルから外して凍結した。うまくいかなかった事例として残す",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "ref-mogrt",
+   "ref-prtextstyle",
+   "core-capabilities"
+  ],
+  "path": "features/feat-cutsrt-shapes.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-speaker",
+  "title": "話者の振り分け（声紋・分離・言語モデル・前後の合成・確からしさのマーカー）",
+  "kind": "feature",
+  "tags": [
+   "Cut & SRT",
+   "話者",
+   "声紋",
+   "音声分離",
+   "テロップ",
+   "振り分け",
+   "マーカー",
+   "確からしさ",
+   "TitaNet",
+   "MossFormer2",
+   "Whisper",
+   "言語モデル"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "複数人の会話のテロップを、話している人ごとのトラックへ振り分ける。声紋だけでは重なりに弱いので、声の分離と本文の確かめと前後の文脈を合成し、自信の低い所にマーカーを付ける。Mac では実機確認済み、Windows は未確認",
+  "parts": [
+   "local-server",
+   "media-tools",
+   "ppro-kit"
+  ],
+  "related": [
+   "feat-cutsrt-pinmic",
+   "core-transactions",
+   "ref-local-server"
+  ],
+  "path": "features/feat-cutsrt-speaker.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-split-fix",
+  "title": "分割・修正タブ（字幕の分割・結合・一括置換と、元に戻す）",
+  "kind": "feature",
+  "tags": [
+   "Cut & SRT",
+   "分割・修正",
+   "SRT",
+   "字幕",
+   "分割",
+   "結合",
+   "一括置換",
+   "元に戻す",
+   "純関数",
+   "押しつぶし",
+   "flex",
+   "CEP"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "生成した SRT を 1 キュー 1 行で並べ、分割・結合・本文の修正・一括置換・削除ができる。解析と編集は純関数で、ファイルの読み書きだけをサーバーに頼む。行の押しつぶし、空検索の誤爆などを先に塞いだ。再生はパネルから CEP ヘルパー経由",
+  "parts": [
+   "ui-kit",
+   "local-server",
+   "transcribe-srt",
+   "cep-helper"
+  ],
+  "related": [
+   "feat-cutsrt-dictionary",
+   "core-ui-rules",
+   "feat-cutsrt-playback-helper",
+   "ref-local-server"
+  ],
+  "path": "features/feat-cutsrt-split-fix.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-telop-srt",
+  "title": "テロップと字幕の生成（文字起こし→意味で区切る改行→SRT→配置・訳）",
+  "kind": "feature",
+  "tags": [
+   "テロップ",
+   "SRT",
+   "字幕",
+   "文字起こし",
+   "whisper",
+   "改行",
+   "LLM",
+   "原文投影",
+   "縮退",
+   "翻訳",
+   "ローカルモデル"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "音声を文字起こしし、AI には改行の位置だけを決めさせ、文字は元の文字起こしから復元して SRT を作る。表記の規則は機械で強制し、AI が失敗しても縮退して必ず完走する",
+  "parts": [
+   "transcribe-srt",
+   "probe"
+  ],
+  "related": [
+   "feat-cutsrt-cut",
+   "feat-cutsrt-align",
+   "feat-cutsrt-overview",
+   "ref-fcp7-xml",
+   "core-capabilities",
+   "core-api-patterns"
+  ],
+  "path": "features/feat-cutsrt-telop-srt.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-cutsrt-web",
+  "title": "Web タブ（パネル内のブラウザ・domains・履歴・ダウンロードの横取り）",
+  "kind": "feature",
+  "tags": [
+   "Web",
+   "webview",
+   "UXP",
+   "domains",
+   "ダウンロード",
+   "履歴",
+   "loaderror",
+   "Cookie",
+   "横取り"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "verified",
+  "summary": "パネルの中に <webview> を置き、素材サイトを開いて画像や動画を取り込む。許可ドメインは TLD のワイルドカードで列挙し、戻る・進むと保存は自前で作る。ログイン必須の保存は実ブラウザへ逃がす",
+  "parts": [
+   "ui-kit"
+  ],
+  "related": [
+   "feat-cutsrt-assets",
+   "core-manifest-permissions",
+   "core-ui-rules",
+   "feat-cutsrt-overview"
+  ],
+  "path": "features/feat-cutsrt-web.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-ed-catalog-previews",
+  "title": "カタログと見本（見本の作り方・いちばん明るい瞬間）",
+  "kind": "feature",
+  "tags": [
+   "Effect & Design",
+   "カタログ",
+   "見本",
+   "プレビュー",
+   "ffmpeg",
+   "書き出し",
+   "signalstats",
+   "目視",
+   "CSS",
+   "書体",
+   "検査"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "デザインとアニメを JSON のカタログで持ち、見本は本物の Premiere で書き出した映像から静止画を作る。静止画は最も明るい瞬間を選ぶ。カタログの失敗は 1 項目で全滅させず、書体の欠落は隠さない",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "feat-ed-overview",
+   "feat-ed-design-apply",
+   "feat-ed-motion",
+   "feat-ed-import-styles",
+   "core-verification",
+   "core-safety"
+  ],
+  "path": "features/feat-ed-catalog-previews.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-ed-design-apply",
+  "title": "デザインの 1 クリック差し替え（MOGRT の生成・importMGT・元を外す）",
+  "kind": "feature",
+  "tags": [
+   "Effect & Design",
+   "MOGRT",
+   "importMGT",
+   "ドナー",
+   "FlatBuffer",
+   "テロップ",
+   "差し替え",
+   "QE DOM",
+   "日本語UI",
+   "トラック"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "選んだテロップのデザインを、同梱の Basic Title.mogrt を土台に作った MOGRT で差し替える。同じ位置・同じ長さに置いて元を外す。無いトラックを指すと元を上書きする点と、日本語 UI の効果名に注意",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "feat-ed-overview",
+   "feat-ed-import-styles",
+   "feat-ed-motion",
+   "feat-cutsrt-design",
+   "ref-mogrt",
+   "ref-prtextstyle",
+   "core-transactions",
+   "core-safety"
+  ],
+  "path": "features/feat-ed-design-apply.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-ed-import-styles",
+  "title": "買った・作ったテキストスタイルの取り込み（本文だけ差し替える）",
+  "kind": "feature",
+  "tags": [
+   "Effect & Design",
+   "取り込み",
+   "prtextstyle",
+   "FlatBuffer",
+   "スタイル",
+   "書体",
+   "フォント",
+   "Adobe Fonts",
+   "色の既定値",
+   "差し替え"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "利用者が持つ .prtextstyle などを、読み取った値で作り直さず、元のバイト列の本文だけを差し替えて当てる。作り直し方式は色・縁・影の既定値で半数が別物になった。書体は 3 か所を探す",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "feat-ed-design-apply",
+   "feat-ed-catalog-previews",
+   "feat-kazaru",
+   "ref-prtextstyle",
+   "ref-mogrt"
+  ],
+  "path": "features/feat-ed-import-styles.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-ed-motion",
+  "title": "アニメ（motion.json・ExtendScript のキー・UXP の焼き込み・トランスフォーム・残像）",
+  "kind": "feature",
+  "tags": [
+   "Effect & Design",
+   "アニメ",
+   "キーフレーム",
+   "motion.json",
+   "bake",
+   "焼き込み",
+   "トランスフォーム",
+   "残像",
+   "アンカー",
+   "補間",
+   "UXP",
+   "取引"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "動きを motion.json に定義し、現在値を基準にしたキーの計画にして書く。取り消し 1 回で書くため、UXP の補助が 1 コマごとの直線キーに焼き込む。時刻は素材時間、効果名は日本語 UI に注意",
+  "parts": [
+   "motion-bake",
+   "ppro-kit"
+  ],
+  "related": [
+   "feat-ed-overview",
+   "feat-ed-design-apply",
+   "feat-ed-catalog-previews",
+   "ref-keyframe-interpolation",
+   "core-transactions",
+   "core-api-patterns",
+   "ref-ticktime"
+  ],
+  "path": "features/feat-ed-motion.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-ed-overview",
+  "title": "Effect & Design の全体（CEP パネル＋UXP 補助＋Python のエンジン・4 つの実行場所）",
+  "kind": "feature",
+  "tags": [
+   "Effect & Design",
+   "CEP",
+   "UXP",
+   "ExtendScript",
+   "Python",
+   "補助プラグイン",
+   "構成",
+   "テロップ",
+   "デザイン",
+   "アニメ",
+   "ハイブリッド"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "テロップのデザインとアニメを 1 クリックで当てる拡張。画面は CEP、Premiere の操作は ExtendScript、見た目づくりは Python、取り消し 1 回で書く部分だけ UXP の補助。役割を 4 つに割り、後で UXP へ差し替えられる形にした",
+  "parts": [
+   "cep-helper",
+   "mogrt-text",
+   "motion-bake"
+  ],
+  "related": [
+   "feat-ed-design-apply",
+   "feat-ed-motion",
+   "feat-ed-import-styles",
+   "feat-ed-catalog-previews",
+   "feat-ed-packaging",
+   "feat-cutsrt-design",
+   "ref-cep-extendscript",
+   "core-versions",
+   "core-transactions"
+  ],
+  "path": "features/feat-ed-overview.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-ed-packaging",
+  "title": "配布パッケージ（make_package・AGENTS.package.md・書体の確認・xcode-select）",
+  "kind": "feature",
+  "tags": [
+   "Effect & Design",
+   "配布",
+   "パッケージ",
+   "zip",
+   "インストーラ",
+   "UPIA",
+   "ccx",
+   "AGENTS.md",
+   "書体",
+   "xcode-select",
+   "PlayerDebugMode"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "拡張を 1 つの zip にして配る。中身が同じなら同じバイト列になるよう固め、AI への手順書は zip を作るときだけ AGENTS.md の名前にする。導入は何度やっても安全にし、Python と書体の有無を結果に出す",
+  "parts": [
+   "packaging",
+   "cep-helper"
+  ],
+  "related": [
+   "feat-ed-overview",
+   "feat-ed-import-styles",
+   "core-versioning-release",
+   "core-safety",
+   "ref-cep-extendscript"
+  ],
+  "path": "features/feat-ed-packaging.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-effect-shortcut",
+  "title": "effect-shortcut（効果のスロット・取引の 3 段階）",
+  "kind": "feature",
+  "tags": [
+   "effect-shortcut",
+   "UXP",
+   "小型プラグイン",
+   "効果",
+   "スロット",
+   "取引",
+   "VideoFilterFactory",
+   "PointF",
+   "キーフレーム",
+   "コマンド"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "あるクリップの効果の状態（モーション・不透明度・足した効果の全項目）を 5 個の棚に保存し、選んだクリップへ 1 回で当てる小型パネル。取引を「外で解決→中で足す→取り直して別の取引で値を入れる」の 3 段階にした",
+  "parts": [
+   "commands",
+   "ppro-kit"
+  ],
+  "related": [
+   "feat-cutsrt-fx-slots",
+   "feat-clip-clipboard",
+   "feat-caption-align",
+   "core-transactions",
+   "core-api-patterns"
+  ],
+  "path": "features/feat-effect-shortcut.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-kazaru",
+  "title": "KAZARU（.prtextstyle と .prfpset を言葉から作る）",
+  "kind": "feature",
+  "tags": [
+   "KAZARU",
+   "prtextstyle",
+   "prfpset",
+   "テキストスタイル",
+   "エフェクトプリセット",
+   "テロップ",
+   "Adobe Fonts",
+   "スキル",
+   "Claude Code",
+   "Codex",
+   "配布"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "「バラエティ風の黄色い文字に赤い縁」のような言葉の注文から、Premiere に読み込めるテキストスタイル(.prtextstyle)と動きのプリセット(.prfpset)を生成するスキル集。Premiere を操作せず、ファイルを作って渡すだけ。書体は有効化済みの Adobe Fonts から実在を確かめて選ぶ",
+  "parts": [],
+  "related": [
+   "ref-prtextstyle",
+   "ref-prfpset",
+   "feat-cutsrt-design",
+   "feat-premiere-skills",
+   "feat-premiere-agent-kit"
+  ],
+  "path": "features/feat-kazaru.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-premiere-agent-kit",
+  "title": "premiere-agent-kit（MCP の登録・安全規約・逃げ道・トラブル表・画面操作）",
+  "kind": "feature",
+  "tags": [
+   "premiere-agent-kit",
+   "MCP",
+   "登録",
+   "setup_mcp",
+   "安全規約",
+   "スキル",
+   "逃げ道",
+   "トラブルシュート",
+   "computer-use",
+   "Claude Code",
+   "Codex"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "Cut & SRT がすでに持つ Premiere 操作の口(MCP)を、外の AI に安全に使わせるためのスキル 6 本と登録スクリプト。新しい操作コードは書かず、接続の面倒を無くす道具と、使い方・断り方・逃げ道の知識だけを配る",
+  "parts": [
+   "mcp-bridge"
+  ],
+  "related": [
+   "feat-cutsrt-mcp",
+   "ref-mcp",
+   "core-safety",
+   "feat-cutsrt-settings-diagnostics",
+   "feat-premiere-skills",
+   "feat-kazaru"
+  ],
+  "path": "features/feat-premiere-agent-kit.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-premiere-skills",
+  "title": "premiere-skills（/cut と /srt の作り・終了コード・意味で区切る改行）",
+  "kind": "feature",
+  "tags": [
+   "premiere-skills",
+   "cut",
+   "srt",
+   "srt-fast",
+   "無音カット",
+   "字幕",
+   "終了コード",
+   "Whisper",
+   "意味区切り",
+   "スキル",
+   "配布",
+   "個人情報"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "Premiere から書き出した XML の無音を切る /cut と、音声から字幕(SRT)を作る /srt・/srt-fast のスキル集。パネルを持たず、XML と音声ファイルの受け渡しで完結する。カット 0 件は成功にせず終了コードで止め、字幕の改行は機械ではなく AI の文脈判断で行う",
+  "parts": [],
+  "related": [
+   "feat-cutsrt-cut",
+   "feat-cutsrt-telop-srt",
+   "feat-premiere-agent-kit",
+   "feat-kazaru",
+   "ref-fcp7-xml"
+  ],
+  "path": "features/feat-premiere-skills.md",
+  "source": "kit"
+ },
+ {
+  "id": "feat-silence-cut-plugin",
+  "title": "silence-cut（初期の UXP＋Python・キーの送信で切る方式と、真似しないこと）",
+  "kind": "feature",
+  "tags": [
+   "silence-cut",
+   "UXP",
+   "小型プラグイン",
+   "無音カット",
+   "ローカルサーバー",
+   "キー送信",
+   "リップル削除",
+   "アクセシビリティ",
+   "先行実験",
+   "真似しない"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "無音を見つけて、イン・アウトを打ち、リップル削除のキーを送って切った初期の無音カット。Mac でだけ確かめた。後に XML の往復へ置き換えられたので、切り方は真似しない。部品として残ったのは検出の考え方と流儀",
+  "parts": [
+   "silence-cut",
+   "local-server"
+  ],
+  "related": [
+   "feat-cutsrt-cut",
+   "feat-caption-align",
+   "feat-clip-clipboard",
+   "feat-effect-shortcut",
+   "ref-local-server",
+   "core-safety",
+   "core-api-patterns"
+  ],
+  "path": "features/feat-silence-cut-plugin.md",
+  "source": "kit"
+ },
+ {
+  "id": "platform-cross",
+  "title": "Mac と Windows の両方で動かす書き方",
+  "kind": "platform",
+  "tags": [
+   "Mac",
+   "Windows",
+   "パス",
+   "文字コード",
+   "改行",
+   "NFC",
+   "NFD",
+   "cp932",
+   "実行ビット",
+   "check.py",
+   "W規則",
+   "日本語"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "パスは環境変数と相対で、文字コードは明示、OS の分岐は 1 か所に。Mac 専用の場所だけを探して Windows で失敗した事故と check.py の W 規則",
+  "parts": [],
+  "related": [
+   "platform-mac",
+   "platform-windows"
+  ],
+  "path": "platform/platform-cross.md",
+  "source": "kit"
+ },
+ {
+  "id": "platform-mac",
+  "title": "Mac での場所と注意",
+  "kind": "platform",
+  "tags": [
+   "Mac",
+   "macOS",
+   "パス",
+   "ログ",
+   "UPIA",
+   "CEP",
+   "launchd",
+   "ffmpeg",
+   "Python",
+   "Gatekeeper",
+   "Apple シリコン",
+   "Intel"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "Mac の Premiere・ログ・UDT・UPIA・登録簿・CEP・フォント・Python・ffmpeg・launchd の置き場所と、保護フォルダや Gatekeeper で止まる所",
+  "parts": [],
+  "related": [
+   "platform-windows",
+   "platform-cross"
+  ],
+  "path": "platform/platform-mac.md",
+  "source": "kit"
+ },
+ {
+  "id": "platform-windows",
+  "title": "Windows での場所と注意",
+  "kind": "platform",
+  "tags": [
+   "Windows",
+   "パス",
+   "ログ",
+   "UPIA",
+   "CEP",
+   "レジストリ",
+   "PowerShell",
+   "Python",
+   "winget",
+   "ffmpeg",
+   "cp932",
+   "タスク スケジューラ",
+   "確度"
+  ],
+  "os": [
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "Windows の Premiere・ログ・UDT・UPIA・CEP・Python・ffmpeg・常駐の場所と注意。実機で確かめたものは少なく、各行に確度を付けた",
+  "parts": [],
+  "related": [
+   "platform-mac",
+   "platform-cross"
+  ],
+  "path": "platform/platform-windows.md",
+  "source": "kit"
+ },
+ {
+  "id": "recipe-agent-mcp",
+  "title": "AI からプラグインを操作できるようにする",
+  "kind": "recipe",
+  "tags": [
+   "MCP",
+   "Claude Code",
+   "Codex",
+   "登録",
+   "待ち行列",
+   "ポーリング",
+   "安全規約",
+   "パネル",
+   "開発中の確かめ"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "AI（Claude Code・Codex）が道具として呼べる入口を、プラグインに付ける。登録は CLI の命令に任せ、変更系の命令は利用者の指示があるときだけ・取り消し 1 回の作りにし、パネルを開いておく",
+  "parts": [
+   "mcp-bridge",
+   "local-server",
+   "probe",
+   "ppro-kit"
+  ],
+  "related": [
+   "ref-mcp",
+   "ref-local-server",
+   "feat-cutsrt-mcp",
+   "feat-premiere-agent-kit",
+   "uc-server-mcp-long-job",
+   "uc-server-stale-handshake-403",
+   "core-safety",
+   "core-transactions"
+  ],
+  "path": "recipes/recipe-agent-mcp.md",
+  "source": "kit"
+ },
+ {
+  "id": "recipe-ai-integration",
+  "title": "AI（CLI・API）と連携する",
+  "kind": "recipe",
+  "tags": [
+   "AI",
+   "CLI",
+   "API",
+   "鍵",
+   "keychain",
+   "保管庫",
+   "標準入力",
+   "タイムアウト",
+   "料金",
+   "同意",
+   "local-server"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "パネルから手元のサーバー経由で AI の CLI や API を呼ぶ。鍵は OS の保管庫に置き、依頼文は標準入力で渡し、時間切れを決め、料金の見積もりと外部へ送る前の同意を必ず取る",
+  "parts": [
+   "local-server",
+   "keychain",
+   "logger",
+   "ppro-kit",
+   "ui-kit"
+  ],
+  "related": [
+   "feat-cutsrt-ai-engines",
+   "feat-cutsrt-direct-angle",
+   "uc-ai-cli-invocation-traps",
+   "uc-ai-which-not-usable",
+   "uc-ai-cli-not-on-server-path",
+   "uc-ai-headless-permissions",
+   "uc-ai-auth-probe-cache",
+   "uc-verify-keychain-test-left",
+   "uc-install-secret-name-dropped",
+   "recipe-local-server-heavy",
+   "core-safety",
+   "ref-local-server"
+  ],
+  "path": "recipes/recipe-ai-integration.md",
+  "source": "kit"
+ },
+ {
+  "id": "recipe-batch-effect",
+  "title": "選んだクリップに一括で効果を足す",
+  "kind": "recipe",
+  "tags": [
+   "効果",
+   "一括",
+   "選択",
+   "VideoFilterFactory",
+   "createComponent",
+   "取引",
+   "取り消し",
+   "パネル"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "タイムラインで選んだ映像クリップすべてに効果を足し、足したあとで値を入れる。効果を足す取引と値を書く取引は別にするので、取り消しは 2 回になる",
+  "parts": [
+   "ppro-kit",
+   "ui-kit",
+   "probe"
+  ],
+  "related": [
+   "core-transactions",
+   "core-api-patterns",
+   "uc-uxp-effect-params-before-commit",
+   "uc-uxp-action-outside-lock",
+   "core-safety"
+  ],
+  "path": "recipes/recipe-batch-effect.md",
+  "source": "kit"
+ },
+ {
+  "id": "recipe-caption-align",
+  "title": "テロップをカットの境目にそろえる",
+  "kind": "recipe",
+  "tags": [
+   "整列",
+   "テロップ",
+   "字幕",
+   "カット点",
+   "許容コマ数",
+   "createSetStartAction",
+   "createSetEndAction",
+   "グラフィック",
+   "取引"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "テロップ（グラフィック）の開始と終了を、別のトラックのクリップの境目に、許容コマ数の内で寄せる。グラフィックには setIn/setOut を使わず、開始側と終了側の境目を別の一覧にし、全体を 1 つの取引にする",
+  "parts": [
+   "ppro-kit",
+   "ui-kit"
+  ],
+  "related": [
+   "feat-caption-align",
+   "feat-cutsrt-align",
+   "ref-ticktime",
+   "uc-uxp-ticktime-ticks-zero",
+   "uc-uxp-get-track-items-args",
+   "uc-uxp-action-outside-lock",
+   "uc-uxp-init-tdz",
+   "uc-uxp-require-relative",
+   "core-transactions",
+   "recipe-silence-cut"
+  ],
+  "path": "recipes/recipe-caption-align.md",
+  "source": "kit"
+ },
+ {
+  "id": "recipe-captions-srt",
+  "title": "文字起こしして字幕（SRT）を作る",
+  "kind": "recipe",
+  "tags": [
+   "字幕",
+   "SRT",
+   "文字起こし",
+   "Whisper",
+   "mlx-whisper",
+   "faster-whisper",
+   "意味区切り",
+   "改行",
+   "日本語"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "素材の音声を手元で文字起こしして SRT にし、プロジェクトへ読み込む。SRT のタイムラインへの配置は手作業か別の処理。意味で区切る改行は AI の文脈判断で行う",
+  "parts": [
+   "ppro-kit",
+   "local-server",
+   "media-tools",
+   "transcribe-srt",
+   "ui-kit"
+  ],
+  "related": [
+   "feat-cutsrt-telop-srt",
+   "feat-premiere-skills",
+   "core-capabilities",
+   "uc-xml-audio-shorter-than-video",
+   "uc-windows-cuda-dll",
+   "uc-windows-cp932",
+   "uc-mac-ffmpeg-detection"
+  ],
+  "path": "recipes/recipe-captions-srt.md",
+  "source": "kit"
+ },
+ {
+  "id": "recipe-clip-slots",
+  "title": "クリップや効果をコピーして貼る",
+  "kind": "recipe",
+  "tags": [
+   "クリップ棚",
+   "スロット",
+   "コピー",
+   "貼り付け",
+   "複製",
+   "localStorage",
+   "効果",
+   "キーフレーム",
+   "ショートカット",
+   "取り直し"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "選んだクリップを番号つきの棚に保存し、あとで再生ヘッドの位置に貼る。保存は名前・開始・トラック・種類だけ、貼る直前に取り直す。複製の Action は取引の中で作り、取り消しは 1 回",
+  "parts": [
+   "ppro-kit",
+   "commands",
+   "ui-kit"
+  ],
+  "related": [
+   "feat-cutsrt-clip-slots",
+   "feat-clip-clipboard",
+   "feat-cutsrt-fx-slots",
+   "feat-effect-shortcut",
+   "uc-uxp-copy-keyframes-lost",
+   "uc-uxp-keyframe-extra-and-wrapped",
+   "uc-uxp-shortcut-commands-not-listed",
+   "uc-uxp-get-track-items-args",
+   "uc-uxp-action-outside-lock",
+   "core-transactions",
+   "recipe-commands-shortcuts"
+  ],
+  "path": "recipes/recipe-clip-slots.md",
+  "source": "kit"
+ },
+ {
+  "id": "recipe-commands-shortcuts",
+  "title": "メニューのコマンドとショートカット",
+  "kind": "recipe",
+  "tags": [
+   "コマンド",
+   "ショートカット",
+   "メニュー",
+   "manifest",
+   "NSUserKeyEquivalents",
+   "Mac",
+   "panel-commands"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "パネルを開かずに実行できるメニューのコマンドを足し、Mac ではシステム設定の「アプリのショートカット」でキーを割り当てる。Premiere のショートカット画面には出ない。Windows の割り当ては未確認",
+  "parts": [
+   "commands",
+   "ui-kit"
+  ],
+  "related": [
+   "uc-uxp-shortcut-commands-not-listed",
+   "uc-mac-shortcut-nsuserkeyequivalents",
+   "core-manifest-permissions",
+   "core-capabilities",
+   "feat-cutsrt-clip-slots",
+   "platform-mac"
+  ],
+  "path": "recipes/recipe-commands-shortcuts.md",
+  "source": "kit"
+ },
+ {
+  "id": "recipe-export-automation",
+  "title": "決まった設定で書き出す",
+  "kind": "recipe",
+  "tags": [
+   "書き出し",
+   "EncoderManager",
+   "exportSequence",
+   "Media Encoder",
+   "AME",
+   "プリセット",
+   "epr",
+   "H.265",
+   "作業エリア",
+   "キュー"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "アクティブなシーケンスを、書き出しプリセット（.epr）を指定して Adobe Media Encoder のキューへ送る。H.265 のプログラム書き出しは意図的に無効、作業エリアバーが出ていると In/Out が無視される。実機での確認は少ない",
+  "parts": [
+   "ppro-kit",
+   "ui-kit",
+   "probe"
+  ],
+  "related": [
+   "core-api-patterns",
+   "core-versions",
+   "core-safety",
+   "uc-uxp-export-frame-not-written",
+   "core-capabilities"
+  ],
+  "path": "recipes/recipe-export-automation.md",
+  "source": "kit"
+ },
+ {
+  "id": "recipe-import-bins",
+  "title": "素材のフォルダを読み込んでビンに整理する",
+  "kind": "recipe",
+  "tags": [
+   "取り込み",
+   "ビン",
+   "importFiles",
+   "createBinAction",
+   "フォルダ",
+   "素材",
+   "整理",
+   "プロジェクトパネル"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "選んだフォルダの素材を project.importFiles で取り込み、種類ごとのビンに整理する。ビンを作る Action はビンを返さないので、名前で探し直す。ビンの作成は実機で確かめていない",
+  "parts": [
+   "ppro-kit",
+   "ui-kit",
+   "probe"
+  ],
+  "related": [
+   "core-api-patterns",
+   "core-transactions",
+   "feat-cutsrt-assets",
+   "core-safety",
+   "platform-cross"
+  ],
+  "path": "recipes/recipe-import-bins.md",
+  "source": "kit"
+ },
+ {
+  "id": "recipe-keyframe-motion",
+  "title": "キーで動きを付ける（ズーム・スライド・フェード）",
+  "kind": "recipe",
+  "tags": [
+   "キーフレーム",
+   "ズーム",
+   "スライド",
+   "フェード",
+   "補間",
+   "焼き込み",
+   "取り消し",
+   "モーション",
+   "スケール"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "選んだクリップのスケール・位置・不透明度に、時刻と値のキーを打つ。補間は 1 コマごとの直線キーに焼き込むので、取引 1 回・取り消し 1 回で済む",
+  "parts": [
+   "ppro-kit",
+   "motion-bake",
+   "ui-kit"
+  ],
+  "related": [
+   "ref-keyframe-interpolation",
+   "core-transactions",
+   "uc-uxp-interp-same-transaction",
+   "uc-uxp-keyframe-extra-and-wrapped",
+   "uc-mogrt-addkey-time-base",
+   "uc-uxp-keyframe-curve-overshoot",
+   "feat-ed-motion"
+  ],
+  "path": "recipes/recipe-keyframe-motion.md",
+  "source": "kit"
+ },
+ {
+  "id": "recipe-local-server-heavy",
+  "title": "重い処理を手元のサーバーに任せる",
+  "kind": "recipe",
+  "tags": [
+   "サーバー",
+   "ジョブ",
+   "Python",
+   "127.0.0.1",
+   "常駐",
+   "launchd",
+   "タスク スケジューラ",
+   "依存",
+   "同意",
+   "進み具合"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "UXP のパネルでは持てない重い処理（音声解析・動画の処理など）を、同じ PC の Python のサーバーのジョブとして動かす。ジョブの書き方、導入、依存を入れる前の同意まで",
+  "parts": [
+   "local-server",
+   "logger",
+   "ppro-kit",
+   "ui-kit",
+   "probe"
+  ],
+  "related": [
+   "ref-local-server",
+   "uc-server-localhost-network-all",
+   "uc-server-launchd-log-rotation",
+   "uc-install-same-version",
+   "uc-server-atomic-output",
+   "recipe-silence-cut",
+   "recipe-ai-integration",
+   "core-safety"
+  ],
+  "path": "recipes/recipe-local-server-heavy.md",
+  "source": "kit"
+ },
+ {
+  "id": "recipe-markers-chapters",
+  "title": "マーカーを打つ・チャプターの一覧を作る",
+  "kind": "recipe",
+  "tags": [
+   "マーカー",
+   "チャプター",
+   "概要欄",
+   "YouTube",
+   "タイムスタンプ",
+   "createAddMarkerAction",
+   "パネル"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "シーケンスにマーカーをまとめて打ち、同じ一覧を YouTube の概要欄用の「0:00 題」の形で出す。マーカーの追加は取引 1 回・取り消し 1 回。色の指定は実機で確かめていない",
+  "parts": [
+   "ppro-kit",
+   "ui-kit"
+  ],
+  "related": [
+   "core-api-patterns",
+   "core-transactions",
+   "ref-ticktime",
+   "core-capabilities",
+   "feat-premiere-agent-kit"
+  ],
+  "path": "recipes/recipe-markers-chapters.md",
+  "source": "kit"
+ },
+ {
+  "id": "recipe-razor-workarounds",
+  "title": "分割・速度変更などできない操作の代わりの手",
+  "kind": "recipe",
+  "tags": [
+   "分割",
+   "razor",
+   "速度変更",
+   "CEP",
+   "QE DOM",
+   "作り直し",
+   "手作業",
+   "画面操作",
+   "27.0",
+   "ベータ",
+   "できない操作"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "UXP で正式にはできない操作（クリップの分割・速度変更・別トラックへの移動など）の代わりの手。XML の作り直し、マーカーを置いて手で切る、期限つきの CEP の補助（Mac のみ・未確認）、画面操作（Claude のデスクトップ版のみ）。27.0 ベータの分割の口は、まだ当てにしない",
+  "parts": [
+   "fcpxml",
+   "cep-helper",
+   "ppro-kit"
+  ],
+  "related": [
+   "uc-uxp-no-razor-api",
+   "uc-uxp-missing-apis-alternatives",
+   "core-capabilities",
+   "ref-cep-extendscript",
+   "ref-fcp7-xml",
+   "feat-premiere-agent-kit",
+   "feat-silence-cut-plugin",
+   "recipe-silence-cut",
+   "uc-cep-qe-effect-locale",
+   "core-versions"
+  ],
+  "path": "recipes/recipe-razor-workarounds.md",
+  "source": "kit"
+ },
+ {
+  "id": "recipe-silence-cut",
+  "title": "無音をカットする",
+  "kind": "recipe",
+  "tags": [
+   "無音カット",
+   "FCP7 XML",
+   "ジェットカット",
+   "閾値",
+   "新しいシーケンス",
+   "ffmpeg",
+   "終了コード",
+   "パネル",
+   "サーバー"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "verified",
+  "summary": "シーケンスを XML で書き出し、手元のサーバーが無音を詰めた XML を作り、読み込んで新しいシーケンスとして開く。元のシーケンスには触らない。カット 0 件は成功にしない",
+  "parts": [
+   "ppro-kit",
+   "local-server",
+   "fcpxml",
+   "media-tools",
+   "silence-cut",
+   "ui-kit"
+  ],
+  "related": [
+   "feat-cutsrt-cut",
+   "feat-premiere-skills",
+   "ref-fcp7-xml",
+   "uc-xml-silence-asymmetric",
+   "uc-xml-nested-multicam",
+   "uc-xml-fit-scale-lost",
+   "uc-fps-vfr-timebase",
+   "uc-uxp-no-razor-api",
+   "recipe-razor-workarounds"
+  ],
+  "path": "recipes/recipe-silence-cut.md",
+  "source": "kit"
+ },
+ {
+  "id": "recipe-telop-restyle",
+  "title": "テロップのデザインを一括で差し替える",
+  "kind": "recipe",
+  "tags": [
+   "テロップ",
+   "MOGRT",
+   "デザイン",
+   "一括",
+   "差し替え",
+   "本文の読み取り",
+   "FCP7 XML",
+   "ドナー",
+   "取り消し"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.3",
+  "status": "partial",
+  "summary": "選んだテロップの本文を XML で読み、デザインを変えた MOGRT を作って同じ位置に入れ直す。位置と動きは引き継がれず、取り消しは 1 本あたり 2〜3 回",
+  "parts": [
+   "ppro-kit",
+   "local-server",
+   "fcpxml",
+   "mogrt-text",
+   "ui-kit"
+  ],
+  "related": [
+   "feat-ed-design-apply",
+   "ref-mogrt",
+   "uc-mogrt-donor-patch-method",
+   "uc-mogrt-design-apply-replaces",
+   "uc-uxp-mogrt-overwrite-unclear",
+   "uc-mogrt-source-text-unreadable",
+   "uc-mogrt-telop-text-not-greppable",
+   "uc-mogrt-adobe-fonts-signout",
+   "uc-mogrt-second-insert-replaces"
+  ],
+  "path": "recipes/recipe-telop-restyle.md",
+  "source": "kit"
+ },
+ {
+  "id": "ref-cep-extendscript",
+  "title": "CEP と ExtendScript と QE DOM",
+  "kind": "reference",
+  "tags": [
+   "CEP",
+   "ExtendScript",
+   "QE DOM",
+   "manifest.xml",
+   ".debug",
+   "PlayerDebugMode",
+   "CSInterface",
+   "Node",
+   "ES3",
+   "matchName",
+   "期限"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "UXP に無い操作（分割・再生・テキストの周辺）のための古い方式。manifest.xml・デバッグの口・未署名の許可・Node の罠・ES3 の制約・QE DOM の使い方と、2028-12 に既定で無効になる予定",
+  "parts": [
+   "cep-helper"
+  ],
+  "related": [
+   "ref-ticktime",
+   "ref-mogrt"
+  ],
+  "path": "reference/ref-cep-extendscript.md",
+  "source": "kit"
+ },
+ {
+  "id": "ref-fcp7-xml",
+  "title": "FCP7 XML（xmeml）の決まり",
+  "kind": "reference",
+  "tags": [
+   "FCP7 XML",
+   "xmeml",
+   "file",
+   "timebase",
+   "ntsc",
+   "ネスト",
+   "マルチカム",
+   "GraphicAndType",
+   "ダングリング",
+   "書き出し",
+   "読み込み"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "完全な定義は 1 回だけ。ぶら下がりを書く前に検査し、子要素で判定。換算は宣言 timebase。マルチカムの映像は書き出されない。テロップ本文は GraphicAndType から読む",
+  "parts": [
+   "fcpxml",
+   "silence-cut"
+  ],
+  "related": [
+   "ref-ticktime"
+  ],
+  "path": "reference/ref-fcp7-xml.md",
+  "source": "kit"
+ },
+ {
+  "id": "ref-keyframe-interpolation",
+  "title": "Premiere の補間の実測式と焼き込み",
+  "kind": "reference",
+  "tags": [
+   "キーフレーム",
+   "補間",
+   "bezier",
+   "hold",
+   "linear",
+   "空間補間",
+   "行き過ぎ",
+   "焼き込み",
+   "bake",
+   "easein",
+   "取り消し"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "区間の形は始まりのキーだけで決まる。bezier の制御点と位置の接線 1/6 の実測式。UXP は同じ取引で補間を変えられないので 1 コマごとの直線のキーに焼く",
+  "parts": [
+   "motion-bake",
+   "ppro-kit"
+  ],
+  "related": [
+   "ref-ticktime",
+   "ref-prfpset"
+  ],
+  "path": "reference/ref-keyframe-interpolation.md",
+  "source": "kit"
+ },
+ {
+  "id": "ref-local-server",
+  "title": "手元のサーバーの作り",
+  "kind": "reference",
+  "tags": [
+   "サーバー",
+   "127.0.0.1",
+   "合言葉",
+   "token",
+   "server.json",
+   "握手",
+   "ジョブ",
+   "ポーリング",
+   "launchd",
+   "タスク スケジューラ",
+   "常駐",
+   "PATH"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "重い処理を任せる手元のサーバーの作り。127.0.0.1 だけ・起動ごとの合言葉・握手のファイル・ジョブ（失敗も HTTP 200）・ポーリング・常駐・版ごとの runtime",
+  "parts": [
+   "local-server"
+  ],
+  "related": [
+   "ref-mcp",
+   "platform-mac",
+   "platform-windows"
+  ],
+  "path": "reference/ref-local-server.md",
+  "source": "kit"
+ },
+ {
+  "id": "ref-mcp",
+  "title": "MCP の口の作り",
+  "kind": "reference",
+  "tags": [
+   "MCP",
+   "JSON-RPC",
+   "標準入出力",
+   "待ち行列",
+   "ポーリング",
+   "claude mcp add",
+   "codex mcp",
+   "403",
+   "server.json",
+   "AI連携"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "AI（Claude Code / Codex）からプラグインを操作する口。標準入出力の JSON-RPC、パネルが取りに来る待ち行列、パネルを閉じると届かない、登録は CLI の命令で",
+  "parts": [
+   "mcp-bridge",
+   "local-server"
+  ],
+  "related": [
+   "ref-local-server"
+  ],
+  "path": "reference/ref-mcp.md",
+  "source": "kit"
+ },
+ {
+  "id": "ref-mogrt",
+  "title": "MOGRT の中身とドナー差し替え",
+  "kind": "reference",
+  "tags": [
+   "MOGRT",
+   "mogrt",
+   "ドナー",
+   "Basic Title",
+   "prgraphic",
+   "definition.json",
+   "importMGT",
+   "insertMogrtFromPath",
+   "テロップ",
+   "locale",
+   "UUID"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": ".mogrt は zip。Premiere 同梱の Basic Title.mogrt をドナーにして文字のデザインだけ差し替える。ID の振り直しで <First> を触らない・尺は locale ごとに読む・転植版は使わない",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "ref-prtextstyle",
+   "ref-ticktime"
+  ],
+  "path": "reference/ref-mogrt.md",
+  "source": "kit"
+ },
+ {
+  "id": "ref-prfpset",
+  "title": ".prfpset（エフェクトプリセット）",
+  "kind": "reference",
+  "tags": [
+   "prfpset",
+   "エフェクトプリセット",
+   "キーフレーム",
+   "補間",
+   "トランスフォーム",
+   "アンカー",
+   "ParameterID",
+   "引き伸ばし",
+   "イン点",
+   "アウト点"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": ".prfpset の木の構造、Type 0/1/2（引き伸ばし・イン点・アウト点）、キーの書き方と補間の番号、点の接線、トランスフォームの ParameterID",
+  "parts": [
+   "motion-bake"
+  ],
+  "related": [
+   "ref-keyframe-interpolation",
+   "ref-prtextstyle"
+  ],
+  "path": "reference/ref-prfpset.md",
+  "source": "kit"
+ },
+ {
+  "id": "ref-prtextstyle",
+  "title": ".prtextstyle とソーステキストの blob",
+  "kind": "reference",
+  "tags": [
+   "prtextstyle",
+   "ソーステキスト",
+   "blob",
+   "FlatBuffer",
+   "テキストスタイル",
+   "フォント",
+   "PostScript名",
+   "Adobe Fonts",
+   "縁取り",
+   "影"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": ".prtextstyle は Premiere のプロジェクト XML。見た目は 12 バイトのヘッダ＋FlatBuffer の blob に入る。取り込みは本文だけ差し替えるのが確実",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "ref-mogrt",
+   "ref-prfpset"
+  ],
+  "path": "reference/ref-prtextstyle.md",
+  "source": "kit"
+ },
+ {
+  "id": "ref-ticktime",
+  "title": "TickTime と時間の単位",
+  "kind": "reference",
+  "tags": [
+   "TickTime",
+   "ticks",
+   "時間",
+   "フレーム",
+   "timebase",
+   "ntsc",
+   "BigInt",
+   "素材時間",
+   "ExtendScript",
+   "キーフレーム"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "1 秒は 254016000000 ticks。生成は文字列で、読み取りは ticksNumber を先に。フレームへの換算は宣言の timebase で。ExtendScript のキーの時刻は素材時間",
+  "parts": [
+   "ppro-kit",
+   "fcpxml"
+  ],
+  "related": [
+   "ref-fcp7-xml",
+   "ref-keyframe-interpolation"
+  ],
+  "path": "reference/ref-ticktime.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ai-auth-probe-cache",
+  "title": "ログインしたのにパネルは未認証のまま。認証確認の失敗が固まって残る",
+  "kind": "usecase",
+  "tags": [
+   "AI",
+   "認証",
+   "キャッシュ",
+   "TTL",
+   "再接続",
+   "Windows",
+   "claude"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "認証の確認結果を、特に失敗を長く覚えていると、ログイン後も直らない。失敗の保持時間は短くし、利用者が押せる再確認の経路を用意する。単体の CLI の資格はアプリとは別",
+  "parts": [
+   "local-server"
+  ],
+  "related": [
+   "uc-ai-which-not-usable",
+   "uc-ai-login-guide-wrong",
+   "uc-ai-cli-not-on-server-path",
+   "uc-windows-daemon-process-paths"
+  ],
+  "path": "usecases/uc-ai-auth-probe-cache.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ai-cli-defaults-env-account",
+  "title": "AI CLI の既定・環境変数・アカウントの種別で、モデルと認証の結果が変わる",
+  "kind": "usecase",
+  "tags": [
+   "AI",
+   "CLI",
+   "モデル",
+   "環境変数",
+   "アカウント",
+   "401",
+   "検証環境"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "外部 CLI はモデルと思考の深さを明示して呼ぶ。モデルの名前はアカウントの種別で変わるので、実応答で確かめてから選択肢に入れる。検証のときは、開発機の設定やシェルに残った API キーの環境変数が結果を変えていないか疑う",
+  "parts": [
+   "local-server"
+  ],
+  "related": [
+   "uc-ai-old-cli-rejects-flags",
+   "uc-ai-cli-invocation-traps",
+   "uc-verify-env-false-positive"
+  ],
+  "path": "usecases/uc-ai-cli-defaults-env-account.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ai-cli-invocation-traps",
+  "title": "AI CLI の呼び出しの罠（標準入力・作業ディレクトリ・フラグの位置・タイムアウト）",
+  "kind": "usecase",
+  "tags": [
+   "AI",
+   "CLI",
+   "stdin",
+   "cwd",
+   "タイムアウト",
+   "並列",
+   "stderr",
+   "デッドロック"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "外部 AI CLI は、依頼の渡し方・作業ディレクトリ・フラグの位置を実際に動かして確かめる。別の所から流用したタイムアウトは測り直し、ローカルの CLI は並列にしても速くならない",
+  "parts": [
+   "local-server"
+  ],
+  "related": [
+   "uc-windows-cmd-argv",
+   "uc-ai-shared-argv-breaks-sibling-cli",
+   "uc-ai-prompt-no-system-no-session",
+   "uc-ai-cli-defaults-env-account"
+  ],
+  "path": "usecases/uc-ai-cli-invocation-traps.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ai-cli-not-on-server-path",
+  "title": "ターミナルでは動く CLI が、常駐サーバーからは「見つかりません」になる",
+  "kind": "usecase",
+  "tags": [
+   "AI",
+   "CLI",
+   "PATH",
+   "常駐",
+   "nvm",
+   "探索",
+   "フルパス"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "ターミナルの PATH と常駐サーバーの PATH は別物。導入先の候補を 1 つの関数で探してフルパスで実行し、見つからないときは探した場所を見せる。同じ探索を持つ入口を全部そろえる",
+  "parts": [
+   "local-server"
+  ],
+  "related": [
+   "uc-ai-which-not-usable",
+   "uc-dev-duplicate-logic-entries",
+   "uc-windows-daemon-process-paths",
+   "uc-mac-ffmpeg-detection"
+  ],
+  "path": "usecases/uc-ai-cli-not-on-server-path.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ai-engine-registry",
+  "title": "AI エンジンを 1 つ足すと 9 つのファイルを触る。配線の足し忘れが黙って失敗になる",
+  "kind": "usecase",
+  "tags": [
+   "AI",
+   "設計",
+   "レジストリ",
+   "宣言テーブル",
+   "UI",
+   "許可リスト",
+   "整合テスト"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "エンジンの識別・認証・モデルの選択肢を 1 つの宣言テーブルに集め、画面の選択肢と許可リストをそこから導く。画面の「空＝既定」と実行側の許可リストは別の概念なので、両方持つ",
+  "parts": [
+   "local-server",
+   "ui-kit"
+  ],
+  "related": [
+   "uc-ai-shared-argv-breaks-sibling-cli",
+   "uc-ai-old-cli-rejects-flags",
+   "uc-dev-duplicate-logic-entries",
+   "uc-verify-regression-fails-when-broken"
+  ],
+  "path": "usecases/uc-ai-engine-registry.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ai-headless-permissions",
+  "title": "画面を持たない実行の claude は、許可していない道具で「承認待ち」のまま止まる",
+  "kind": "usecase",
+  "tags": [
+   "AI",
+   "claude",
+   "ヘッドレス",
+   "許可",
+   "承認",
+   "段階承認",
+   "件数上限"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "画面の無い実行では、許可リストに無い道具は承認待ちで永久に止まる。読み取りは先に許可、書き込みは不許可にし、AI に編集させるなら段階承認と件数の上限と取り消しの案内を持たせる",
+  "parts": [
+   "mcp-bridge",
+   "local-server"
+  ],
+  "related": [
+   "uc-ai-cli-invocation-traps",
+   "uc-uxp-undo-grouping",
+   "core-safety"
+  ],
+  "path": "usecases/uc-ai-headless-permissions.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ai-install-login-verify",
+  "title": "外部の AI CLI のログインは導入側で肩代わりできない。応答しない CLI が導入を止める",
+  "kind": "usecase",
+  "tags": [
+   "AI",
+   "CLI",
+   "認証",
+   "ログイン",
+   "インストーラ",
+   "タイムアウト",
+   "プリフライト",
+   "冪等"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "認証は利用者ごとで自動化できない。導入側は時間制限つきの実応答で使えるかを見届け、数分かかる処理の前にも使えるかを検査する。連携の登録は何度やっても同じ結果になる形にする",
+  "parts": [
+   "local-server",
+   "packaging"
+  ],
+  "related": [
+   "uc-server-preflight-light",
+   "uc-ai-which-not-usable",
+   "uc-ai-login-guide-wrong",
+   "uc-install-verify-hijacks-agent"
+  ],
+  "path": "usecases/uc-ai-install-login-verify.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ai-login-guide-wrong",
+  "title": "画面のログイン案内どおりにしてもログインできない（案内が実態とずれた）",
+  "kind": "usecase",
+  "tags": [
+   "AI",
+   "ログイン",
+   "案内文",
+   "claude",
+   "gemini",
+   "公式確認",
+   "一元化"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "「ターミナルで claude /login を実行」は誤りだった。対話内のコマンドとシェルの引数を混同せず、案内文は公式で確かめて 1 か所に集める。外部サービスの認証方式は事業者の都合で変わる",
+  "parts": [
+   "local-server"
+  ],
+  "related": [
+   "uc-ai-install-login-verify",
+   "uc-ai-auth-probe-cache",
+   "uc-verify-docs-same-commit"
+  ],
+  "path": "usecases/uc-ai-login-guide-wrong.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ai-old-cli-rejects-flags",
+  "title": "古い AI CLI が、新しいフラグや新しいモデルの指定を拒否して失敗する",
+  "kind": "usecase",
+  "tags": [
+   "AI",
+   "CLI",
+   "フラグ",
+   "縮退",
+   "モデル",
+   "effort",
+   "診断"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "外部 CLI の新しいオプションと新世代のモデルは、古い版が拒否する前提で作る。外して 1 回だけやり直し、縮んだことを診断に出す。共通の設定でも、CLI ごとに引数の名前も有無も違う",
+  "parts": [
+   "local-server"
+  ],
+  "related": [
+   "uc-ai-cli-defaults-env-account",
+   "uc-ai-engine-registry",
+   "uc-ai-cli-invocation-traps"
+  ],
+  "path": "usecases/uc-ai-old-cli-rejects-flags.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ai-ollama-think-leak",
+  "title": "Windows のローカル LLM（Ollama）で、思考の文章が応答に混ざり、途中でやめられない",
+  "kind": "usecase",
+  "tags": [
+   "AI",
+   "Ollama",
+   "Windows",
+   "qwen3",
+   "思考モデル",
+   "think",
+   "キャンセル"
+  ],
+  "os": [
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "思考モデルは API の think=False だけでは思考が漏れる個体がある。プロンプトの /no_think も併用し、非ストリームは途中キャンセルできないと割り切って上限時間で守る",
+  "parts": [
+   "local-server"
+  ],
+  "related": [
+   "uc-ai-engine-registry",
+   "uc-ai-prompt-no-system-no-session",
+   "uc-windows-guide-python-limit"
+  ],
+  "path": "usecases/uc-ai-ollama-think-leak.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ai-prompt-no-system-no-session",
+  "title": "system 引数もセッションも持たない AI CLI に、指示と質問を一緒に渡すと混乱する",
+  "kind": "usecase",
+  "tags": [
+   "AI",
+   "プロンプト",
+   "system",
+   "セッション",
+   "履歴",
+   "知識の注入",
+   "CLI"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "system 相当を持たない CLI には、規則と質問の境界を文で明示する。セッションを持たない CLI には、直近の履歴を字数の上限つきで毎回渡す。大きな知識は索引だけを常に入れ、本文は必要なときに読ませる",
+  "parts": [
+   "local-server",
+   "mcp-bridge"
+  ],
+  "related": [
+   "uc-ai-cli-invocation-traps",
+   "uc-ai-headless-permissions",
+   "uc-windows-cmd-argv"
+  ],
+  "path": "usecases/uc-ai-prompt-no-system-no-session.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ai-shared-argv-breaks-sibling-cli",
+  "title": "共有の引数の組み立てを直したら、差分に名前の出ない兄弟の CLI が壊れた",
+  "kind": "usecase",
+  "tags": [
+   "AI",
+   "CLI",
+   "引数",
+   "stdin",
+   "回帰",
+   "総当たり",
+   "Windows"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "複数の AI CLI が使う引数の組み立てを 1 つ直すと、stdin を読めない別の CLI だけ本文が空になった。直した対象だけでなく、実際に渡る引数と標準入力の層で全エンジンを総当たりして確かめる",
+  "parts": [
+   "local-server"
+  ],
+  "related": [
+   "uc-windows-cmd-argv",
+   "uc-ai-cli-invocation-traps",
+   "uc-ai-engine-registry",
+   "uc-verify-probe-same-path"
+  ],
+  "path": "usecases/uc-ai-shared-argv-breaks-sibling-cli.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ai-structured-json-retry",
+  "title": "AI にデザインの定義（JSON）を書かせると、書体名を作り話し、検査に通らない",
+  "kind": "usecase",
+  "tags": [
+   "AI",
+   "JSON",
+   "スキーマ検査",
+   "書体",
+   "作り直し",
+   "画像添付",
+   "CLI"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "構造のある JSON を AI に作らせるときは、選択肢を先に渡して作り話を防ぎ、機械検査の却下理由をそのまま返して回数に上限をつけて作り直させる。画像の添付など CLI 固有の能力は、対応する CLI に固定する",
+  "parts": [
+   "local-server",
+   "mogrt-text"
+  ],
+  "related": [
+   "uc-ai-cli-invocation-traps",
+   "uc-ai-prompt-no-system-no-session",
+   "ref-prtextstyle"
+  ],
+  "path": "usecases/uc-ai-structured-json-retry.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ai-which-not-usable",
+  "title": "「CLI が見つかる」と「使える」は別。画面は利用可なのに実行で失敗する",
+  "kind": "usecase",
+  "tags": [
+   "AI",
+   "CLI",
+   "認証",
+   "可否判定",
+   "実応答",
+   "縮退",
+   "which"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "バイナリがあることしか見ていないと、未ログインや未課金でも「利用可」と出る。LLM を呼ばない軽い確認か短い実応答で可否を判定し、別のエンジンに切り替わったことを利用者に見せる",
+  "parts": [
+   "local-server"
+  ],
+  "related": [
+   "uc-ai-auth-probe-cache",
+   "uc-ai-cli-not-on-server-path",
+   "uc-ai-install-login-verify",
+   "uc-server-preflight-light"
+  ],
+  "path": "usecases/uc-ai-which-not-usable.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-cep-es3-json",
+  "title": "ExtendScript で「JSON is undefined」。再生ボタンが無反応になる",
+  "kind": "usecase",
+  "tags": [
+   "ExtendScript",
+   "ES3",
+   "JSON",
+   "CEP",
+   "evalScript",
+   "EvalScript error"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "ExtendScript は ES3 で、JSON オブジェクトが無い。JSON.stringify を呼ぶと \"EvalScript error.\" としか返らない。必要な形だけ自前で文字列にする",
+  "parts": [
+   "cep-helper"
+  ],
+  "related": [
+   "ref-cep-extendscript",
+   "uc-cep-node-exec-callback",
+   "uc-cep-umd-window"
+  ],
+  "path": "usecases/uc-cep-es3-json.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-cep-node-exec-callback",
+  "title": "CEP で外部コマンドを呼んでも、返事のコールバックが永久に来ない",
+  "kind": "usecase",
+  "tags": [
+   "CEP",
+   "Node",
+   "child_process",
+   "exec",
+   "execFile",
+   "execFileSync",
+   "コールバック"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "CEP の Node 環境では、child_process の exec / execFile の非同期のコールバックが呼ばれないことがある。execFileSync を、setTimeout(…, 0) で一拍置いて呼ぶ",
+  "parts": [
+   "cep-helper"
+  ],
+  "related": [
+   "ref-cep-extendscript",
+   "uc-cep-umd-window",
+   "uc-cep-es3-json"
+  ],
+  "path": "usecases/uc-cep-node-exec-callback.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-cep-qe-effect-locale",
+  "title": "日本語の Premiere で QE の効果が付かない",
+  "kind": "usecase",
+  "tags": [
+   "QE",
+   "CEP",
+   "ExtendScript",
+   "日本語",
+   "効果名",
+   "ロケール",
+   "addVideoEffect"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "日本語の画面の Premiere の QE は、日本語の表示名でしか効果を引けない。英語名を渡すと名前の空の効果が返る。日本語名 → 英語名の順に試し、戻り値と部品の数で付いたか確かめる",
+  "parts": [
+   "cep-helper"
+  ],
+  "related": [
+   "ref-cep-extendscript",
+   "uc-uxp-qe-transition-settings",
+   "uc-uxp-keyframe-extra-and-wrapped"
+  ],
+  "path": "usecases/uc-cep-qe-effect-locale.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-cep-umd-window",
+  "title": "CEP で window.X が未定義になる。UMD 風の module の判定が Node 側へ入ってしまう",
+  "kind": "usecase",
+  "tags": [
+   "CEP",
+   "UMD",
+   "module",
+   "window",
+   "グローバル",
+   "Node",
+   "Chromium 99"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "CEP はページにも module を作るので、typeof module の分岐は Node 側に入り、window に API が載らない。module.exports と window の両方に載せる",
+  "parts": [
+   "cep-helper"
+  ],
+  "related": [
+   "ref-cep-extendscript",
+   "uc-cep-node-exec-callback",
+   "uc-cep-es3-json"
+  ],
+  "path": "usecases/uc-cep-umd-window.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-cep-unknown-command",
+  "title": "古い補助プログラムが、新しい命令を別の動きとして実行する",
+  "kind": "usecase",
+  "tags": [
+   "CEP",
+   "補助",
+   "命令",
+   "features",
+   "能力申告",
+   "更新",
+   "razor"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "別プロセスに新しい命令を足すときは、相手がその命令を理解するかを「能力の名乗り」で確かめてから送る。古い補助は未知の命令を再生として実行し、補助の更新は Premiere の再起動まで届かない",
+  "parts": [
+   "cep-helper",
+   "commands"
+  ],
+  "related": [
+   "ref-cep-extendscript",
+   "uc-install-protocol-not-version",
+   "uc-install-stale-panel-version-chip"
+  ],
+  "path": "usecases/uc-cep-unknown-command.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-dev-ae-mogrt-purchased-assets",
+  "title": "After Effects で作られた MOGRT の見た目は取り出せない。購入した素材の可否は形式と規約で決まる",
+  "kind": "usecase",
+  "tags": [
+   "開発",
+   "MOGRT",
+   "After Effects",
+   "購入素材",
+   "規約",
+   "取り込み",
+   "凍結"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "AE 製の .mogrt の見た目は、Premiere のテキストの部品でなく AE のレイヤーの中にあるので、スタイルとして取り出せない。外部の素材を取り込むときは、技術より先に形式と規約を確かめ、購入素材を配布物に同梱しない",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "ref-mogrt",
+   "ref-prtextstyle",
+   "uc-mogrt-source-text-unreadable",
+   "uc-mogrt-style-import-keep-blob"
+  ],
+  "path": "usecases/uc-dev-ae-mogrt-purchased-assets.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-dev-cep-end-date-unverified",
+  "title": "「CEP は 2026 年 9 月に終了」という前提が確かめられなかった",
+  "kind": "usecase",
+  "tags": [
+   "設計判断",
+   "CEP",
+   "終了",
+   "一次情報",
+   "誤診"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.0",
+  "status": "unverified",
+  "summary": "「◯月に終了」は、一次情報で絶対日付か相対期間かを確かめる。確定日は裏付けられず、UXP に一本化する方向だけが確か。ホストの操作は薄い層に閉じ込めて備える",
+  "parts": [
+   "cep-helper"
+  ],
+  "related": [
+   "ref-cep-extendscript",
+   "uc-dev-stay-uxp-not-cep",
+   "core-versions"
+  ],
+  "path": "usecases/uc-dev-cep-end-date-unverified.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-dev-duplicate-logic-entries",
+  "title": "同じ探索の処理を別のモジュールも持っていて、1 か所を直しても別の入口で同じ症状が残った",
+  "kind": "usecase",
+  "tags": [
+   "開発",
+   "重複",
+   "リファクタ",
+   "共通関数",
+   "呼び出し箇所",
+   "洗い出し"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "同じ処理を複数のモジュールが別々に持つと、直し漏れが出る。直す前に、呼び出し箇所を全数洗い出して、共通の関数に一本化する",
+  "parts": [
+   "local-server"
+  ],
+  "related": [
+   "uc-ai-cli-not-on-server-path",
+   "uc-ai-engine-registry",
+   "uc-server-bridge-contract-drift"
+  ],
+  "path": "usecases/uc-dev-duplicate-logic-entries.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-dev-edit-vs-runtime",
+  "title": "直したのに Premiere の動きが変わらない（編集した物と、動いている物は別）",
+  "kind": "usecase",
+  "tags": [
+   "開発",
+   "反映",
+   "Reload",
+   "再起動",
+   "稼働コピー",
+   "層",
+   "切り分け"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "動いているのは、編集したファイルそのものとは限らない。パネル・サーバー・補助・導入先のコピーの 4 つの層のどれが古いかを、版と応答で確かめ、層ごとの反映の手段で入れ直す",
+  "parts": [
+   "packaging",
+   "local-server",
+   "cep-helper"
+  ],
+  "related": [
+   "core-dev-loop",
+   "uc-install-edit-vs-running-copy",
+   "uc-install-reload-layers",
+   "uc-install-same-version",
+   "uc-install-stale-panel-version-chip",
+   "uc-cep-unknown-command"
+  ],
+  "path": "usecases/uc-dev-edit-vs-runtime.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-dev-freeze-unverifiable-feature",
+  "title": "検証する手段が無い機能は、削除でなく凍結する",
+  "kind": "usecase",
+  "tags": [
+   "開発",
+   "凍結",
+   "撤退",
+   "検証手段",
+   "診断器具",
+   "復活手順",
+   "配布"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "実機で確かめる手段が無い機能は、画面から到達できないようにして凍結する。サーバー側・診断の道具・復活の手順を残し、何を消して何を残したか、残る未検証の点を記録する",
+  "parts": [
+   "mogrt-text",
+   "packaging"
+  ],
+  "related": [
+   "uc-mogrt-empty-graphic-misdiagnosis",
+   "uc-mogrt-donor-patch-method",
+   "uc-verify-impossible-list-routes",
+   "uc-install-dist-zip-gates"
+  ],
+  "path": "usecases/uc-dev-freeze-unverifiable-feature.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-dev-gui-key-send-mac",
+  "title": "API で範囲を削除できず、macOS でキー送信に頼った経路の実測",
+  "kind": "usecase",
+  "tags": [
+   "開発",
+   "macOS",
+   "キー送信",
+   "Quartz",
+   "CGEvent",
+   "アクセシビリティ",
+   "キャリブレーション",
+   "最終手段"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "Premiere は画面の部品の階層をアクセシビリティに出さない。キー送信の自動操作は、フォーカス・座標・権限に依存するので最終手段にする。使うなら Quartz でクリックしてフォーカスを移し、キーの押下に間を置く",
+  "parts": [
+   "commands"
+  ],
+  "related": [
+   "uc-uxp-no-razor-api",
+   "uc-uxp-shortcut-commands-not-listed",
+   "uc-mac-shortcut-nsuserkeyequivalents",
+   "uc-uxp-api-doc-vs-device"
+  ],
+  "path": "usecases/uc-dev-gui-key-send-mac.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-dev-image-stamp-canvas",
+  "title": "貼る画像が、「フレームサイズに合わせる」の設定で大きさも位置も狂う",
+  "kind": "usecase",
+  "tags": [
+   "開発",
+   "画像",
+   "スタンプ",
+   "フレームサイズに合わせる",
+   "透明キャンバス",
+   "位置合わせ",
+   "実測"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "Premiere は画像の拡縮と位置を自動で変える設定を持つ。貼る画像は、シーケンスと同じ大きさの透明なキャンバスに焼いてから置くか、書き出したコマで実測して合わせる",
+  "parts": [
+   "media-tools",
+   "ppro-kit"
+  ],
+  "related": [
+   "feat-cutsrt-direct-stamp",
+   "ref-ticktime",
+   "uc-fps-property-missing"
+  ],
+  "path": "usecases/uc-dev-image-stamp-canvas.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-dev-japanese-path-normalization",
+  "title": "日本語のパスの罠（NFC / NFD の混在、URL のパーセントエンコード、git の 8 進エスケープ）",
+  "kind": "usecase",
+  "tags": [
+   "開発",
+   "日本語",
+   "パス",
+   "NFC",
+   "NFD",
+   "URL.pathname",
+   "git",
+   "quotepath",
+   "macOS"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "日本語のパスは、見た目が同じでもバイト列が違う。鍵にする前に NFC に正規化し、URL とパスの変換経路を揃え、git は core.quotepath=false で動かす",
+  "parts": [
+   "fcpxml",
+   "packaging"
+  ],
+  "related": [
+   "ref-fcp7-xml",
+   "uc-install-zip-japanese-names",
+   "platform-mac"
+  ],
+  "path": "usecases/uc-dev-japanese-path-normalization.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-dev-stay-uxp-not-cep",
+  "title": "導入が面倒だから CEP に移るべきか",
+  "kind": "usecase",
+  "tags": [
+   "設計判断",
+   "UXP",
+   "CEP",
+   "移行",
+   "導入",
+   "二重保守"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "CEP に移る利点は導入の簡単さだけで、移ると取引と OTIO の書き出しを失い、作り直しになる。UXP のまま、導入の経路を直す",
+  "parts": [
+   "cep-helper",
+   "local-server"
+  ],
+  "related": [
+   "core-capabilities",
+   "ref-cep-extendscript",
+   "uc-dev-cep-end-date-unverified",
+   "uc-uxp-undo-grouping"
+  ],
+  "path": "usecases/uc-dev-stay-uxp-not-cep.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-dev-zsh-shell-traps",
+  "title": "Mac で AI が使うシェルは zsh。環境変数の束が分割されず、`=` で始まる語が展開され、timeout が無い",
+  "kind": "usecase",
+  "tags": [
+   "開発",
+   "macOS",
+   "zsh",
+   "bash",
+   "環境変数",
+   "語分割",
+   "timeout",
+   "シェル"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "AI が Mac で実行するシェルの操作は zsh 前提で書く。複雑な環境変数の組み立ては bash のスクリプトにして /bin/bash で実行し、待ちは perl の alarm で作る",
+  "parts": [
+   "packaging"
+  ],
+  "related": [
+   "uc-mac-bash-variable-japanese",
+   "uc-ai-cli-invocation-traps",
+   "uc-windows-powershell-traps",
+   "platform-mac"
+  ],
+  "path": "usecases/uc-dev-zsh-shell-traps.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-fps-conform-rate-trust",
+  "title": "パネルが報告したレートを無条件に信じて、正しい XML を張り替えた",
+  "kind": "usecase",
+  "tags": [
+   "fps",
+   "XML",
+   "conform",
+   "信頼境界",
+   "丸め",
+   "rate"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "外部から来たレートで XML を書き換えるときは、XML 自身の宣言と突き合わせて、大きく食い違うなら拒否して警告する。区間の長さは長さを保って丸める",
+  "parts": [
+   "fcpxml",
+   "silence-cut"
+  ],
+  "related": [
+   "uc-fps-property-missing",
+   "uc-fps-silent-default-30",
+   "uc-fps-vfr-timebase",
+   "ref-fcp7-xml"
+  ],
+  "path": "usecases/uc-fps-conform-rate-trust.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-fps-mixed-ticks-basis",
+  "title": "終盤ほどカットがずれる（フレームと ticks の基準の混在）",
+  "kind": "usecase",
+  "tags": [
+   "fps",
+   "ticks",
+   "pproTicks",
+   "FCP7 XML",
+   "in/out",
+   "rate",
+   "ずれ",
+   "換算"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "XML の中でフレーム値・in/out・ticks が別々の基準を持つと、差が位置に比例して貯まる。全部を同じ基準で換算し、実際の XML で確かめるまで規則を固定しない",
+  "parts": [
+   "fcpxml",
+   "silence-cut"
+  ],
+  "related": [
+   "uc-fps-vfr-timebase",
+   "uc-fps-conform-rate-trust",
+   "uc-fps-override-not-in-file-rate",
+   "ref-fcp7-xml",
+   "ref-ticktime"
+  ],
+  "path": "usecases/uc-fps-mixed-ticks-basis.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-fps-override-not-in-file-rate",
+  "title": "FPS を上書きした素材が、カット後に元の fps へ戻って音ずれする",
+  "kind": "usecase",
+  "tags": [
+   "fps",
+   "Interpret Footage",
+   "FCP7 XML",
+   "file",
+   "rate",
+   "音ずれ",
+   "29.97"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "素材のフレームレートを上書きしても、FCP XML の素材側 file の rate には載らない。クリップ側 rate と file 側 rate が食い違うときは揃えるが、変更前のレートが取れたときだけ注意を出す",
+  "parts": [
+   "fcpxml",
+   "silence-cut"
+  ],
+  "related": [
+   "uc-fps-mixed-ticks-basis",
+   "uc-fps-vfr-timebase",
+   "ref-fcp7-xml"
+  ],
+  "path": "usecases/uc-fps-override-not-in-file-rate.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-fps-property-missing",
+  "title": "60fps なのに 30fps として扱われる（存在しないプロパティを読んで黙って既定値に落ちた）",
+  "kind": "usecase",
+  "tags": [
+   "fps",
+   "UXP",
+   "SequenceSettings",
+   "getVideoFrameRate",
+   "既定値",
+   "undefined"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "partial",
+  "summary": "シーケンスの fps を「存在しないプロパティ」から読むと常に undefined になり、既定の 30 が実際の値として下流へ流れる。メソッド getVideoFrameRate() を await で呼び、取れなければ失敗として扱う",
+  "parts": [
+   "ppro-kit",
+   "silence-cut"
+  ],
+  "related": [
+   "uc-fps-silent-default-30",
+   "uc-fps-conform-rate-trust",
+   "core-api-patterns"
+  ],
+  "path": "usecases/uc-fps-property-missing.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-fps-silent-default-30",
+  "title": "fps の検出失敗を「もっともらしい既定値 30」で隠さない",
+  "kind": "usecase",
+  "tags": [
+   "fps",
+   "既定値",
+   "fail-closed",
+   "NaN",
+   "検出失敗",
+   "設計"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "検出に失敗した fps を 30 などで埋めて成功の形で返すと、下流が気づかず事故る。NaN・null・停止で伝え、呼び出し元を全部洗う",
+  "parts": [
+   "ppro-kit",
+   "silence-cut",
+   "fcpxml"
+  ],
+  "related": [
+   "uc-fps-property-missing",
+   "uc-fps-conform-rate-trust",
+   "core-safety"
+  ],
+  "path": "usecases/uc-fps-silent-default-30.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-fps-vfr-timebase",
+  "title": "最後の 100 秒だけカットされない（宣言の timebase と実際の fps の食い違い）",
+  "kind": "usecase",
+  "tags": [
+   "fps",
+   "VFR",
+   "timebase",
+   "FCP7 XML",
+   "画面収録",
+   "末尾",
+   "同期"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "可変フレームレート素材は、実際は 29.998fps でも XML には整数の timebase=29 で書かれる。宣言された値と実際の値は一致しない前提で、解析の窓を実際の長さに抑え、レートを張り替える",
+  "parts": [
+   "fcpxml",
+   "silence-cut"
+  ],
+  "related": [
+   "uc-fps-mixed-ticks-basis",
+   "uc-fps-conform-rate-trust",
+   "ref-fcp7-xml",
+   "ref-ticktime"
+  ],
+  "path": "usecases/uc-fps-vfr-timebase.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-auto-load-frozen",
+  "title": "UDT を使わないパネルの自動読み込みの試作は、実機で確かめないまま統合を見送り、凍結した",
+  "kind": "usecase",
+  "tags": [
+   "UDT",
+   "自動読み込み",
+   "凍結",
+   "非公式",
+   "判断"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "実機で検証していない導入の自動化は本線に入れない。残りの作業とリスクを文書にして凍結する。非公式のプロトコルへの依存は、いつ壊れるか分からない",
+  "parts": [
+   "packaging"
+  ],
+  "related": [
+   "uc-install-udt-connects-once",
+   "uc-install-udt-package-stale",
+   "core-safety"
+  ],
+  "path": "usecases/uc-install-auto-load-frozen.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-cc-signin-wipes",
+  "title": "Creative Cloud にサインインし直したら、導入した補助プラグインが消えた",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "UPIA",
+   "登録簿",
+   "Creative Cloud",
+   "サインイン",
+   "PluginsInfo"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=26.5",
+  "status": "verified",
+  "summary": "Creative Cloud が「ユーザーが変わった」と判断した瞬間に、UXP の登録簿が空に書き換わる。一覧コマンドには残って見えるので気づけない。もう一度 install すれば、再起動なしで戻る",
+  "parts": [
+   "packaging",
+   "probe"
+  ],
+  "related": [
+   "uc-install-udt-package-stale",
+   "core-versions",
+   "platform-mac"
+  ],
+  "path": "usecases/uc-install-cc-signin-wipes.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-cep-python-upia-home",
+  "title": "配布版を仮のホームで試しても再現しない。CEP から見える python3 と UPIA の書き込み先の罠",
+  "kind": "usecase",
+  "tags": [
+   "CEP",
+   "python3",
+   "UPIA",
+   "HOME",
+   "xcode-select",
+   "配布",
+   "AGENTS.md"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "Premiere の CEP から使える python3 は /usr/bin/python3 だけ。UPIA と defaults write は HOME を偽装しても本物のホームに書く。配布 ZIP に AI 向けの指示を入れるなら、開発リポジトリの同名ファイルと衝突しないよう、配布時に生成する",
+  "parts": [
+   "packaging",
+   "cep-helper"
+  ],
+  "related": [
+   "ref-cep-extendscript",
+   "platform-mac",
+   "uc-install-udt-package-stale"
+  ],
+  "path": "usecases/uc-install-cep-python-upia-home.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-cep-symlink-vs-copy",
+  "title": "CEP パネルを開発用のリンクのまま「動いた」と言ってしまう。配る形で再起動後まで確かめる",
+  "kind": "usecase",
+  "tags": [
+   "CEP",
+   "導入",
+   "シンボリックリンク",
+   "再起動",
+   "受け入れ",
+   "配布"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "シンボリックリンクで入れた CEP パネルは、元のフォルダを消すと一緒に消える。配る形（コピー導入）に入れ替えて、Premiere を再起動した後まで確認してから完了とする",
+  "parts": [
+   "packaging",
+   "cep-helper"
+  ],
+  "related": [
+   "ref-cep-extendscript",
+   "uc-install-same-version",
+   "core-verification"
+  ],
+  "path": "usecases/uc-install-cep-symlink-vs-copy.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-dist-zip-gates",
+  "title": "作業ツリーをそのまま固めると、認証トークンやテストが配布物に混ざる",
+  "kind": "usecase",
+  "tags": [
+   "配布",
+   "ZIP",
+   "ゲート",
+   "git ls-files",
+   "検査",
+   "再生成"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "配布 ZIP は 1 コマンドで再生成し、git で追跡しているファイルを基準に組む。「含めるもの」と「含めてはいけないもの」の両方をゲートで検査し、展開した実物で確かめる",
+  "parts": [
+   "packaging"
+  ],
+  "related": [
+   "uc-install-secret-name-dropped",
+   "uc-install-zip-japanese-names",
+   "uc-install-personal-info-leak",
+   "core-versioning-release"
+  ],
+  "path": "usecases/uc-install-dist-zip-gates.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-edit-vs-running-copy",
+  "title": "直したのに「何も変わらない」。編集した場所と動いている実体が別のコピーだった",
+  "kind": "usecase",
+  "tags": [
+   "開発",
+   "反映",
+   "稼働コピー",
+   "同期",
+   "rsync",
+   "版"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "動いているサーバーとパネルは、リポジトリや配布 ZIP とは別のコピーであることが多い。まず「何がどこで動いているか」を特定し、チェックサムで同期して、状態確認の応答で届いたことまで確かめる",
+  "parts": [
+   "packaging",
+   "local-server"
+  ],
+  "related": [
+   "core-dev-loop",
+   "uc-install-reload-layers",
+   "uc-install-stale-panel-version-chip"
+  ],
+  "path": "usecases/uc-install-edit-vs-running-copy.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-personal-info-leak",
+  "title": "配布物や公開リポジトリに、個人のパス・初期データの個人名・平文の辞書が混ざった",
+  "kind": "usecase",
+  "tags": [
+   "公開",
+   "個人情報",
+   "配布",
+   "辞書",
+   "履歴",
+   "filter-repo",
+   "秘匿"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "個人の辞書・メモ・パスは配布物から分離し、全走査のテストと公開直前の差分確認を通す。公開済みなら、履歴ごと書き換える",
+  "parts": [
+   "packaging"
+  ],
+  "related": [
+   "uc-install-dist-zip-gates",
+   "uc-install-secret-name-dropped",
+   "core-safety"
+  ],
+  "path": "usecases/uc-install-personal-info-leak.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-protocol-not-version",
+  "title": "パネルとサーバーの互換を版数の一致で判定したら、警告が出ず 404 で失敗した",
+  "kind": "usecase",
+  "tags": [
+   "互換",
+   "プロトコル",
+   "capabilities",
+   "版",
+   "パネル",
+   "サーバー",
+   "更新"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "別々に配る画面と常駐サーバーは、版数の文字列でなく「通信の番号」や「できることの申告」で互換を判定する。古い側が来たら、つながずに更新を促す",
+  "parts": [
+   "local-server",
+   "mcp-bridge"
+  ],
+  "related": [
+   "uc-install-stale-panel-version-chip",
+   "uc-install-version-scattered",
+   "ref-local-server"
+  ],
+  "path": "usecases/uc-install-protocol-not-version.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-reload-layers",
+  "title": "サーバーを再起動してもパネルは古いまま。変更の反映は層ごとに手段が違う",
+  "kind": "usecase",
+  "tags": [
+   "開発",
+   "反映",
+   "Reload",
+   "UDT",
+   "再起動",
+   "トークン"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "パネルだけの変更は UDT の Reload、サーバーの変更は常駐の再起動、再起動でトークンが変わるならパネルも Reload。層ごとの反映手段を手順の冒頭に書く",
+  "parts": [
+   "local-server",
+   "packaging"
+  ],
+  "related": [
+   "core-dev-loop",
+   "uc-install-edit-vs-running-copy",
+   "uc-install-stale-panel-version-chip"
+  ],
+  "path": "usecases/uc-install-reload-layers.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-rewrite-dropped-seed",
+  "title": "インストーラを書き直した 1 つのコミットが、初期データの投入を静かに消し、8 版気づかれなかった",
+  "kind": "usecase",
+  "tags": [
+   "インストーラ",
+   "退行",
+   "辞書",
+   "初期データ",
+   "テスト",
+   "コミット"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "大きな書き直しは分割して、本体でない補助の手順（初期データの投入など）の効果を、実プロセス・実 HTTP の統合テストで書き直しの前から固定する",
+  "parts": [
+   "packaging",
+   "local-server"
+  ],
+  "related": [
+   "core-verification",
+   "uc-install-same-version",
+   "uc-install-version-scattered"
+  ],
+  "path": "usecases/uc-install-rewrite-dropped-seed.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-runtime-per-version",
+  "title": "展開した場所に依存した常駐が、移動・削除・同期で壊れる。渡す前に開発機だけの前提も洗い出す",
+  "kind": "usecase",
+  "tags": [
+   "配布",
+   "常駐",
+   "runtime",
+   "版別",
+   "開発機依存",
+   "ロールバック",
+   "OneDrive"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "常駐サーバーは展開したフォルダでなく、版ごとのフォルダへ複製して動かし、設定や仮想環境は外に置く。失敗したら以前の物に戻す。渡す前に「開発機にだけある物」を棚卸しする",
+  "parts": [
+   "packaging",
+   "local-server"
+  ],
+  "related": [
+   "uc-install-same-version",
+   "uc-install-tcc-protected-folder",
+   "platform-cross"
+  ],
+  "path": "usecases/uc-install-runtime-per-version.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-same-version",
+  "title": "作り直して入れたのに古いまま。同じ版数では導入先が更新されない",
+  "kind": "usecase",
+  "tags": [
+   "インストーラ",
+   "版",
+   "runtime",
+   "更新",
+   "常駐",
+   "再起動"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "版別のフォルダに入れる作りでは、同じ版数だと「既にあるので上書きしません」で古い物を使い続け、動いているサーバーも再起動されない。版を上げる条件と、入れ直し手順をセットで決める",
+  "parts": [
+   "packaging",
+   "local-server"
+  ],
+  "related": [
+   "core-versioning-release",
+   "uc-install-version-scattered",
+   "uc-install-edit-vs-running-copy"
+  ],
+  "path": "usecases/uc-install-same-version.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-secret-name-dropped",
+  "title": "配った先でサーバーが起動しない。名前に secret を含む部品が、配布から落ちた",
+  "kind": "usecase",
+  "tags": [
+   "配布",
+   "ビルド",
+   "除外",
+   "secret",
+   "token",
+   "credentials",
+   "import",
+   "部品名"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "配布ビルドは「秘密の混入防止」で名前に secret / token / credentials を含むファイルを黙って外す。部品の名前にこれらの語を使わず、配布物を展開して全部品を import できるか検査する",
+  "parts": [
+   "keychain",
+   "packaging"
+  ],
+  "related": [
+   "uc-install-dist-zip-gates",
+   "uc-install-version-scattered"
+  ],
+  "path": "usecases/uc-install-secret-name-dropped.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-stale-panel-version-chip",
+  "title": "「直っていない」と報告されたが、古いパネルで試されていた",
+  "kind": "usecase",
+  "tags": [
+   "版",
+   "パネル",
+   "診断",
+   "サポート",
+   "バージョン表示"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "パネルとサーバーは別々に更新されるので、画面に版が出ないと切り分けられない。版の表示を「panel X / server Y」の併記にし、起動ログにも版を出す",
+  "parts": [
+   "ui-kit",
+   "local-server"
+  ],
+  "related": [
+   "uc-install-reload-layers",
+   "uc-install-version-scattered",
+   "uc-install-protocol-not-version"
+  ],
+  "path": "usecases/uc-install-stale-panel-version-chip.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-support-pack",
+  "title": "「動きません」だけの問い合わせで、環境もエラーも分からず往復が増える",
+  "kind": "usecase",
+  "tags": [
+   "サポート",
+   "診断",
+   "ZIP",
+   "秘匿化",
+   "テンプレート",
+   "遠隔"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "配るなら、秘匿化した診断を 1 クリックで ZIP にする「サポートパック」と、問い合わせテンプレート、切り分けの表を最初から付ける。実機の無い OS は、失敗時に画面とログを回収できる作りにする",
+  "parts": [
+   "logger",
+   "packaging"
+  ],
+  "related": [
+   "uc-install-unsigned-os-protection",
+   "platform-windows",
+   "core-safety"
+  ],
+  "path": "usecases/uc-install-support-pack.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-tcc-protected-folder",
+  "title": "書類・デスクトップ・ダウンロードに置くと、常駐サーバーが「Operation not permitted」で起動しない",
+  "kind": "usecase",
+  "tags": [
+   "Mac",
+   "TCC",
+   "launchd",
+   "常駐",
+   "権限",
+   "配布",
+   "インストーラ"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "macOS は書類・デスクトップ・ダウンロードを個別許可制にし、画面を出せない常駐プロセスは弾かれる。開発機では再現しない。インストーラが置き場所を検査して、保護フォルダなら止めて別の場所へ案内する",
+  "parts": [
+   "packaging",
+   "local-server"
+  ],
+  "related": [
+   "platform-mac",
+   "uc-install-verify-hijacks-agent",
+   "ref-local-server"
+  ],
+  "path": "usecases/uc-install-tcc-protected-folder.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-udt-connects-once",
+  "title": "後から立ち上げたローダーに Premiere はつながらない。UDT 型の読み込みは起動時の一度きり",
+  "kind": "usecase",
+  "tags": [
+   "UDT",
+   "読み込み",
+   "WebSocket",
+   "起動順",
+   "開発者モード"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "開発者モードの Premiere は、起動時に一度だけ 127.0.0.1:14001 のローダーへつなぎにいき、リトライしない。ローダーは Premiere より先に起動する",
+  "parts": [
+   "packaging"
+  ],
+  "related": [
+   "uc-install-auto-load-frozen",
+   "uc-install-udt-package-stale",
+   "core-dev-loop"
+  ],
+  "path": "usecases/uc-install-udt-connects-once.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-udt-package-stale",
+  "title": "UDT の Package が古い版の .ccx を作る。上書きの入れ直しでは古い版が動き続ける",
+  "kind": "usecase",
+  "tags": [
+   "UDT",
+   "UPIA",
+   "ccx",
+   "導入",
+   "更新",
+   "remove",
+   "install"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": ".ccx は上書きでなく「remove してから install」で入れる。UDT の Package は同じ ID の登録済みの古いエントリを掴むので、先に Remove してから Add し、できた物の版を確かめる",
+  "parts": [
+   "packaging"
+  ],
+  "related": [
+   "core-versioning-release",
+   "uc-install-same-version",
+   "uc-install-cc-signin-wipes",
+   "uc-install-udt-connects-once"
+  ],
+  "path": "usecases/uc-install-udt-package-stale.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-unsigned-os-protection",
+  "title": "署名していない配布物が、OS の保護と展開の経路に引っかかる",
+  "kind": "usecase",
+  "tags": [
+   "配布",
+   "Gatekeeper",
+   "SmartScreen",
+   "実行権限",
+   "quarantine",
+   "ZIP",
+   "展開"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "署名していない配布スクリプトは、OS の保護に当たる前提で、迂回でなく正規の起動手順を標準にする。展開の構成を検査して、崩れていたら止める",
+  "parts": [
+   "packaging"
+  ],
+  "related": [
+   "uc-install-zip-japanese-names",
+   "uc-install-support-pack",
+   "platform-mac",
+   "platform-windows"
+  ],
+  "path": "usecases/uc-install-unsigned-os-protection.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-vendor-canonical-double",
+  "title": "同梱した部品と外にある本家の二重管理で、古い版を使ったり直しを入れ忘れたりする",
+  "kind": "usecase",
+  "tags": [
+   "配布",
+   "同梱",
+   "vendor",
+   "二重管理",
+   "同期",
+   "版"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "同じ名前の部品を「同梱コピー」と「外の本家」に持つと、古い方を採用したり直しを片方に入れ忘れたりする。内容の目印で版を検査し、同期は差分で止まる作りにして、意図的な食い違いは台帳に残す",
+  "parts": [
+   "packaging"
+  ],
+  "related": [
+   "core-versioning-release",
+   "uc-install-edit-vs-running-copy"
+  ],
+  "path": "usecases/uc-install-vendor-canonical-double.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-verify-hijacks-agent",
+  "title": "配布物の確認でインストーラを一時フォルダから完走させたら、動いていた常駐が確認用コピーに乗り換わった",
+  "kind": "usecase",
+  "tags": [
+   "配布",
+   "検証",
+   "インストーラ",
+   "launchd",
+   "常駐",
+   "事故"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "副作用のあるインストーラを保護されていない場所で最後まで走らせると、本番の登録を上書きする。確認は「保護フォルダで止まるところまで」にし、時間切れで止める見積もりに頼らない",
+  "parts": [
+   "packaging"
+  ],
+  "related": [
+   "uc-install-tcc-protected-folder",
+   "core-verification",
+   "core-safety"
+  ],
+  "path": "usecases/uc-install-verify-hijacks-agent.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-version-scattered",
+  "title": "版数が何か所にも書かれていて、表示や見出しがずれる",
+  "kind": "usecase",
+  "tags": [
+   "版",
+   "配布",
+   "テスト",
+   "ゲート",
+   "manifest",
+   "変更履歴"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "版数が複数のファイルに散らばる配布物は、全箇所の一致を機械のテストと配布 ZIP の検査で固定する。並行して作業するときは、あとからマージする側がまとめて版を上げる",
+  "parts": [
+   "packaging"
+  ],
+  "related": [
+   "core-versioning-release",
+   "uc-install-same-version",
+   "uc-install-stale-panel-version-chip"
+  ],
+  "path": "usecases/uc-install-version-scattered.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-install-zip-japanese-names",
+  "title": "日本語名を含む配布 ZIP の罠。文字化け・実行権限の消失・拡張属性・OS の混入物",
+  "kind": "usecase",
+  "tags": [
+   "配布",
+   "ZIP",
+   "UTF-8",
+   "実行権限",
+   "拡張属性",
+   "zsh",
+   "日本語"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "ZIP は「開ける」だけでなく、ファイル名のフラグ・実行権限・拡張属性・OS ごとの混入物を全エントリで検査する。OS 標準の zip 作成は UTF-8 のフラグを立てない",
+  "parts": [
+   "packaging"
+  ],
+  "related": [
+   "uc-install-dist-zip-gates",
+   "uc-install-unsigned-os-protection",
+   "platform-cross"
+  ],
+  "path": "usecases/uc-install-zip-japanese-names.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mac-bash-variable-japanese",
+  "title": "Mac のインストーラが途中で止まる。「$変数」の直後の日本語が変数名に混ざる",
+  "kind": "usecase",
+  "tags": [
+   "Mac",
+   "bash",
+   "シェル",
+   "インストーラ",
+   "日本語",
+   "ロケール",
+   "set -u"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "Mac 標準の bash 3.2 は、UTF-8 の環境で「$VAR」の直後の日本語の先頭バイトを変数名に取り込む。変数は ${VAR} と書き、候補の列挙は while read で回す",
+  "parts": [
+   "packaging"
+  ],
+  "related": [
+   "platform-mac",
+   "uc-windows-cp932",
+   "core-verification"
+  ],
+  "path": "usecases/uc-mac-bash-variable-japanese.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mac-ffmpeg-detection",
+  "title": "ffmpeg の案内文が実装と食い違い、PATH の先頭の Intel 専用ビルドで起動に失敗する",
+  "kind": "usecase",
+  "tags": [
+   "ffmpeg",
+   "Mac",
+   "PATH",
+   "Intel",
+   "Homebrew",
+   "診断",
+   "インストーラ"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "ffmpeg は同梱せず、案内文は実装と一致させる。有無は PATH ではなく「-version を実行」して判定する。PATH の先頭にある Intel 専用ビルドに注意する",
+  "parts": [
+   "media-tools",
+   "packaging"
+  ],
+  "related": [
+   "platform-mac",
+   "uc-install-support-pack",
+   "uc-mac-intel-degraded"
+  ],
+  "path": "usecases/uc-mac-ffmpeg-detection.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mac-intel-degraded",
+  "title": "Intel Mac で mlx 系が動かず導入が失敗する。縮退構成を作るなら wheel の提供を先に測る",
+  "kind": "usecase",
+  "tags": [
+   "Intel Mac",
+   "x86_64",
+   "wheel",
+   "mlx",
+   "faster-whisper",
+   "縮退",
+   "fail-closed"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "古い CPU 向けの縮退構成は、依存全体の wheel 提供を PyPI で先に実測する。画面とバックエンドの両方で fail-closed にして、静かな代替を防ぐ。実機が無い項目は一覧にして、未測定の速度などはガイドに書かない",
+  "parts": [
+   "transcribe-srt",
+   "packaging"
+  ],
+  "related": [
+   "platform-mac",
+   "uc-mac-ffmpeg-detection",
+   "uc-windows-guide-python-limit"
+  ],
+  "path": "usecases/uc-mac-intel-degraded.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mac-shortcut-nsuserkeyequivalents",
+  "title": "統合したあと、ショートカットが 1 つだけ効かない",
+  "kind": "usecase",
+  "tags": [
+   "Mac",
+   "ショートカット",
+   "NSUserKeyEquivalents",
+   "メニュー名",
+   "誤診",
+   "defaults"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=26.3",
+  "status": "verified",
+  "summary": "Mac のショートカットの実体は macOS の NSUserKeyEquivalents で、メニュー項目名の完全一致で照合される。プラグイン ID を変えると引き継がれない、は誤判定だった",
+  "parts": [
+   "packaging"
+  ],
+  "related": [
+   "platform-mac",
+   "uc-uxp-shortcut-commands-not-listed",
+   "core-versioning-release"
+  ],
+  "path": "usecases/uc-mac-shortcut-nsuserkeyequivalents.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-addkey-time-base",
+  "title": "キーフレームを打った時刻が約 1 時間ずれる（addKey の時刻は素材の入点基準）",
+  "kind": "usecase",
+  "tags": [
+   "ExtendScript",
+   "addKey",
+   "キーフレーム",
+   "MOGRT",
+   "入点",
+   "pproTicksIn",
+   "時間基準"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "addKey の時刻はクリップ先頭ではなく素材の入点が基準。MOGRT の入点は約 3600 秒なので、先頭からの秒数に入点を足して打つ",
+  "parts": [
+   "ppro-kit",
+   "mogrt-text"
+  ],
+  "related": [
+   "ref-ticktime",
+   "ref-keyframe-interpolation",
+   "uc-fps-vfr-timebase"
+  ],
+  "path": "usecases/uc-mogrt-addkey-time-base.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-adobe-fonts-signout",
+  "title": "全デザインが「書体なし」になる（Creative Cloud のサインアウトで Adobe Fonts が空）",
+  "kind": "usecase",
+  "tags": [
+   "フォント",
+   "Adobe Fonts",
+   "Creative Cloud",
+   "サインアウト",
+   "E_FONT",
+   "書体探索"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=26.2",
+  "status": "verified",
+  "summary": "Adobe Fonts は Creative Cloud のサインアウトで空になる。書体の探索は Adobe Fonts だけでなく、利用者が入れた書体の置き場も見て、全件が欠けたらサインアウトを疑う",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "feat-ed-catalog-previews",
+   "feat-ed-import-styles",
+   "platform-mac"
+  ],
+  "path": "usecases/uc-mogrt-adobe-fonts-signout.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-anchor-arc-afterimage",
+  "title": "画面下のテロップに拡大・回転を当てると画面中央へ弧を描く",
+  "kind": "usecase",
+  "tags": [
+   "アニメーション",
+   "アンカーポイント",
+   "スケール",
+   "回転",
+   "残像",
+   "トランスフォーム",
+   "QE"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "既定のアンカーは画面中央。拡大や回転の前にアンカーを対象の位置へ移して位置を補正する。残像はトランスフォーム効果自身の動きにしか乗らない",
+  "parts": [
+   "mogrt-text",
+   "ppro-kit"
+  ],
+  "related": [
+   "ref-keyframe-interpolation",
+   "feat-ed-motion",
+   "uc-uxp-keyframe-curve-overshoot",
+   "ref-prfpset"
+  ],
+  "path": "usecases/uc-mogrt-anchor-arc-afterimage.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-binary-rule-without-data",
+  "title": "非公開バイナリの読み取り規則を実物なしで変えて、アニメ付きテロップで 0 件になった",
+  "kind": "usecase",
+  "tags": [
+   "OTIO",
+   "BinaryData",
+   "Source Text",
+   "バイリンガル",
+   "フィクスチャ",
+   "抽出規則",
+   "診断"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.3",
+  "status": "partial",
+  "summary": "非公開バイナリを読む規則は、実データを 1 件でも手元に落としてから書き換える。本文は位置でなく内容で決め、決まらなければ止める。診断用の保存の道具を先に用意する",
+  "parts": [
+   "ppro-kit",
+   "fcpxml"
+  ],
+  "related": [
+   "uc-mogrt-source-text-unreadable",
+   "uc-mogrt-localized-name-lookup",
+   "uc-mogrt-otio-track-pick"
+  ],
+  "path": "usecases/uc-mogrt-binary-rule-without-data.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-binaryhash-unknown",
+  "title": "blob を書き換えたときの BinaryHash の規則が割れない",
+  "kind": "usecase",
+  "tags": [
+   "MOGRT",
+   "BinaryHash",
+   "ハッシュ",
+   "blob",
+   "総当たり",
+   "診断",
+   "効かなかった試み"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "内容のハッシュは解読に固執せず、触らない版と代用値の版を対にして実機で判定する。「実害なし」は検証するまで推定にとどめる",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "uc-mogrt-empty-graphic-misdiagnosis",
+   "uc-mogrt-first-uuid",
+   "ref-mogrt"
+  ],
+  "path": "usecases/uc-mogrt-binaryhash-unknown.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-design-apply-replaces",
+  "title": "デザインを適用するとテロップの位置と動きが消え、取り消しが 2 回要る",
+  "kind": "usecase",
+  "tags": [
+   "デザイン",
+   "置換",
+   "位置",
+   "モーション",
+   "Undo",
+   "座標系",
+   "KAZARU"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.3",
+  "status": "unverified",
+  "summary": "置換型の操作は、失うもの（位置・動き・取り消しの回数）を先に利用者に警告する。別のツールの知識は、座標系と単位を翻訳して渡す",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "uc-uxp-mogrt-overwrite-unclear",
+   "uc-uxp-undo-grouping",
+   "feat-ed-design-apply",
+   "feat-kazaru"
+  ],
+  "path": "usecases/uc-mogrt-design-apply-replaces.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-donor-patch-method",
+  "title": "UXP にグラフィックを作る API が無い（同梱 MOGRT をパッチして挿入する方法）",
+  "kind": "usecase",
+  "tags": [
+   "MOGRT",
+   "ドナー",
+   "バイナリパッチ",
+   "insertMogrtFromPath",
+   "prgraphic",
+   "FlatBuffer",
+   "UXP"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.3",
+  "status": "partial",
+  "summary": "生成の API が無くても、同梱した MOGRT の blob を局所的にパッチして insertMogrtFromPath で入れれば、再編集できるグラフィックが作れる。尺の ticks は言語ごとに違い、MasterClip は 2 つある",
+  "parts": [
+   "mogrt-text",
+   "ppro-kit"
+  ],
+  "related": [
+   "ref-mogrt",
+   "uc-mogrt-first-uuid",
+   "uc-mogrt-second-insert-replaces",
+   "uc-mogrt-xml-synthesis-experiment",
+   "feat-cutsrt-shapes"
+  ],
+  "path": "usecases/uc-mogrt-donor-patch-method.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-donor-text-font-align",
+  "title": "パッチした文言が反映されない・日本語が豆腐になる・中央揃えが右揃えになる",
+  "kind": "usecase",
+  "tags": [
+   "MOGRT",
+   "clientControls",
+   "フォント",
+   "mAlignment",
+   "日本語",
+   "ドナー",
+   "豆腐"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "画面用の既定文字（clientControls）も一緒にパッチし、非ASCIIにはその言語のフォントを指定し、揃えの enum は推測せず突き合わせて確かめる（0=左、1=右、2=中央）",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "uc-mogrt-donor-patch-method",
+   "uc-mogrt-position-coordinates",
+   "uc-mogrt-empty-graphic-misdiagnosis",
+   "ref-mogrt"
+  ],
+  "path": "usecases/uc-mogrt-donor-text-font-align.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-empty-graphic-misdiagnosis",
+  "title": "生成した MOGRT が「空のグラフィック」になる（誤診が 3 回続いて凍結）",
+  "kind": "usecase",
+  "tags": [
+   "MOGRT",
+   "空グラフィック",
+   "誤診",
+   "Sequence ID",
+   "Keyframes",
+   "凍結",
+   "検証"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "挿入は成功するのにレイヤーが空になる。不透明度 0 説と Sequence ID 不一致説は 2 つとも直しても実機で直らなかった。実在の欠陥を直したことと症状が消えたことは別で、根治は実機の前後確認まで宣言しない",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "uc-mogrt-first-uuid",
+   "uc-mogrt-binaryhash-unknown",
+   "uc-mogrt-localized-name-lookup",
+   "ref-mogrt",
+   "feat-cutsrt-shapes"
+  ],
+  "path": "usecases/uc-mogrt-empty-graphic-misdiagnosis.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-first-uuid",
+  "title": "作った MOGRT が空のグラフィックになる（First の UUID まで振り直した）",
+  "kind": "usecase",
+  "tags": [
+   "MOGRT",
+   "UUID",
+   "First",
+   "MediaType",
+   "ドナー",
+   "描画",
+   "insertMogrtFromPath"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.3",
+  "status": "verified",
+  "summary": "ID の振り直しで、メディア種別を示す定数の UUID（First）まで変えると、挿入はできるのに描画が空になる。アセット固有の ID と、型を示す定数を区別し、後者は触らない",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "uc-mogrt-second-insert-replaces",
+   "uc-mogrt-empty-graphic-misdiagnosis",
+   "ref-mogrt",
+   "feat-ed-design-apply"
+  ],
+  "path": "usecases/uc-mogrt-first-uuid.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-flatbuffer-defaults",
+  "title": "書かれていない項目を 0 と決めつけて、色や縁が崩れる（FlatBuffer の既定値）",
+  "kind": "usecase",
+  "tags": [
+   "prtextstyle",
+   "FlatBuffer",
+   "既定値",
+   "テキストスタイル",
+   "画素一致",
+   "実測"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=26.5",
+  "status": "verified",
+  "summary": "FlatBuffer は既定値と同じ項目を書かない。欠けた項目を 0・黒・白と決めつけず、実機に描かせて画素が一致する値を既定値にする",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "ref-prtextstyle",
+   "uc-mogrt-style-import-keep-blob",
+   "uc-mogrt-text-render-rules",
+   "feat-kazaru"
+  ],
+  "path": "usecases/uc-mogrt-flatbuffer-defaults.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-importmgt-track-rounding",
+  "title": "上のトラックが無いと、元のクリップを上書きしてしまう（importMGT のトラック指定）",
+  "kind": "usecase",
+  "tags": [
+   "ExtendScript",
+   "importMGT",
+   "トラック",
+   "丸め",
+   "0始まり",
+   "addTracks",
+   "上書き"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "importMGT のトラック番号は 0 始まりで、指したトラックが無いとトラックを作らず最上段へ丸める。挿入の前に上のトラックを足し、挿入後に入り先を確かめる",
+  "parts": [
+   "ppro-kit",
+   "mogrt-text"
+  ],
+  "related": [
+   "uc-uxp-mogrt-overwrite-unclear",
+   "uc-mogrt-design-apply-replaces",
+   "ref-cep-extendscript",
+   "feat-ed-design-apply"
+  ],
+  "path": "usecases/uc-mogrt-importmgt-track-rounding.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-localized-name-lookup",
+  "title": "日本語の Premiere でだけ MOGRT のパラメータが見つからない（翻訳される表示名で引いた）",
+  "kind": "usecase",
+  "tags": [
+   "MOGRT",
+   "prgraphic",
+   "ObjectID",
+   "ロケール",
+   "日本語UI",
+   "表示名",
+   "ドナー"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "表示名は言語ごとに翻訳される。アセットの部品は ObjectID や ClassID など、言語に依らない識別子か構造上の位置で引く",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "uc-mogrt-empty-graphic-misdiagnosis",
+   "uc-mogrt-binary-rule-without-data",
+   "ref-mogrt"
+  ],
+  "path": "usecases/uc-mogrt-localized-name-lookup.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-otio-track-pick",
+  "title": "辞書の差分学習で、テロップの本文をどのトラックから読むか決まらない",
+  "kind": "usecase",
+  "tags": [
+   "OTIO",
+   "テロップ",
+   "辞書",
+   "差分学習",
+   "トラック",
+   "行数",
+   "一時ファイル"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.3",
+  "status": "verified",
+  "summary": "OTIO のテロップ本文を動画トラックごとに抽出し、直前の SRT の本文の行数に最も近いトラックを採る。比べる行数は表示用の字幕数と分けて持ち、一時ファイルは両側で消す",
+  "parts": [
+   "ppro-kit",
+   "fcpxml"
+  ],
+  "related": [
+   "uc-mogrt-source-text-unreadable",
+   "uc-mogrt-binary-rule-without-data",
+   "feat-cutsrt-dictionary"
+  ],
+  "path": "usecases/uc-mogrt-otio-track-pick.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-place-snap-edit-points",
+  "title": "自動で置いた画像が、テロップの区切りの途中から始まる（境界の定義の二重化）",
+  "kind": "usecase",
+  "tags": [
+   "配置",
+   "編集点",
+   "テロップ",
+   "吸着",
+   "TickTime",
+   "createOverwriteItemAction",
+   "画像"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "解析の秒数で置くと、テロップの切れ目とずれる。位置のずれは換算を疑う前に、2 つの機能が同じ境界を使っているかを測り、AI が出した秒位置は編集点へ吸着させる",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "uc-mogrt-ticktime-graphic-inout",
+   "ref-ticktime",
+   "feat-cutsrt-align"
+  ],
+  "path": "usecases/uc-mogrt-place-snap-edit-points.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-position-coordinates",
+  "title": "シェイプの位置がずれる（Position は正規化値で、基準辺が符号で変わる）",
+  "kind": "usecase",
+  "tags": [
+   "MOGRT",
+   "Position",
+   "正規化",
+   "StartKeyframe",
+   "IsTimeVarying",
+   "アニメーション",
+   "静止化"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "レイヤーの Position は正規化値で、0 以上は左/上辺基準、負は右/下辺基準。アニメ付きパラメータの StartKeyframe は捨て値で、静止化は Keyframes の削除と IsTimeVarying=false で行う",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "uc-mogrt-donor-text-font-align",
+   "uc-mogrt-empty-graphic-misdiagnosis",
+   "ref-mogrt"
+  ],
+  "path": "usecases/uc-mogrt-position-coordinates.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-second-insert-replaces",
+  "title": "生成した MOGRT を 2 個目に挿入すると 1 個目が消える（内部 ID の使い回し）",
+  "kind": "usecase",
+  "tags": [
+   "MOGRT",
+   "UUID",
+   "ObjectUID",
+   "ClipID",
+   "置換",
+   "ドナー",
+   "重なり"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "ドナーの内部 ID を全生成物で使い回すと、Premiere は同じアセットの再挿入と見なして置換する。参照整合を保って毎回振り直し、尺内の続けての挿入は挿入前に検査する",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "uc-mogrt-first-uuid",
+   "uc-mogrt-donor-patch-method",
+   "uc-uxp-mogrt-overwrite-unclear",
+   "ref-mogrt"
+  ],
+  "path": "usecases/uc-mogrt-second-insert-replaces.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-source-text-unreadable",
+  "title": "テロップの本文（Source Text）が API で読めない",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "ExtendScript",
+   "Source Text",
+   "getValue",
+   "OTIO",
+   "BinaryData",
+   "ComponentParam"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.3",
+  "status": "partial",
+  "summary": "Source Text は複合型で、ExtendScript の getValue は 1 文字の文字化けを返し、UXP の ComponentParam は拒否する。OTIO の書き出しから BinaryData を取って読む。書き込みは setValue で効く",
+  "parts": [
+   "ppro-kit",
+   "fcpxml",
+   "mogrt-text"
+  ],
+  "related": [
+   "uc-mogrt-telop-text-not-greppable",
+   "uc-mogrt-binary-rule-without-data",
+   "uc-mogrt-otio-track-pick",
+   "ref-prtextstyle"
+  ],
+  "path": "usecases/uc-mogrt-source-text-unreadable.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-style-import-keep-blob",
+  "title": "取り込んだテキストスタイルの色・縁・光彩・斜体が半分ほど食い違う",
+  "kind": "usecase",
+  "tags": [
+   "スタイル",
+   "取り込み",
+   "blob",
+   "FlatBuffer",
+   "本文差し替え",
+   "画素一致",
+   "設計判断"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=26.5",
+  "status": "verified",
+  "summary": "非公開バイナリは作り直さず、元の blob を保ったまま必要な所（本文）だけを差し替える。元の画と取り込み後の画を全件比べて確かめる",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "uc-mogrt-flatbuffer-defaults",
+   "uc-mogrt-text-render-rules",
+   "feat-ed-import-styles",
+   "ref-prtextstyle"
+  ],
+  "path": "usecases/uc-mogrt-style-import-keep-blob.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-telop-text-not-greppable",
+  "title": "テロップの本文が XML を検索しても見つからない",
+  "kind": "usecase",
+  "tags": [
+   "XML",
+   "テロップ",
+   "本文",
+   "FlatBuffer",
+   "base64",
+   "GraphicAndType",
+   "書き戻し"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.3",
+  "status": "partial",
+  "summary": "本文の置き場は、MOGRT なら effect の name、旧来のテロップなら base64 の中の FlatBuffer の末尾にある。置き場は書き出した XML で実測して決め、別種のクリップに同じ方式が通じると決めつけない",
+  "parts": [
+   "fcpxml",
+   "mogrt-text"
+  ],
+  "related": [
+   "uc-mogrt-source-text-unreadable",
+   "ref-prtextstyle",
+   "ref-fcp7-xml"
+  ],
+  "path": "usecases/uc-mogrt-telop-text-not-greppable.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-text-render-rules",
+  "title": "グラデーションと縁の描画の規則が、設計の思い込みと違う",
+  "kind": "usecase",
+  "tags": [
+   "テキスト描画",
+   "グラデーション",
+   "縁",
+   "字形",
+   "cmap",
+   "品質検査",
+   "実測"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=26.5",
+  "status": "partial",
+  "summary": "Premiere のグラデは文字列全体でなく 1 文字ずつ掛かり、縁の太さは縁ごとに輪郭から測る。不明な内部形式は利用者に GUI で作ってもらったものを解析し、字形は cmap で検査する",
+  "parts": [
+   "mogrt-text"
+  ],
+  "related": [
+   "uc-mogrt-flatbuffer-defaults",
+   "uc-mogrt-style-import-keep-blob",
+   "ref-prtextstyle"
+  ],
+  "path": "usecases/uc-mogrt-text-render-rules.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-ticktime-graphic-inout",
+  "title": "テロップの整列で、着地がずれる・カット点を飛び越える（TickTime 算術とグラフィックの in/out）",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "TickTime",
+   "グラフィック",
+   "setInPoint",
+   "setOutPoint",
+   "整列",
+   "吸着",
+   "検証"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "TickTime の引き算は負で異常値を返す。グラフィックは in/out を動かさず start/end だけを使い、候補の境界は始点と終点を分け、適用後に読み戻して確かめる",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "uc-mogrt-place-snap-edit-points",
+   "feat-caption-align",
+   "feat-cutsrt-align",
+   "ref-ticktime"
+  ],
+  "path": "usecases/uc-mogrt-ticktime-graphic-inout.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-mogrt-xml-synthesis-experiment",
+  "title": "スタイル済みテロップを XML で作れるか分からず、機能が止まっていた（実験の進め方）",
+  "kind": "usecase",
+  "tags": [
+   "実験",
+   "XMEML",
+   "Source Text",
+   "PNG",
+   "ドナー",
+   "判定基準",
+   "設計判断"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "実機でしか分からない前提は、結果の場合分けと判定の手順を先に決め、道具を作ってから 1 往復で実験する。この方式は PNG 合成を経て、ドナー MOGRT のパッチに置き換わった",
+  "parts": [
+   "fcpxml",
+   "mogrt-text"
+  ],
+  "related": [
+   "uc-mogrt-donor-patch-method",
+   "uc-mogrt-source-text-unreadable",
+   "ref-mogrt"
+  ],
+  "path": "usecases/uc-mogrt-xml-synthesis-experiment.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-server-atomic-output",
+  "title": "失敗やキャンセルで、前回の成果物や保存データが壊れる",
+  "kind": "usecase",
+  "tags": [
+   "staging",
+   "atomic",
+   "os.replace",
+   "成果物",
+   "キャンセル",
+   "保存形式",
+   "0件"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "成果物は同じフォルダの staging に書き、後処理が済んでから os.replace で公開する。0 件や部分成功を成功にせず、旧い保存データは消さない",
+  "parts": [
+   "local-server",
+   "silence-cut",
+   "transcribe-srt"
+  ],
+  "related": [
+   "uc-server-lock-order-cancel",
+   "uc-server-transcript-cache-fingerprint",
+   "core-safety"
+  ],
+  "path": "usecases/uc-server-atomic-output.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-server-body-limit-timeouts",
+  "title": "画像が送れない・接続が間欠的に切れる（受信上限と Node の既定タイムアウト）",
+  "kind": "usecase",
+  "tags": [
+   "Node",
+   "ローカルサーバー",
+   "タイムアウト",
+   "keepAliveTimeout",
+   "受信上限",
+   "https",
+   "Failed to fetch"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "受信の上限は最大のケースで決めて画面側で収め、Node の既定のタイムアウトは上書きする。1 回の失敗で切断と決めつけない",
+  "parts": [
+   "local-server"
+  ],
+  "related": [
+   "uc-server-bridge-contract-drift",
+   "uc-server-localhost-network-all",
+   "ref-local-server"
+  ],
+  "path": "usecases/uc-server-body-limit-timeouts.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-server-boundary-validation",
+  "title": "空の数値入力や AI の応答の NaN で設定や候補が壊れる（境界での検査）",
+  "kind": "usecase",
+  "tags": [
+   "NaN",
+   "null",
+   "JSON",
+   "検証",
+   "debounce",
+   "設定",
+   "エラー応答",
+   "LLM"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "画面や AI から来る数値は、送る側と受ける側の両方で検査する。実行時に影響する設定は、実行の要求の本文に明示し、通信のエラーと業務のエラーを混ぜない",
+  "parts": [
+   "local-server",
+   "ppro-kit"
+  ],
+  "related": [
+   "uc-server-lock-order-cancel",
+   "uc-server-bridge-contract-drift",
+   "uc-fps-silent-default-30"
+  ],
+  "path": "usecases/uc-server-boundary-validation.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-server-bridge-contract-drift",
+  "title": "ブリッジの認証ヘッダ名やポートがずれて、通信が失敗する・別物と取り合う",
+  "kind": "usecase",
+  "tags": [
+   "ブリッジ",
+   "認証ヘッダ",
+   "ポート",
+   "EADDRINUSE",
+   "名乗り",
+   "機械照合",
+   "プロキシ"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "手で組んだリクエストが通っても実クライアントの検証にはならない。固定のポートでなく、サーバーの名乗りで相手を同定し、2 つのファイルに書いた取り決めは機械で照合する",
+  "parts": [
+   "local-server",
+   "mcp-bridge"
+  ],
+  "related": [
+   "uc-server-stale-handshake-403",
+   "uc-server-body-limit-timeouts",
+   "ref-local-server"
+  ],
+  "path": "usecases/uc-server-bridge-contract-drift.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-server-cli-exit-zero-path",
+  "title": "画面が呼ぶ CLI が失敗で終了すると画面が止まる・常駐側で ffmpeg が見つからない",
+  "kind": "usecase",
+  "tags": [
+   "CLI",
+   "終了コード",
+   "JSON",
+   "PATH",
+   "常駐",
+   "ffmpeg",
+   "Python",
+   "doctor"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "画面が呼ぶ CLI は、失敗でも終了コード 0 で JSON を返し、失敗は本文で伝える。常駐やパネルは対話シェルの PATH を引き継がないので、絶対パスの候補を探す",
+  "parts": [
+   "local-server",
+   "ppro-kit"
+  ],
+  "related": [
+   "uc-server-preflight-light",
+   "core-dev-loop",
+   "platform-cross"
+  ],
+  "path": "usecases/uc-server-cli-exit-zero-path.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-server-launchd-log-rotation",
+  "title": "常駐サーバーのログを truncate すると、巨大な空白ができる（launchd）",
+  "kind": "usecase",
+  "tags": [
+   "macOS",
+   "launchd",
+   "ログ",
+   "truncate",
+   "kickstart",
+   "ローテーション",
+   "常駐"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "launchd が握るログのファイルは稼働中に truncate せず、リネームしてからジョブを再起動して世代を作る。確かめられない前提に頼らない手順を選ぶ",
+  "parts": [
+   "local-server",
+   "logger"
+  ],
+  "related": [
+   "platform-mac",
+   "uc-mac-bash-variable-japanese",
+   "ref-local-server"
+  ],
+  "path": "usecases/uc-server-launchd-log-rotation.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-server-localhost-network-all",
+  "title": "パネルから手元のサーバーにつながらない（network.domains の個別許可では fetch が発生しない）",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "manifest",
+   "network.domains",
+   "fetch",
+   "loopback",
+   "ローカルサーバー",
+   "127.0.0.1"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=26.3",
+  "status": "verified",
+  "summary": "manifest の許可リストに http://127.0.0.1:3850 のような個別の loopback を書いても fetch が発生しなかった。network.domains を all にし、安全性はサーバー側（loopback だけで待ち受ける・起動ごとのトークン）で担保する",
+  "parts": [
+   "local-server",
+   "ppro-kit"
+  ],
+  "related": [
+   "core-manifest-permissions",
+   "ref-local-server",
+   "uc-server-stale-handshake-403",
+   "core-safety"
+  ],
+  "path": "usecases/uc-server-localhost-network-all.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-server-lock-order-cancel",
+  "title": "同時に走ってしまう・キャンセルが失敗の通知になる（ロックと終了状態の順序）",
+  "kind": "usecase",
+  "tags": [
+   "ロック",
+   "キャンセル",
+   "非同期",
+   "await",
+   "プロセス停止",
+   "PID",
+   "状態"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "排他ロックは await の前に取り、終了の状態は後処理が済んでから 1 回だけ公開する。プロセスの停止は、PID だけでなく identity（起動時刻など）で照合し、キャンセルとエラーは画面まで区別する",
+  "parts": [
+   "local-server",
+   "ppro-kit"
+  ],
+  "related": [
+   "uc-server-atomic-output",
+   "uc-server-boundary-validation",
+   "core-transactions"
+  ],
+  "path": "usecases/uc-server-lock-order-cancel.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-server-mcp-long-job",
+  "title": "MCP ツールの設計と保守（長時間のジョブ・宣言と実装のずれ・200 の中の失敗）",
+  "kind": "usecase",
+  "tags": [
+   "MCP",
+   "長時間ジョブ",
+   "ポーリング",
+   "機械照合",
+   "ツール定義",
+   "通信エラー",
+   "AST"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "長い処理は「開始」と「状態確認」の二段にし、ツールの宣言と文書の対応は実装を読んで機械で照合する。通信の成否とジョブの成否は別の層で判定する",
+  "parts": [
+   "mcp-bridge",
+   "local-server"
+  ],
+  "related": [
+   "ref-mcp",
+   "feat-cutsrt-mcp",
+   "feat-premiere-agent-kit",
+   "uc-server-boundary-validation"
+  ],
+  "path": "usecases/uc-server-mcp-long-job.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-server-preflight-light",
+  "title": "事前の確認や診断が、ログイン確認のプローブで最大 60 秒止まる",
+  "kind": "usecase",
+  "tags": [
+   "プリフライト",
+   "診断",
+   "doctor",
+   "サブプロセス",
+   "CLI",
+   "ログイン確認",
+   "設計判断"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "事前の確認と診断は、「入っているか・設定されているか」までの軽い判定に絞る。重い確認は、既存の工程か、利用者が押す再検査のボタンに分ける",
+  "parts": [
+   "local-server"
+  ],
+  "related": [
+   "uc-server-cli-exit-zero-path",
+   "feat-cutsrt-ai-engines",
+   "feat-cutsrt-settings-diagnostics"
+  ],
+  "path": "usecases/uc-server-preflight-light.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-server-secrets-oauth-state",
+  "title": "設定の取得で秘密の値が流れる・OAuth のコールバックをどう守るか",
+  "kind": "usecase",
+  "tags": [
+   "秘密情報",
+   "API",
+   "OAuth",
+   "state",
+   "コールバック",
+   "MCP",
+   "トークン",
+   "設定"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "外部の AI 向けの設定取得は、値そのものでなく「設定済みか」だけを返す。ヘッダ認証のサーバーで OAuth のコールバックを受けるときは、ヘッダ検査の外に置いた分を state の一致で守る",
+  "parts": [
+   "local-server",
+   "mcp-bridge",
+   "keychain"
+  ],
+  "related": [
+   "uc-server-stale-handshake-403",
+   "uc-install-secret-name-dropped",
+   "ref-mcp",
+   "core-safety"
+  ],
+  "path": "usecases/uc-server-secrets-oauth-state.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-server-slowness-polling",
+  "title": "見張りの重複と、範囲を絞らない処理で遅くなる",
+  "kind": "usecase",
+  "tags": [
+   "パフォーマンス",
+   "ポーリング",
+   "in-flight",
+   "キャッシュ",
+   "範囲指定",
+   "ログ",
+   "一時ファイル"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "ポーリングは「前の呼び出しが終わるまで次を出さない」ガードと、見えているときだけ動く判定を入れる。範囲指定は最上流で効かせ、結果にオフセットを足して戻す",
+  "parts": [
+   "local-server",
+   "ppro-kit"
+  ],
+  "related": [
+   "uc-server-transcript-cache-fingerprint",
+   "uc-server-cli-exit-zero-path",
+   "core-api-patterns"
+  ],
+  "path": "usecases/uc-server-slowness-polling.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-server-stale-handshake-403",
+  "title": "403 がずっと続く（古い握手のファイル・フォルダごとのトークンのずれ）",
+  "kind": "usecase",
+  "tags": [
+   "ローカルサーバー",
+   "トークン",
+   "403",
+   "ready",
+   "server.json",
+   "更新",
+   "MCP",
+   "認証"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "更新版を別のフォルダへ展開すると、アダプタが隣の古い ready を読み、稼働中のサーバーは別のフォルダにいて、恒久的に 403 になる。認証情報は、マシンに 1 つの既知の場所へ集める",
+  "parts": [
+   "local-server",
+   "mcp-bridge"
+  ],
+  "related": [
+   "uc-server-localhost-network-all",
+   "uc-server-bridge-contract-drift",
+   "uc-install-same-version",
+   "ref-local-server"
+  ],
+  "path": "usecases/uc-server-stale-handshake-403.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-server-transcript-cache-fingerprint",
+  "title": "辞書やモデルを更新しても古い文字起こしが使われる（キャッシュの判定が足りない）",
+  "kind": "usecase",
+  "tags": [
+   "キャッシュ",
+   "転写",
+   "fingerprint",
+   "モデル",
+   "辞書",
+   "VAD",
+   "ハッシュ"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "キャッシュの再利用は、結果を変えるすべての要素の指紋と、内容のハッシュの両方が一致したときだけにする。書き込みに失敗したときは、古い派生ファイルを消す",
+  "parts": [
+   "transcribe-srt",
+   "local-server"
+  ],
+  "related": [
+   "uc-fps-vfr-timebase",
+   "uc-server-atomic-output",
+   "feat-cutsrt-telop-srt"
+  ],
+  "path": "usecases/uc-server-transcript-cache-fingerprint.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ui-audit-common-defects",
+  "title": "パネルの画面の見直しで、毎回見つかる定番の欠陥",
+  "kind": "usecase",
+  "tags": [
+   "UI",
+   "監査",
+   "トースト",
+   "フォーカス",
+   "角丸",
+   "診断画面",
+   "取り消し"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "取り消しの案内は省略せず、失敗の通知は閉じるまで残し、副次画面にも戻る手段を付け、フォーカスと角丸は 1 つの規則にする",
+  "parts": [
+   "ui-kit"
+  ],
+  "related": [
+   "core-ui-rules",
+   "uc-ui-narrow-dock",
+   "uc-ui-cep-narrow-height"
+  ],
+  "path": "usecases/uc-ui-audit-common-defects.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ui-cep-narrow-height",
+  "title": "CEP パネルの幅や高さが小さいと、操作が画面の外へ押し出される",
+  "kind": "usecase",
+  "tags": [
+   "CEP",
+   "Chromium 99",
+   "レイアウト",
+   "ResizeObserver",
+   "media query",
+   "コンテナクエリ",
+   "ドック"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "パネルは幅も高さも変わる。操作の入口が画面の外へ出ないようにし、コンテナクエリなど新しい CSS に頼らず、ResizeObserver か media query で切り替える",
+  "parts": [
+   "ui-kit"
+  ],
+  "related": [
+   "core-ui-rules",
+   "uc-ui-narrow-dock",
+   "uc-ui-flex-rows-collapse"
+  ],
+  "path": "usecases/uc-ui-cep-narrow-height.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ui-details-hidden",
+  "title": "折りたたみに details を使うと開閉が不安定。hidden を付けても消えない",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "details",
+   "hidden",
+   "display",
+   "折りたたみ",
+   "CSS",
+   "トグル"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "UXP では標準の HTML 要素の対応を当てにせず、ボタンと div の自前トグルにする。hidden を使う画面には、先に [hidden]{display:none!important} を置く",
+  "parts": [
+   "ui-kit"
+  ],
+  "related": [
+   "core-ui-rules",
+   "uc-ui-uxp-css-limits",
+   "uc-ui-sp-button-inactive"
+  ],
+  "path": "usecases/uc-ui-details-hidden.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ui-flex-rows-collapse",
+  "title": "一覧の行やカードが中身より低く潰れて、ボタンが文字に重なる",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "CSS",
+   "flex",
+   "flex-shrink",
+   "grid",
+   "スクロール",
+   "下見"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "UXP の flex は、子に「中身より小さくならない下限」が無く、行が溢れると縮む。スクロールさせる列の子には flex:0 0 auto を付け、下見は UXP と同じ条件にして、件数を増やした状態で見る",
+  "parts": [
+   "ui-kit"
+  ],
+  "related": [
+   "core-ui-rules",
+   "uc-ui-narrow-dock",
+   "uc-ui-uxp-css-limits"
+  ],
+  "path": "usecases/uc-ui-flex-rows-collapse.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ui-mutationobserver-missing",
+  "title": "UXP に MutationObserver が無く、起動の処理が止まって設定も一覧も読み込まれない",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "MutationObserver",
+   "ReferenceError",
+   "下見",
+   "機能検出",
+   "起動"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "UXP には MutationObserver が無い。使う前に typeof で調べ、無ければ定期的な監視に切り替える。ブラウザでの下見が通しても、UXP に無い機能を削って確かめる",
+  "parts": [
+   "ui-kit"
+  ],
+  "related": [
+   "core-ui-rules",
+   "uc-uxp-init-tdz",
+   "uc-uxp-webview-not-browser"
+  ],
+  "path": "usecases/uc-ui-mutationobserver-missing.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ui-narrow-dock",
+  "title": "狭いドック（幅 280〜480px）のパネルで、入力欄が豆粒大に潰れる",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "レイアウト",
+   "ドック",
+   "幅",
+   "縦積み",
+   "主ボタン",
+   "width:100%"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "Premiere のパネルは幅が狭い。横並びを増やさず縦積みと折り返しを選び、全幅の主ボタンは入力欄と別の行に置く",
+  "parts": [
+   "ui-kit"
+  ],
+  "related": [
+   "core-ui-rules",
+   "uc-ui-flex-rows-collapse",
+   "uc-ui-cep-narrow-height"
+  ],
+  "path": "usecases/uc-ui-narrow-dock.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ui-select-wheel",
+  "title": "select の上でホイールを回すと、値が勝手に変わる",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "select",
+   "wheel",
+   "設定",
+   "巻き戻し",
+   "入力"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "UXP の select は、上でホイールを回すと値が変わる。ホイールの抑止、直近のホイールで起きた変更の巻き戻し、1 秒周期の突き合わせの 3 層で守る",
+  "parts": [
+   "ui-kit"
+  ],
+  "related": [
+   "core-ui-rules",
+   "uc-ui-textarea-null",
+   "core-verification"
+  ],
+  "path": "usecases/uc-ui-select-wheel.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ui-sp-button-inactive",
+  "title": "起動したときから表示されているページのボタン（sp-button）が押せない",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "sp-button",
+   "Spectrum",
+   "hidden",
+   "click",
+   "requestAnimationFrame",
+   "不活性"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "UXP の sp-button は、いったん非表示になって再び表示される遷移を経ないと、反応しない状態のままになる。最初のページを一度 hidden にして、次の描画で戻す。保険として pointerdown 後にクリックが来なければ実行する",
+  "parts": [
+   "ui-kit"
+  ],
+  "related": [
+   "core-ui-rules",
+   "uc-ui-details-hidden",
+   "uc-ui-uxp-css-limits"
+  ],
+  "path": "usecases/uc-ui-sp-button-inactive.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ui-svg-preview-measured",
+  "title": "パネルに出す見本を自分で描くと、Premiere の見た目とずれる。実測した数値で合わせる",
+  "kind": "usecase",
+  "tags": [
+   "CEP",
+   "UI",
+   "見本",
+   "SVG",
+   "フォント",
+   "画素比較",
+   "プレビュー"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "見本を自前で描くなら、同じフォントと詰め組みで描いて全件を見比べる。フォントの適用は、宣言したフォントと既定のフォントを canvas に描いた画素の比較で確かめる",
+  "parts": [
+   "ui-kit"
+  ],
+  "related": [
+   "core-ui-rules",
+   "uc-ui-flex-rows-collapse",
+   "core-verification"
+  ],
+  "path": "usecases/uc-ui-svg-preview-measured.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ui-textarea-null",
+  "title": "入力欄の値が null で、文字列に \"null\" が混ざる・NaN が設定を壊す",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "textarea",
+   "input",
+   "null",
+   "NaN",
+   "parseFloat",
+   "JSON",
+   "二重防御"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "UXP の textarea や空の入力欄は、value が null のことがある。文字列には空文字を先に入れ、数値は送信前に有限かどうかを見て落とし、サーバー側でも検査する",
+  "parts": [
+   "ui-kit",
+   "local-server"
+  ],
+  "related": [
+   "core-ui-rules",
+   "uc-ui-select-wheel",
+   "uc-fps-silent-default-30"
+  ],
+  "path": "usecases/uc-ui-textarea-null.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-ui-uxp-css-limits",
+  "title": "UXP の CSS・HTML はブラウザと同じに書けない（Grid・影・input の中央揃え・SVG）",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "CSS",
+   "Grid",
+   "box-shadow",
+   "text-align",
+   "SVG",
+   "Spectrum",
+   "制約"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "UXP は Grid、外向きの影、input の text-align、複雑な SVG に対応しない。レイアウトは flex、影は inset だけ、色は 16 進数の直書きにして、描けないものは画像で同梱する",
+  "parts": [
+   "ui-kit"
+  ],
+  "related": [
+   "core-ui-rules",
+   "uc-ui-flex-rows-collapse",
+   "uc-ui-details-hidden",
+   "uc-ui-sp-button-inactive"
+  ],
+  "path": "usecases/uc-ui-uxp-css-limits.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-action-outside-lock",
+  "title": "「The script object is no longer valid」で変更が失敗する",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "取引",
+   "Action",
+   "エラー",
+   "lockedAccess",
+   "executeTransaction",
+   "await"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "Action を取引の外で作ったか、取引の中で await した。非同期の取得は先に済ませ、Action は lockedAccess と executeTransaction の中で同期的に作る",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "core-transactions",
+   "core-api-patterns",
+   "uc-uxp-get-track-items-args",
+   "uc-uxp-effect-params-before-commit"
+  ],
+  "path": "usecases/uc-uxp-action-outside-lock.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-api-doc-vs-device",
+  "title": "公式の文書にある API が、実機では動かない・曖昧",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "API",
+   "公式リファレンス",
+   "存在確認",
+   "typeof",
+   "プローブ",
+   "可否表"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "文書にあることと、その素材・その版で動くことは別。typeof で存在を確かめ、無ければ原因つきで止める。未確認の呼び出しは 1 つずつ実機で確かめる",
+  "parts": [
+   "ppro-kit",
+   "probe"
+  ],
+  "related": [
+   "core-api-patterns",
+   "core-verification",
+   "uc-uxp-new-trackitemselection",
+   "uc-uxp-sequence-inout-missing"
+  ],
+  "path": "usecases/uc-uxp-api-doc-vs-device.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-bulk-place-safety",
+  "title": "素材の一括配置で二重に置く・既存のクリップを壊す",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "配置",
+   "一括",
+   "挿入",
+   "リップル",
+   "フレームレート",
+   "安全"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "同じ時刻の点を畳み、自分どうしの重なりを防ぎ、既存のクリップと重なる点はスキップし、フレームレートが読めなければ停止する。実証済みの引数でも副作用は再検証する",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "core-safety",
+   "core-api-patterns",
+   "uc-uxp-mogrt-overwrite-unclear"
+  ],
+  "path": "usecases/uc-uxp-bulk-place-safety.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-cannot-measure-or-write-anywhere",
+  "title": "描画後の大きさが取れない・好きなパスに読み書きできない",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "制約",
+   "ローカルサーバー",
+   "ファイル入出力",
+   "整列",
+   "selectionStart"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "取れない量は「取れる量 + 構造の取り決め」で、許されない操作は手元のサーバーで補う。不確かな API には確実な代わりの入力を用意する",
+  "parts": [
+   "local-server",
+   "ui-kit"
+  ],
+  "related": [
+   "core-capabilities",
+   "ref-local-server",
+   "uc-uxp-missing-apis-alternatives"
+  ],
+  "path": "usecases/uc-uxp-cannot-measure-or-write-anywhere.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-copy-keyframes-lost",
+  "title": "クリップの複製で、キーフレームと効果が落ちる",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "複製",
+   "キーフレーム",
+   "効果",
+   "createInsertProjectItemAction",
+   "クリップ棚"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "入点の値 1 つだけを保存するとアニメーションが消える。素の ProjectItem の挿入は元の効果を引き継がない。キーフレーム列と補間を保存し、挿入したクリップへ効果を複写する",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "feat-cutsrt-clip-slots",
+   "uc-uxp-interp-same-transaction",
+   "uc-uxp-keyframe-extra-and-wrapped"
+  ],
+  "path": "usecases/uc-uxp-copy-keyframes-lost.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-effect-params-before-commit",
+  "title": "足した効果の値を設定できない",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "効果",
+   "VideoFilterFactory",
+   "createComponent",
+   "取引",
+   "getParamCount"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "足す前の効果は設定項目を持たず、取引が確定してから現れる。効果を足す取引と、値やキーを書く取引を分ける",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "core-transactions",
+   "uc-uxp-action-outside-lock",
+   "uc-uxp-interp-same-transaction"
+  ],
+  "path": "usecases/uc-uxp-effect-params-before-commit.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-export-frame-not-written",
+  "title": "書き出したコマの画像がまだ無い",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "書き出し",
+   "exportSequenceFrame",
+   "exportAsMediaDirect",
+   "コマ",
+   "待ち"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.5",
+  "status": "verified",
+  "summary": "exportSequenceFrame は画像を書き終わる前に戻る。ファイルが現れるまで待つ。描画が欠けたらプレイヘッドを置いて出し直し、exportAsMediaDirect の出点は含まれない前提で長さを見る",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "core-api-patterns",
+   "feat-cutsrt-direct-zoom",
+   "feat-cutsrt-direct-stamp",
+   "core-verification"
+  ],
+  "path": "usecases/uc-uxp-export-frame-not-written.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-get-track-items-args",
+  "title": "getTrackItems が空・例外になる（引数が 2 つ要る）",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "Track",
+   "getTrackItems",
+   "引数",
+   "選択"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "Track.getTrackItems は (type, includeEmpty) が必須。無引数は空配列か例外になる。選択オブジェクトの getTrackItems は別物で引数なし",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "core-api-patterns",
+   "uc-uxp-action-outside-lock"
+  ],
+  "path": "usecases/uc-uxp-get-track-items-args.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-getmediatype-guid",
+  "title": "映像か音声かの判定がいつも外れる",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "TrackItem",
+   "getMediaType",
+   "Guid",
+   "映像",
+   "音声",
+   "リンク"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.0",
+  "status": "unverified",
+  "summary": "getMediaType() は Premiere 26.x で Guid を返し、数値や文字列と比べると必ず false。クラス名で判定し、再取得の照合キーには媒体の種別も入れる",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "core-api-patterns",
+   "uc-uxp-action-outside-lock",
+   "uc-uxp-ticktime-ticks-zero"
+  ],
+  "path": "usecases/uc-uxp-getmediatype-guid.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-host-version-too-old",
+  "title": "Premiere が古くてパネルを Load できない・メニューに出ない",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "minVersion",
+   "26.2",
+   "読み込み",
+   "開発者モード",
+   "ProjectConverter",
+   "導入"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "unverified",
+  "summary": "使う API の Since の最大値が、プラグインの最低版を決める。26.0 では Load に失敗する。導入ガイドの冒頭に最低版を書き、実行時にも版を確かめる",
+  "parts": [
+   "packaging",
+   "ppro-kit"
+  ],
+  "related": [
+   "core-versions",
+   "core-manifest-permissions",
+   "core-dev-loop",
+   "feat-cutsrt-install-update"
+  ],
+  "path": "usecases/uc-uxp-host-version-too-old.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-init-tdz",
+  "title": "起動で ReferenceError が出る（宣言前の const）",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "起動",
+   "TDZ",
+   "const",
+   "readyState",
+   "初期化"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "起動の処理が const の宣言より前に残ると、UXP が readyState を complete にした状態で評価するため、未初期化の const に触れて落ちる。起動の処理はファイルの最後に置く",
+  "parts": [
+   "ui-kit"
+  ],
+  "related": [
+   "core-ui-rules",
+   "uc-uxp-require-relative"
+  ],
+  "path": "usecases/uc-uxp-init-tdz.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-interp-same-transaction",
+  "title": "キーの補間がイーズにならない",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "キーフレーム",
+   "補間",
+   "イーズ",
+   "焼き込み",
+   "取引"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "同じ取引の中ではキーの補間を変えられず、無言で効かない。別の取引にすると取り消しが 2 回になるので、補間の結果を 1 コマごとの直線キーに焼き込む",
+  "parts": [
+   "ppro-kit",
+   "motion-bake"
+  ],
+  "related": [
+   "core-transactions",
+   "ref-keyframe-interpolation",
+   "uc-uxp-effect-params-before-commit",
+   "uc-uxp-keyframe-extra-and-wrapped",
+   "feat-ed-motion"
+  ],
+  "path": "usecases/uc-uxp-interp-same-transaction.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-keyframe-curve-overshoot",
+  "title": "スライドの行き過ぎが設計の約 2 倍になる",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "キーフレーム",
+   "補間",
+   "ベジェ",
+   "位置",
+   "オーバーシュート"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "区間の形は始まりのキーの補間だけで決まる。位置は空間ベジェで、行き過ぎが設計値の約 2 倍になる。設計値は実測してから決める",
+  "parts": [
+   "motion-bake"
+  ],
+  "related": [
+   "ref-keyframe-interpolation",
+   "uc-uxp-interp-same-transaction",
+   "feat-ed-motion"
+  ],
+  "path": "usecases/uc-uxp-keyframe-curve-overshoot.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-keyframe-extra-and-wrapped",
+  "title": "キーフレームが余分に付く・消せない・値が包まれて返る",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "キーフレーム",
+   "createSetTimeVaryingAction",
+   "範囲削除",
+   "戻り値"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.0",
+  "status": "verified",
+  "summary": "キーを打つと時刻 0 に余分な 1 本が付く。同じ取引で足したキーは消せない。値は { value } と一段包まれて返る",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "core-transactions",
+   "uc-uxp-interp-same-transaction",
+   "ref-keyframe-interpolation",
+   "uc-uxp-transition-duration-ticks"
+  ],
+  "path": "usecases/uc-uxp-keyframe-extra-and-wrapped.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-missing-apis-alternatives",
+  "title": "CEP や本体にある操作が UXP から呼べない（できる・できないの表）",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "CEP",
+   "ExtendScript",
+   "差分表",
+   "代替",
+   "設計",
+   "リンク",
+   "ターゲット"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "リンク・ターゲット・分割・速度変更・名前の変更などは UXP に無い。企画の最初に公式リファレンスで可否を表にし、案内・代替の画面・自前の実装で補う",
+  "parts": [
+   "ppro-kit",
+   "cep-helper"
+  ],
+  "related": [
+   "core-capabilities",
+   "ref-cep-extendscript",
+   "uc-uxp-no-razor-api",
+   "uc-dev-stay-uxp-not-cep"
+  ],
+  "path": "usecases/uc-uxp-missing-apis-alternatives.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-mogrt-overwrite-unclear",
+  "title": "MOGRT を入れても元のテロップが残る／消える",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "MOGRT",
+   "importMGT",
+   "insertMogrtFromPath",
+   "上書き",
+   "トラック",
+   "名前"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "挿入は同じトラックの重なりを黙って上書きし、上のトラックが無いと最上段へ丸める。挿入前に衝突を調べ、元は無効にして残し、挿入後に入り先を確かめる",
+  "parts": [
+   "ppro-kit",
+   "mogrt-text"
+  ],
+  "related": [
+   "ref-mogrt",
+   "feat-ed-design-apply",
+   "core-safety",
+   "core-api-patterns"
+  ],
+  "path": "usecases/uc-uxp-mogrt-overwrite-unclear.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-new-trackitemselection",
+  "title": "26.3 で選択の反映が「Connection to object lost」になる",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "選択",
+   "TrackItemSelection",
+   "setSelection",
+   "26.3",
+   "エラー"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.3",
+  "status": "partial",
+  "summary": "new TrackItemSelection() は作れても、続く setSelection で失敗する。getSelection() のライブな選択を空にして、対象だけ足す置き換え式にする",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "core-api-patterns",
+   "core-versions",
+   "uc-uxp-remove-items-4-args",
+   "uc-uxp-api-doc-vs-device"
+  ],
+  "path": "usecases/uc-uxp-new-trackitemselection.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-no-razor-api",
+  "title": "クリップを切る（分割）API が UXP に無い",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "分割",
+   "razor",
+   "QE",
+   "CEP",
+   "チャンネル割り当て",
+   "XML"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "UXP に razor / split も音声チャンネルの割り当て API も無い。破壊的な擬似実装はせず、限られた用途だけ CEP の QE で補う（Mac のみ・前後を照合）",
+  "parts": [
+   "cep-helper"
+  ],
+  "related": [
+   "uc-uxp-missing-apis-alternatives",
+   "ref-cep-extendscript",
+   "feat-cutsrt-pinmic",
+   "feat-cutsrt-playback-helper"
+  ],
+  "path": "usecases/uc-uxp-no-razor-api.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-override-frame-rate",
+  "title": "素材のフレームレートを変えると、ほかのクリップまで変わる",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "フレームレート",
+   "上書き",
+   "ClipProjectItem",
+   "素材単位",
+   "取り消し"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "素材のフレームレートの上書きは ClipProjectItem.createSetOverrideFrameRateAction で、素材単位。全クリップ・全シーケンスに連動するので、画面で明示する",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "core-api-patterns",
+   "ref-ticktime",
+   "uc-fps-property-missing"
+  ],
+  "path": "usecases/uc-uxp-override-frame-rate.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-qe-transition-settings",
+  "title": "標準のトランジションは付くが、設定を変えられない",
+  "kind": "usecase",
+  "tags": [
+   "QE",
+   "トランジション",
+   "標準エフェクト",
+   "日本語名",
+   "設定項目"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.5",
+  "status": "verified",
+  "summary": "標準搭載の効果やトランジションは QE で付くが、トランジションは matchName までしか読めず設定項目を変えられない。動きの調整は効果で作り、書き出して確かめる",
+  "parts": [
+   "cep-helper"
+  ],
+  "related": [
+   "ref-cep-extendscript",
+   "uc-uxp-transition-duration-ticks",
+   "uc-cep-qe-effect-locale",
+   "feat-ed-motion"
+  ],
+  "path": "usecases/uc-uxp-qe-transition-settings.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-remove-items-4-args",
+  "title": "削除の Action が「Not Enough Parameters」になる",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "削除",
+   "createRemoveItemsAction",
+   "引数",
+   "26.3",
+   "エラー"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.3",
+  "status": "partial",
+  "summary": "createRemoveItemsAction は 26.3 で 4 引数（選択・ripple・メディア種別・shiftOverLapping）が必須。少ない引数は Not Enough Parameters になる",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "core-api-patterns",
+   "uc-uxp-new-trackitemselection"
+  ],
+  "path": "usecases/uc-uxp-remove-items-4-args.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-require-relative",
+  "title": "分けた JS が読み込めない",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "require",
+   "モジュール",
+   "相対パス",
+   "script",
+   "起動",
+   "try-catch"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "UXP では require の相対パスが解決できない。単一ファイルにまとめるか、script タグの読み込み順を実機で確かめる。初期化は try-catch で守り、起動ログを出す",
+  "parts": [
+   "ui-kit",
+   "logger"
+  ],
+  "related": [
+   "core-ui-rules",
+   "uc-uxp-init-tdz",
+   "core-verification"
+  ],
+  "path": "usecases/uc-uxp-require-relative.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-sequence-inout-missing",
+  "title": "範囲を指定したサブシーケンスが作れない（setInPoint が実機に無い）",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "Sequence",
+   "setInPoint",
+   "setOutPoint",
+   "サブシーケンス",
+   "XML",
+   "無効化"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "Sequence.setInPoint / setOutPoint は実機に無かった。理由つきで機能を無効にし、最終的にはサーバーで作った XML を読み込んで新しいシーケンスにした",
+  "parts": [
+   "ppro-kit",
+   "fcpxml"
+  ],
+  "related": [
+   "uc-uxp-api-doc-vs-device",
+   "ref-fcp7-xml",
+   "core-capabilities"
+  ],
+  "path": "usecases/uc-uxp-sequence-inout-missing.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-shortcut-commands-not-listed",
+  "title": "Premiere のショートカット画面に UXP のコマンドが出ない",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "ショートカット",
+   "manifest",
+   "コマンド",
+   "上限",
+   "キー入力"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.0",
+  "status": "unverified",
+  "summary": "版によっては、キーボードショートカットの画面に UXP のコマンドが出ない。manifest のコマンド数が割り当てられる数の上限なので、パネル内のキー入力を代わりに用意する",
+  "parts": [
+   "ui-kit"
+  ],
+  "related": [
+   "core-manifest-permissions",
+   "feat-cutsrt-clip-slots",
+   "uc-mac-shortcut-nsuserkeyequivalents"
+  ],
+  "path": "usecases/uc-uxp-shortcut-commands-not-listed.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-ticktime-ticks-zero",
+  "title": "位置を読むといつも 0 になる・未設定の入点が -400000 秒で返る",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "TickTime",
+   "ticks",
+   "ticksNumber",
+   "番兵値",
+   "貼り付け"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.0",
+  "status": "partial",
+  "summary": "実機の TickTime は .ticks が 0 になることがある。.ticksNumber を先に見て、未設定の入点の番兵値 -400000 秒は未設定として扱う",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "ref-ticktime",
+   "core-api-patterns",
+   "uc-uxp-getmediatype-guid"
+  ],
+  "path": "usecases/uc-uxp-ticktime-ticks-zero.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-transition-duration-ticks",
+  "title": "トランジションの長さがずれる",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "トランジション",
+   "長さ",
+   "ティック",
+   "コマ",
+   "TransitionFactory"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "長さを秒で渡すとコマに切り捨てられる。コマ数 × 1 コマのティックで渡し、内部名は実機から読んで対応を取る",
+  "parts": [
+   "ppro-kit"
+  ],
+  "related": [
+   "core-api-patterns",
+   "ref-ticktime",
+   "uc-uxp-keyframe-extra-and-wrapped"
+  ],
+  "path": "usecases/uc-uxp-transition-duration-ticks.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-undo-grouping",
+  "title": "取り消しをキーや効果の数だけ押さないと戻らない",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "取り消し",
+   "undo",
+   "executeTransaction",
+   "ExtendScript",
+   "CEP",
+   "設計判断"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "ExtendScript には複数の操作を取り消し 1 回にまとめる手段が無い。実行部を UXP の executeTransaction に移し、取り消しの回数を設計に織り込んで画面に出す",
+  "parts": [
+   "ppro-kit",
+   "cep-helper"
+  ],
+  "related": [
+   "core-transactions",
+   "uc-uxp-effect-params-before-commit",
+   "feat-ed-overview"
+  ],
+  "path": "usecases/uc-uxp-undo-grouping.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-uxp-webview-not-browser",
+  "title": "パネル内の埋め込みブラウザで遷移が全部拒否される・ダウンロードできない",
+  "kind": "usecase",
+  "tags": [
+   "UXP",
+   "WebView",
+   "domains",
+   "loaderror",
+   "ダウンロード",
+   "ナビゲーション"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.3",
+  "status": "verified",
+  "summary": "UXP の WebView はブラウザの代わりにならない。domains に \"all\" を書くと無言で全拒否になり、戻る・進む・再読込の API も添付のダウンロードも無い",
+  "parts": [
+   "ui-kit"
+  ],
+  "related": [
+   "feat-cutsrt-web",
+   "core-manifest-permissions",
+   "core-ui-rules"
+  ],
+  "path": "usecases/uc-uxp-webview-not-browser.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-claimed-proven-api-missing",
+  "title": "「実証済み」と書いた API が、公式にも利用者の実機にも無かった",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "API",
+   "実証済み",
+   "存在確認",
+   "typeof",
+   "UI の出し分け"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "「実証済み」と書くなら、環境と試した内容を併記する。公式の文書に無い API は実機にも無い前提で、使えない環境では機能を無効にして理由を出す",
+  "parts": [
+   "ppro-kit",
+   "probe"
+  ],
+  "related": [
+   "core-api-patterns",
+   "uc-uxp-api-doc-vs-device",
+   "uc-uxp-sequence-inout-missing",
+   "uc-uxp-host-version-too-old"
+  ],
+  "path": "usecases/uc-verify-claimed-proven-api-missing.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-clean-env-tiers",
+  "title": "開発機と違う配布先を、段階を分けて検証し、未検証の範囲を書く",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "配布",
+   "クリーン環境",
+   "fake HOME",
+   "PATH",
+   "check-only",
+   "新規ユーザー"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "未導入の環境は、危険度の低い順に 3 段階（自動テスト、PATH を絞った確認、新規ユーザー）と、偽の HOME での合成の通し検証で調べる。偽装の限界と、どの段階まで済んだか（未検証）を正直に書く",
+  "parts": [
+   "packaging",
+   "local-server"
+  ],
+  "related": [
+   "uc-verify-other-os-without-machine",
+   "uc-install-dist-zip-gates",
+   "uc-install-verify-hijacks-agent",
+   "core-verification"
+  ],
+  "path": "usecases/uc-verify-clean-env-tiers.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-diagnose-before-evidence",
+  "title": "実機のログを見る前に原因を決め打ちして作り込み、後から誤診と分かった",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "誤診",
+   "ログ",
+   "到達可能性",
+   "予防的修正",
+   "実データ"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "実装に入る前に実機のログを見る。原因と書く前に、その処理が実データで本当に通るかを確かめる。再現できない弱点は、真因とは分けて予防的な修正として記録する",
+  "parts": [
+   "logger",
+   "probe"
+  ],
+  "related": [
+   "core-verification",
+   "uc-verify-read-device-via-logs",
+   "uc-verify-reproduce-with-real-data",
+   "uc-uxp-ticktime-ticks-zero"
+  ],
+  "path": "usecases/uc-verify-diagnose-before-evidence.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-docs-same-commit",
+  "title": "配布するガイドや README が、実装と食い違っていた",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "ドキュメント",
+   "README",
+   "困ったとき表",
+   "エラー文言",
+   "ファクトチェック"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "機能・挙動・エラー文言を変えたら、同じコミットでガイドと変更履歴と「困ったとき」の表を更新する。載せる機能は実際のコードで裏取りし、未確認の範囲は書く",
+  "parts": [
+   "packaging"
+  ],
+  "related": [
+   "uc-ai-login-guide-wrong",
+   "uc-install-stale-panel-version-chip",
+   "uc-install-version-scattered"
+  ],
+  "path": "usecases/uc-verify-docs-same-commit.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-env-and-answer-key",
+  "title": "検証の場も正解表も検証の対象。受け入れの環境が本番より親切で、採点の正解がずれていた",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "受け入れ",
+   "検証環境",
+   "正解表",
+   "空トラック",
+   "評価データ"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "検証のために作った環境と正解のデータは、本番より親切になりやすい。実際の配置（最上段・空トラックなし・複数選択）を代表させ、正解表も別の方法で検証してから採点に使う",
+  "parts": [
+   "probe"
+  ],
+  "related": [
+   "uc-mogrt-importmgt-track-rounding",
+   "uc-mogrt-second-insert-replaces",
+   "uc-verify-proxy-not-evidence"
+  ],
+  "path": "usecases/uc-verify-env-and-answer-key.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-env-false-positive",
+  "title": "環境のせいの誤検出を、原因を特定する前に「無関係」と言わない",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "テスト",
+   "環境依存",
+   "PATH",
+   "既存サーバー",
+   "隔離",
+   "e2e"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "隔離した環境でだけ落ちるテストは、原因（依存の有無、先客のサーバー）を特定してから「無関係」と判定する。テストは PATH・グローバルな状態・既存のサーバーに依存させない",
+  "parts": [
+   "local-server",
+   "probe"
+  ],
+  "related": [
+   "uc-verify-skip-is-not-success",
+   "uc-ai-cli-defaults-env-account",
+   "uc-ai-cli-not-on-server-path"
+  ],
+  "path": "usecases/uc-verify-env-false-positive.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-impossible-list-routes",
+  "title": "「不可能」と結論した後に、別の経路で実現できた",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "不可能",
+   "経路",
+   "誤診",
+   "シェイプ",
+   "選択補助",
+   "未検証"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "「A はできないから X は不可能」は、A 以外の経路が無いことを示して初めて成立する。「不可能」と書くときは、試した経路と、未検証の経路を並べて書く",
+  "parts": [
+   "probe",
+   "mogrt-text"
+  ],
+  "related": [
+   "uc-uxp-missing-apis-alternatives",
+   "uc-uxp-cannot-measure-or-write-anywhere",
+   "uc-mogrt-donor-patch-method",
+   "uc-dev-freeze-unverifiable-feature"
+  ],
+  "path": "usecases/uc-verify-impossible-list-routes.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-keychain-test-left",
+  "title": "試した鍵が、本物のキーチェーンに残った（任せた作業が実環境に副作用を残した）",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "副作用",
+   "キーチェーン",
+   "サブエージェント",
+   "隔離",
+   "作業ツリー",
+   "巻き戻し"
+  ],
+  "os": [
+   "mac"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "AI に任せた変更は、稼働中の作業ツリーや本物の資格情報の保管庫に副作用を残しうる。作業は分けた作業場所で行わせ、触らない対象を指示に書き、終わった後に痕跡を点検する",
+  "parts": [
+   "keychain",
+   "local-server"
+  ],
+  "related": [
+   "uc-install-secret-name-dropped",
+   "uc-server-secrets-oauth-state",
+   "core-safety"
+  ],
+  "path": "usecases/uc-verify-keychain-test-left.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-look-at-all-frames",
+  "title": "機械検査を通っても、実際の書き出しと切り出した全フレームを見るまで「確認済み」と言わない",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "目視",
+   "書き出しコマ",
+   "補間",
+   "コマ比較",
+   "全数確認"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "見た目や補間の欠落は機械検査だけでは保証できない。見た分だけを「確認済み」と言う。N 枚を切り出したら N 枚すべて見る。経路を変えたら、同じコマを比べる",
+  "parts": [
+   "probe"
+  ],
+  "related": [
+   "core-verification",
+   "uc-uxp-export-frame-not-written",
+   "uc-uxp-interp-same-transaction",
+   "uc-verify-proxy-not-evidence"
+  ],
+  "path": "usecases/uc-verify-look-at-all-frames.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-node-green-device-broken",
+  "title": "Node のテストもモックも全部緑なのに、UXP の実機では壊れていた",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "UXP",
+   "Node",
+   "モック",
+   "完了報告",
+   "実機確認",
+   "引き継ぎ"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "Node のテストが全緑でも、「動きます」と言わない。保証できる範囲と実機の最終ゲートを分けて渡し、実機で確かめてほしい項目を番号つきで引き継ぐ。状態の更新は純関数に切り出して固定する",
+  "parts": [
+   "probe",
+   "ui-kit"
+  ],
+  "related": [
+   "core-verification",
+   "uc-verify-stub-wrong-shape",
+   "uc-verify-test-double-defaults",
+   "uc-uxp-ticktime-ticks-zero",
+   "uc-ui-select-wheel"
+  ],
+  "path": "usecases/uc-verify-node-green-device-broken.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-numbers-with-conditions",
+  "title": "測った数字は、条件とセットで報告する（省いた工程の精度、合計が合わない秒数、母数が変わった定数）",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "測定",
+   "精度",
+   "工程秒",
+   "定数",
+   "母数",
+   "報告"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "省いた工程の数字を精度として報告しない。工程ごとの秒数の合計は総時間と突き合わせる。定数には測った条件を書き残し、二重に持つ定数は機械で照合する",
+  "parts": [
+   "transcribe-srt",
+   "logger"
+  ],
+  "related": [
+   "uc-verify-settings-effect-on-output",
+   "uc-verify-show-used-value",
+   "uc-server-slowness-polling"
+  ],
+  "path": "usecases/uc-verify-numbers-with-conditions.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-other-os-without-machine",
+  "title": "手元に Windows 機が無いとき、Windows 向けの分岐をどう検証するか",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "Windows",
+   "OS 判定",
+   "テスト",
+   "関数内参照",
+   "チェックリスト"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "OS の判定を関数の中で毎回参照するようにし、テストで属性を差し替えて Mac から他 OS の分岐を通す。OS の条件でスキップされるテストは実機でしか効かないので、未検証の範囲を明記して実機のチェックリストで確かめてもらう",
+  "parts": [
+   "local-server",
+   "packaging"
+  ],
+  "related": [
+   "uc-verify-clean-env-tiers",
+   "uc-windows-powershell-traps",
+   "uc-windows-port-local-server",
+   "platform-windows"
+  ],
+  "path": "usecases/uc-verify-other-os-without-machine.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-panel-css-gates",
+  "title": "パネルの色・文字の大きさ・ボタンがばらばら。ヘッドレス描画の崩れ検査は UXP の描画そのものではない",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "UI",
+   "CSS",
+   "コントラスト",
+   "ヘッドレス",
+   "縦つぶれ",
+   "パレット"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "色数・文字の大きさ・コントラストを機械ゲートにし、幅違いの崩れをヘッドレス描画で数える。ただしヘッドレスの Chrome は UXP の描画そのものではないので、最終確認は実機で行う",
+  "parts": [
+   "ui-kit"
+  ],
+  "related": [
+   "core-ui-rules",
+   "uc-ui-flex-rows-collapse",
+   "uc-verify-node-green-device-broken"
+  ],
+  "path": "usecases/uc-verify-panel-css-gates.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-panel-reload-only-bugs",
+  "title": "パネルは読み込み直さないと動かせない。ID の取り違えや起動順の事故が実機まで分からない",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "UXP",
+   "パネル",
+   "Reload",
+   "DOM スタブ",
+   "非同期",
+   "unhandled rejection"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "Reload でしか見えない事故は、HTML の ID と JS の参照の照合、評価順を再現する DOM スタブ、稼働中サーバーの実応答で事前に潰す。非同期のボタンは try/catch してパネルのログに出し、画面の作り直しでは ID・保存キー・起動順を変えない",
+  "parts": [
+   "ui-kit",
+   "logger"
+  ],
+  "related": [
+   "core-ui-rules",
+   "uc-verify-node-green-device-broken",
+   "uc-verify-test-double-defaults",
+   "uc-install-reload-layers"
+  ],
+  "path": "usecases/uc-verify-panel-reload-only-bugs.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-probe-by-return-value",
+  "title": "診断の合格が「呼べた」だけで、実際には効果が付いていなかった（QE の addVideoEffect）",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "プローブ",
+   "QE",
+   "addVideoEffect",
+   "戻り値",
+   "日本語 UI",
+   "判定表"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "実機で API を試す診断の合否は、呼べたかではなく、戻り値と状態の変化で判定する。日本語の UI では、効果の名前を日本語、英語の順に試す",
+  "parts": [
+   "probe",
+   "ppro-kit"
+  ],
+  "related": [
+   "uc-cep-qe-effect-locale",
+   "uc-uxp-api-doc-vs-device",
+   "core-verification"
+  ],
+  "path": "usecases/uc-verify-probe-by-return-value.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-probe-same-path",
+  "title": "疎通の確認は通るのに、本番だけ失敗する（確認と本番で経路が違った）",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "プローブ",
+   "疎通確認",
+   "経路",
+   "stdin",
+   "cmd.exe",
+   "エラー文言"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "疎通の確認は、本番と同じ経路・同じ種類の入力（長さ・改行込み）で行う。エラー文言は失敗の種類ごとに分け、確認の失敗と実行中の失敗は表示も分ける",
+  "parts": [
+   "local-server"
+  ],
+  "related": [
+   "uc-windows-cmd-argv",
+   "uc-ai-shared-argv-breaks-sibling-cli",
+   "uc-ai-cli-invocation-traps",
+   "uc-ai-which-not-usable"
+  ],
+  "path": "usecases/uc-verify-probe-same-path.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-proxy-not-evidence",
+  "title": "似た経路・模擬素材・単体テストで通っても、本物の証拠にならない",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "代理",
+   "模擬素材",
+   "実クライアント",
+   "認証",
+   "Sec-Fetch",
+   "実送信"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "代わりのもので通ったことは、本物の証拠にならない。壊れている画面と同じ経路・実素材・実際の送信で確かめ、代わりのもので確かめた範囲は「ここまで」と書く",
+  "parts": [
+   "local-server"
+  ],
+  "related": [
+   "core-verification",
+   "uc-verify-probe-same-path",
+   "uc-verify-node-green-device-broken",
+   "uc-server-bridge-contract-drift"
+  ],
+  "path": "usecases/uc-verify-proxy-not-evidence.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-read-device-via-logs",
+  "title": "実機の挙動が分からない。画面の操作でなく、ログ・保存領域・CDP で読む",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "実機",
+   "UXPLogs",
+   "LocalStorage",
+   "CDP",
+   "ログ",
+   "画面操作"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "接頭辞つきの診断ログを最初から入れ、実機の様子は UXP のログ・保存領域・CDP で読む。画面の操作は最終手段にして、使うときは座標をクリックする前に毎回スクリーンショットを撮る",
+  "parts": [
+   "logger",
+   "probe"
+  ],
+  "related": [
+   "core-verification",
+   "uc-verify-diagnose-before-evidence",
+   "uc-cep-node-exec-callback"
+  ],
+  "path": "usecases/uc-verify-read-device-via-logs.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-regression-fails-when-broken",
+  "title": "新しいテストが、本当にバグを捉えているか分からない（「壊すと落ちる」を確かめる）",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "回帰テスト",
+   "fail-first",
+   "構造検査",
+   "assert",
+   "二重管理",
+   "機械照合"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "回帰テストは、修正を無効にしたときに落ちることを確かめて初めて信用できる。「無いこと」は構造で確かめ、置換は assert でガードし、二重に持つ表は片方を直すと落ちる形で結ぶ",
+  "parts": [
+   "probe"
+  ],
+  "related": [
+   "uc-verify-stub-wrong-shape",
+   "uc-verify-test-double-defaults",
+   "uc-ai-engine-registry",
+   "uc-server-bridge-contract-drift"
+  ],
+  "path": "usecases/uc-verify-regression-fails-when-broken.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-reproduce-old-version",
+  "title": "「単体版では壊れない」は、呼び出し方の差。旧版を実際に動かして再現する",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "再現",
+   "旧版",
+   "呼び出しの差",
+   "fps",
+   "XML の宣言"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "「A では壊れず B では壊れる」は、まず呼び出しの差を疑う。旧版を取り出して実行し、症状を再現する。Premiere に任せる工程は、XML の宣言で確かめられる範囲と、実機でしか確かめられない範囲に分ける",
+  "parts": [
+   "silence-cut"
+  ],
+  "related": [
+   "uc-fps-property-missing",
+   "uc-fps-conform-rate-trust",
+   "uc-verify-reproduce-with-real-data",
+   "uc-verify-show-used-value"
+  ],
+  "path": "usecases/uc-verify-reproduce-old-version.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-reproduce-with-real-data",
+  "title": "不具合の報告は、実際の XML と素材で数値を再現して確定する（エラー文言は版の指紋）",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "再現",
+   "実データ",
+   "XML",
+   "エラー文言",
+   "版数",
+   "推定"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "報告された数字は、実データから再現できて初めて真因になる。実データを回収できない間は結論に「推定」と書く。古いエラー文言から、報告者の環境の古い版を逆算できる",
+  "parts": [
+   "silence-cut",
+   "logger"
+  ],
+  "related": [
+   "uc-verify-reproduce-old-version",
+   "uc-verify-user-output-provenance",
+   "uc-fps-vfr-timebase",
+   "uc-fps-mixed-ticks-basis"
+  ],
+  "path": "usecases/uc-verify-reproduce-with-real-data.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-roundtrip-generated",
+  "title": "生成物のテストが全部緑なのに、実機では空だった（復号し直す往復テストと、実物を写した試料）",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "生成物",
+   "往復テスト",
+   "フィクスチャ",
+   "バイナリ",
+   "MOGRT",
+   "ドナー"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "バイナリの生成物は、作った後に復号し直して意図した値が戻るかを必ず確かめる。試料は ID・参照・ローカライズの差まで実物どおりに写し、一部は実物で通す。簡略化した箇所はそのままテストの盲点になる",
+  "parts": [
+   "mogrt-text",
+   "probe"
+  ],
+  "related": [
+   "uc-mogrt-empty-graphic-misdiagnosis",
+   "uc-mogrt-flatbuffer-defaults",
+   "uc-mogrt-first-uuid",
+   "uc-verify-test-double-defaults"
+  ],
+  "path": "usecases/uc-verify-roundtrip-generated.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-settings-effect-on-output",
+  "title": "設定が画面からサーバーまで届いても、出力が変わるかは別。実メディアで差を確かめる",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "設定",
+   "既定値",
+   "E2E",
+   "正解付き",
+   "境界",
+   "ffmpeg"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "設定の効果は、値が保存されることでなく、出力がその値どおりに変わることを、実際の道具で確かめる。既定値は、正解つきのデータで測る。ずれの向きと量が設定値と一致するかで、バグか設計どおりかを切り分ける",
+  "parts": [
+   "silence-cut",
+   "probe"
+  ],
+  "related": [
+   "uc-xml-silence-asymmetric",
+   "uc-ui-textarea-null",
+   "uc-verify-numbers-with-conditions"
+  ],
+  "path": "usecases/uc-verify-settings-effect-on-output.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-show-used-value",
+  "title": "直したバグに気づく手段が無く、4 つの版に生き残った（使った値を毎回見せる）",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "fps",
+   "可視化",
+   "結果カード",
+   "ログ",
+   "二重定義",
+   "拒否"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "処理が実際に使った値（出力のフレームレートなど）と、拒否・縮退したことを、毎回ログと結果の画面に出す。安全網が働いたことは、呼び出し元の検出が壊れているというサインとして扱う",
+  "parts": [
+   "logger",
+   "silence-cut"
+  ],
+  "related": [
+   "uc-fps-property-missing",
+   "uc-fps-conform-rate-trust",
+   "uc-fps-silent-default-30",
+   "core-verification"
+  ],
+  "path": "usecases/uc-verify-show-used-value.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-skip-is-not-success",
+  "title": "テストが緑でも、静かに skip されていて走っていなかった",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "テスト",
+   "skip",
+   "ポート競合",
+   "依存",
+   "npm ci"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "skip は成功ではない。走った件数と skip の理由を確認する。配布の最終判定は OS ごとに単独で走らせ、開発の前提の依存（npm ci）を入れてから照合テストを走らせる",
+  "parts": [
+   "packaging"
+  ],
+  "related": [
+   "uc-verify-clean-env-tiers",
+   "uc-verify-env-false-positive",
+   "uc-install-dist-zip-gates"
+  ],
+  "path": "usecases/uc-verify-skip-is-not-success.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-split-symptom-by-observable",
+  "title": "「何も見えない」を 1 語で扱って誤診した。レイヤー一覧の有無で原因の系統を分ける",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "診断",
+   "空のグラフィック",
+   "プロパティパネル",
+   "症状の分類",
+   "診断ラダー"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "症状を 1 語で括らず、UI が持つ構造のリスト（レイヤー一覧）を先に見て、値の問題か構造の問題かを分ける。実機にしか答えが無い問いは、1 往復で決着する形にして聞く",
+  "parts": [
+   "probe"
+  ],
+  "related": [
+   "uc-mogrt-empty-graphic-misdiagnosis",
+   "uc-mogrt-first-uuid",
+   "uc-verify-numbers-with-conditions"
+  ],
+  "path": "usecases/uc-verify-split-symptom-by-observable.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-stub-wrong-shape",
+  "title": "テストは全部緑なのに実機では壊れていた（スタブが実機に無い形をまねていた）",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "テスト",
+   "スタブ",
+   "モック",
+   "実機の形状",
+   "fps 検出"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "スタブの形は公式のリファレンスと実機の戻り値から起こし、実データで 1 度は照合する。誤った形のスタブは、テストを通してバグを固定してしまう",
+  "parts": [
+   "probe",
+   "ppro-kit"
+  ],
+  "related": [
+   "uc-fps-property-missing",
+   "uc-verify-test-double-defaults",
+   "uc-verify-node-green-device-broken",
+   "uc-verify-regression-fails-when-broken"
+  ],
+  "path": "usecases/uc-verify-stub-wrong-shape.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-test-double-defaults",
+  "title": "Node の VM・DOM スタブ・タイマーのスタブのテストは、本番を再現しない",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "テスト",
+   "スタブ",
+   "Node VM",
+   "DOM",
+   "タイマー",
+   "既定値",
+   "待ち時間"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "スタブが本番と同じ既定値・型・遅延を持つかは、別に固定しないと、緑は信用できない。待ち時間の改善は実時間で確かめる",
+  "parts": [
+   "probe",
+   "ui-kit"
+  ],
+  "related": [
+   "uc-verify-stub-wrong-shape",
+   "uc-verify-node-green-device-broken",
+   "uc-verify-regression-fails-when-broken"
+  ],
+  "path": "usecases/uc-verify-test-double-defaults.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-verify-user-output-provenance",
+  "title": "利用者が出した「カット後の XML」の出どころを確かめずに分析しそうになった",
+  "kind": "usecase",
+  "tags": [
+   "検証",
+   "出自",
+   "XML",
+   "診断",
+   "入力の保持",
+   "sequence id"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "持ち込まれたツールの出力は、出自を確かめてから分析する。調査に要る入力は、成功しても失敗しても消さず、オプトインで残せるようにする",
+  "parts": [
+   "silence-cut",
+   "logger"
+  ],
+  "related": [
+   "uc-verify-reproduce-with-real-data",
+   "uc-xml-invalid-input-fail-closed",
+   "uc-verify-diagnose-before-evidence"
+  ],
+  "path": "usecases/uc-verify-user-output-provenance.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-windows-cmd-argv",
+  "title": "Windows で外部コマンドに長い文章を引数で渡すと、本文の途中が欠ける",
+  "kind": "usecase",
+  "tags": [
+   "Windows",
+   "cmd.exe",
+   "argv",
+   "stdin",
+   ".cmd",
+   "外部CLI",
+   "改行"
+  ],
+  "os": [
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "Windows の .cmd ラッパーは cmd.exe を経由し、引数の改行や記号を解釈し直す。長い文章は引数でなく標準入力かファイルで渡し、1 つのコマンドの対策は全コマンドへ広げる",
+  "parts": [
+   "transcribe-srt",
+   "local-server"
+  ],
+  "related": [
+   "platform-windows",
+   "uc-windows-cp932",
+   "uc-windows-powershell-traps"
+  ],
+  "path": "usecases/uc-windows-cmd-argv.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-windows-cp932",
+  "title": "Windows で日本語が文字化けする・落ちる。あらゆる境界で UTF-8 を指定する",
+  "kind": "usecase",
+  "tags": [
+   "Windows",
+   "cp932",
+   "UTF-8",
+   "文字化け",
+   "PowerShell",
+   "BOM",
+   "subprocess"
+  ],
+  "os": [
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "Windows の既定の文字コードは cp932。.bat・PowerShell・パイプ・ファイル入出力・常駐プロセスの、どの境界でも UTF-8 を明示する。.bat は ASCII だけにして、日本語は BOM 付きの .ps1 に置く",
+  "parts": [
+   "packaging",
+   "local-server"
+  ],
+  "related": [
+   "platform-windows",
+   "uc-windows-mac-only-path",
+   "uc-windows-cmd-argv",
+   "uc-mac-bash-variable-japanese"
+  ],
+  "path": "usecases/uc-windows-cp932.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-windows-cuda-dll",
+  "title": "Windows の文字起こしが「cublas64_12.dll is not found」で失敗する",
+  "kind": "usecase",
+  "tags": [
+   "Windows",
+   "CUDA",
+   "cuBLAS",
+   "cuDNN",
+   "faster-whisper",
+   "GPU",
+   "フォールバック"
+  ],
+  "os": [
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "faster-whisper は CUDA のランタイムが無くてもモデルのロードは通り、最初の推論で失敗する。実行時のエラーで CPU に切り替えて知らせ、ランタイムの DLL はインストーラで入れる",
+  "parts": [
+   "transcribe-srt",
+   "packaging"
+  ],
+  "related": [
+   "platform-windows",
+   "uc-mac-intel-degraded",
+   "uc-windows-guide-python-limit"
+  ],
+  "path": "usecases/uc-windows-cuda-dll.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-windows-daemon-process-paths",
+  "title": "Windows では常駐・プロセスの停止・通知・パスの扱いが Mac と違う",
+  "kind": "usecase",
+  "tags": [
+   "Windows",
+   "常駐",
+   "pythonw",
+   "taskkill",
+   "通知",
+   "パス",
+   "EncodedCommand",
+   "file URL"
+  ],
+  "os": [
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "pythonw で動く常駐はログが残らないので、ログの出力先を自前で付け替える。子プロセスはグループ生成フラグと taskkill で止め、パスはサーバーから受け取る",
+  "parts": [
+   "local-server",
+   "logger"
+  ],
+  "related": [
+   "platform-windows",
+   "uc-windows-port-local-server",
+   "uc-windows-cp932"
+  ],
+  "path": "usecases/uc-windows-daemon-process-paths.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-windows-guide-python-limit",
+  "title": "Windows の導入ガイドの空欄（Python の上限・ログの場所）を、確かめずに前提で埋めそうになった",
+  "kind": "usecase",
+  "tags": [
+   "Windows",
+   "Python",
+   "wheel",
+   "ガイド",
+   "一次情報",
+   "PyPI",
+   "ログ"
+  ],
+  "os": [
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "対応する Python の範囲は、全ての依存について Windows 向けの wheel の提供で決める。ガイドの前提やログの場所は、一次情報で確かめる。「別の作業が確定した」という前提は、差分やコミットで裏取りする",
+  "parts": [
+   "packaging"
+  ],
+  "related": [
+   "platform-windows",
+   "uc-mac-intel-degraded",
+   "uc-install-support-pack"
+  ],
+  "path": "usecases/uc-windows-guide-python-limit.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-windows-mac-only-path",
+  "title": "Windows でだけ「見つかりません」になる。Mac 専用の探索とエンコーディングを持ち込んだ",
+  "kind": "usecase",
+  "tags": [
+   "Windows",
+   "流用",
+   "/Applications",
+   "パス",
+   "MOGRT",
+   "text=True",
+   "エンコーディング"
+  ],
+  "os": [
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "Mac 用に作った部品を Windows に流用するときは、固定のパスとエンコーディングの既定を、OS をまたいで grep する。画面が捨てていた失敗の理由は、結果に添える",
+  "parts": [
+   "mogrt-text",
+   "ppro-kit"
+  ],
+  "related": [
+   "platform-windows",
+   "uc-windows-cp932",
+   "uc-uxp-mogrt-overwrite-unclear"
+  ],
+  "path": "usecases/uc-windows-mac-only-path.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-windows-partial-result-only",
+  "title": "Windows でだけ、結果が後半しか取れない（Mac で再現せず・未解決）",
+  "kind": "usecase",
+  "tags": [
+   "Windows",
+   "再現しない",
+   "未解決",
+   "文字起こし",
+   "faster-whisper",
+   "切り分け"
+  ],
+  "os": [
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "カット後のシーケンスの文字起こしの結果が、Windows の利用者だけ、後半の分しか取れないと報告された。Mac では再現せず、原因は未確定。片方の OS で再現しないときは、実データで段階的に絞り、相手の環境のログを依頼する",
+  "parts": [
+   "transcribe-srt"
+  ],
+  "related": [
+   "platform-windows",
+   "uc-windows-cuda-dll",
+   "uc-windows-cp932",
+   "uc-install-support-pack"
+  ],
+  "path": "usecases/uc-windows-partial-result-only.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-windows-port-local-server",
+  "title": "Mac 専用のローカルサーバー型プラグインを Windows に移すとき、OS 固有の 7 点を分ける",
+  "kind": "usecase",
+  "tags": [
+   "Windows",
+   "移植",
+   "ローカルサーバー",
+   "SendInput",
+   "タスクスケジューラ",
+   "同梱",
+   "スモークテスト"
+  ],
+  "os": [
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "入力の送出・メニュー操作・ファイル検索・常駐・黒い窓・ログ・文字コードを OS ごとに分け、Python と ffmpeg を同梱して導入作業をなくす。配布前に、動作を段階的に確かめる",
+  "parts": [
+   "silence-cut",
+   "local-server"
+  ],
+  "related": [
+   "platform-windows",
+   "uc-windows-daemon-process-paths",
+   "uc-windows-cp932"
+  ],
+  "path": "usecases/uc-windows-port-local-server.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-windows-powershell-traps",
+  "title": "PowerShell スクリプトが、環境変数の未設定や 1 行の出力で落ちる",
+  "kind": "usecase",
+  "tags": [
+   "PowerShell",
+   "Windows",
+   "null",
+   "配列",
+   "Parser",
+   "構文検査",
+   "grep"
+  ],
+  "os": [
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "別の OS のスクリプトは、grep でなく構文解析で検査し、実行まで確かめる。Bash からの移植では、配列と単独の値の暗黙の変換を疑う",
+  "parts": [
+   "packaging"
+  ],
+  "related": [
+   "platform-windows",
+   "uc-windows-cp932",
+   "uc-windows-cmd-argv"
+  ],
+  "path": "usecases/uc-windows-powershell-traps.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-xml-audio-channel-map-lost",
+  "title": "カットすると音声のチャンネル割り当てがカスタムに変わって崩れる",
+  "kind": "usecase",
+  "tags": [
+   "XML",
+   "音声",
+   "チャンネル",
+   "FCP7 XML",
+   "往復",
+   "sourcetrack",
+   "無音カット"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "Premiere の FCP XML は既定のチャンネル割り当てしか記録しない。往復で失われる設定は警告で知らせ、自分のコードを疑う前にプラグインを通さない書き出し→読み込みで再現を確かめる",
+  "parts": [
+   "fcpxml",
+   "silence-cut"
+  ],
+  "related": [
+   "uc-xml-stereo-exploded-tracks",
+   "uc-xml-fit-scale-lost",
+   "uc-xml-first-cut-anomaly",
+   "ref-fcp7-xml"
+  ],
+  "path": "usecases/uc-xml-audio-channel-map-lost.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-xml-audio-shorter-than-video",
+  "title": "音声が映像より短い素材で、字幕作りが「デコード音声が不足」で全滅した",
+  "kind": "usecase",
+  "tags": [
+   "音声",
+   "転写",
+   "SRT",
+   "素材",
+   "デコード",
+   "無音補完",
+   "Windows"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "ドローンや画面収録の素材は、音声が映像より短いことがある。足りない分はエラーにせず、Premiere の再生と同じく無音で補い、注意として知らせる",
+  "parts": [
+   "transcribe-srt",
+   "fcpxml"
+  ],
+  "related": [
+   "uc-xml-stereo-exploded-tracks",
+   "feat-cutsrt-telop-srt"
+  ],
+  "path": "usecases/uc-xml-audio-shorter-than-video.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-xml-dangling-file",
+  "title": "XML を読み込んでも新しいシーケンスが出てこない（ぶら下がった file の参照）",
+  "kind": "usecase",
+  "tags": [
+   "XML",
+   "XMEML",
+   "file",
+   "pathurl",
+   "部分複製",
+   "読み込み",
+   "fail-closed"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "XMEML は file の完全な定義を文書中で最初の 1 回しか書かない。一部のクリップだけを複製すると定義が落ち、Premiere はエラー無しで XML を無視する。書き出す前に全参照を検査して止める",
+  "parts": [
+   "fcpxml",
+   "silence-cut"
+  ],
+  "related": [
+   "uc-xml-nested-multicam",
+   "uc-xml-invalid-input-fail-closed",
+   "ref-fcp7-xml"
+  ],
+  "path": "usecases/uc-xml-dangling-file.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-xml-first-cut-anomaly",
+  "title": "【未解明】カット 1 回目だけ映像トラックが複製される・音声が重複する",
+  "kind": "usecase",
+  "tags": [
+   "XML",
+   "未解明",
+   "カット",
+   "トラック",
+   "再現しない",
+   "診断",
+   "Windows"
+  ],
+  "os": [
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "やり直すと直る一度きりの異常は、入力の XML と出力の XML の対を一定期間残しておくと、再発のときに自分の変換の責任か切り分けられる。原因は未解明",
+  "parts": [
+   "silence-cut",
+   "fcpxml"
+  ],
+  "related": [
+   "uc-xml-audio-channel-map-lost",
+   "uc-xml-dangling-file"
+  ],
+  "path": "usecases/uc-xml-first-cut-anomaly.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-xml-fit-scale-lost",
+  "title": "カットすると画面の大きさが変わる（「フレームサイズに合わせてスケール」が XML に残らない）",
+  "kind": "usecase",
+  "tags": [
+   "XML",
+   "スケール",
+   "Scale to Frame Size",
+   "解像度",
+   "画面収録",
+   "FCP7 XML",
+   "往復"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "Scale to Frame Size の設定は FCP XML に保存されない。書き出し側で、解像度が合わないクリップに明示のスケール値を付けて補う。手動で設定した値には触れない",
+  "parts": [
+   "fcpxml",
+   "silence-cut"
+  ],
+  "related": [
+   "uc-xml-audio-channel-map-lost",
+   "ref-fcp7-xml"
+  ],
+  "path": "usecases/uc-xml-fit-scale-lost.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-xml-invalid-input-fail-closed",
+  "title": "XML の異常な入力（不正な数値・解決できない link・複数のシーケンス）を黙って通した",
+  "kind": "usecase",
+  "tags": [
+   "XML",
+   "XMEML",
+   "link",
+   "異常入力",
+   "fail-closed",
+   "トランジション",
+   "sequence"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "partial",
+  "summary": "異常な入力を黙って飛ばすと、音声が欠けたまま成功したり、読み込みが壊れたりする。復元できる正当な値だけ受け、できなければ止める",
+  "parts": [
+   "fcpxml",
+   "silence-cut"
+  ],
+  "related": [
+   "uc-xml-dangling-file",
+   "uc-xml-regex-nested-tags",
+   "ref-fcp7-xml"
+  ],
+  "path": "usecases/uc-xml-invalid-input-fail-closed.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-xml-nested-multicam",
+  "title": "ネストやマルチカムのタイムラインで無音カットが効かない",
+  "kind": "usecase",
+  "tags": [
+   "XML",
+   "ネスト",
+   "マルチカム",
+   "無音カット",
+   "sequence",
+   "file",
+   "スキップ"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "unverified",
+  "summary": "ネストされたシーケンスの完全な定義は文書中に 1 回だけで、時間は秒で換算し、マルチカムの映像クリップは XML に書き出されない。全部を飛ばしたときは、調整の話にせず真因を言う",
+  "parts": [
+   "fcpxml",
+   "silence-cut"
+  ],
+  "related": [
+   "uc-xml-dangling-file",
+   "uc-xml-stereo-exploded-tracks",
+   "ref-fcp7-xml",
+   "feat-cutsrt-cut"
+  ],
+  "path": "usecases/uc-xml-nested-multicam.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-xml-regex-nested-tags",
+  "title": "クリップ情報の取り出しが V1 の途中で止まる（正規表現で XML を切った）",
+  "kind": "usecase",
+  "tags": [
+   "XML",
+   "FCP7 XML",
+   "正規表現",
+   "ElementTree",
+   "clipitem",
+   "パーサ"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "clipitem の中に同名のタグ（video）が入れ子になるので、正規表現は最初の閉じタグで止まる。XML は必ず XML パーサで読む",
+  "parts": [
+   "fcpxml"
+  ],
+  "related": [
+   "uc-xml-dangling-file",
+   "uc-xml-invalid-input-fail-closed",
+   "ref-fcp7-xml"
+  ],
+  "path": "usecases/uc-xml-regex-nested-tags.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-xml-silence-asymmetric",
+  "title": "カットの後ろに余韻が残りすぎる（無音検出の前後の偏り）",
+  "kind": "usecase",
+  "tags": [
+   "無音カット",
+   "無音検出",
+   "silencedetect",
+   "エンベロープ",
+   "パディング",
+   "RMS",
+   "ffmpeg"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=25.6",
+  "status": "verified",
+  "summary": "前後の余白を対称にしても、検出器が発話の頭は正確、終わりは約 1 フレーム遅く捉えるため後ろが長く残る。補正値で埋めず、前後を同じ基準で測る検出に替える",
+  "parts": [
+   "silence-cut"
+  ],
+  "related": [
+   "feat-cutsrt-cut",
+   "feat-silence-cut-plugin",
+   "uc-xml-nested-multicam"
+  ],
+  "path": "usecases/uc-xml-silence-asymmetric.md",
+  "source": "kit"
+ },
+ {
+  "id": "uc-xml-stereo-exploded-tracks",
+  "title": "ステレオの音声トラックが XML で左右 2 本に展開され、転写や無音判定が崩れる",
+  "kind": "usecase",
+  "tags": [
+   "XML",
+   "音声",
+   "ステレオ",
+   "トラック",
+   "無音カット",
+   "転写",
+   "BGM",
+   "ミックス"
+  ],
+  "os": [
+   "mac",
+   "windows"
+  ],
+  "premiere": ">=26.2",
+  "status": "unverified",
+  "summary": "XML では論理的な A1（ステレオ）が左右 2 本のトラックになる。トラック数は XML でなく Premiere の API から取り、無音判定には声のトラックだけを使う",
+  "parts": [
+   "fcpxml",
+   "silence-cut",
+   "transcribe-srt"
+  ],
+  "related": [
+   "uc-xml-audio-channel-map-lost",
+   "uc-xml-nested-multicam",
+   "ref-fcp7-xml"
+  ],
+  "path": "usecases/uc-xml-stereo-exploded-tracks.md",
+  "source": "kit"
+ }
+]
