@@ -1,0 +1,33 @@
+{
+  "note": "Premiere の UXP API の最低版（公式リファレンスの Since と変更履歴、2026-10-13 調査）。check.py の J014 が使う。名前が一般的すぎて誤検知するもの（setPosition・guid など）は載せない。",
+  "apis": {
+    "ProjectConverter": {"since": "26.2", "what": "FCP XML・OTIO・AAF の書き出し"},
+    "exportAsFinalCutProXML": {"since": "26.2", "what": "ProjectConverter.exportAsFinalCutProXML"},
+    "exportAsOpenTimelineIO": {"since": "26.2", "what": "ProjectConverter.exportAsOpenTimelineIO"},
+    "getVideoFrameRate": {"since": "26.2", "what": "SequenceSettings.getVideoFrameRate()"},
+    "isProject": {"since": "26.2", "what": "Project.isProject"},
+    "closeSequence": {"since": "26.2", "what": "Project.closeSequence"},
+    "createSubClipAction": {"since": "26.3", "what": "ClipProjectItem.createSubClipAction"},
+    "createSequenceWithPresetPath": {"since": "26.3", "what": "Project.createSequenceWithPresetPath"},
+    "launchEncoder": {"since": "26.3", "what": "EncoderManager.launchEncoder"},
+    "startBatchEncode": {"since": "26.3", "what": "EncoderManager.startBatchEncode"},
+    "setEmbeddedXMPEnabled": {"since": "26.3", "what": "EncoderManager"},
+    "setSidecarXMPEnabled": {"since": "26.3", "what": "EncoderManager"},
+    "ObjectMaskUtils": {"since": "26.3", "what": "マスク"},
+    "exportAAF": {"since": "26.3", "what": "ProjectConverter.exportAAF"},
+    "querySupportedLanguages": {"since": "26.3", "what": "Transcript"},
+    "hasTranscript": {"since": "26.3", "what": "Transcript"},
+    "C2PAService": {"since": "26.5", "what": "コンテンツ認証"},
+    "MediaManager": {"since": "26.5", "what": "メディアキャッシュ"},
+    "WorkAreaUtils": {"since": "26.5", "what": "作業エリアの in/out"},
+    "transcribeClipProjectItem": {"since": "26.5", "what": "Transcript"},
+    "isLanguagePackAvailable": {"since": "26.5", "what": "Transcript"},
+    "getBackgroundColor": {"since": "26.5", "what": "uxp.host.getBackgroundColor()"},
+    "applicationPath": {"since": "26.5", "what": "uxp.host.applicationPath"},
+    "createRazorTrackAction": {"since": "27.0", "beta": true, "what": "クリップの分割（27.0 ベータの公式サンプルにだけある）"},
+    "createRazorAllTracksAction": {"since": "27.0", "beta": true, "what": "全トラックの分割（27.0 ベータ）"},
+    "MogrtText": {"since": "27.0", "beta": true, "what": "MOGRT の文字（27.0 ベータの型定義）"},
+    "MogrtComment": {"since": "27.0", "beta": true, "what": "MOGRT のコメント（27.0 ベータの型定義）"},
+    "buildNumber": {"since": "27.0", "beta": true, "what": "uxp.host.buildNumber"}
+  }
+}
